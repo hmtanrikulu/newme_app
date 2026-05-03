@@ -22,13 +22,17 @@
 		7E5B823469E3FEC2D1A3416F /* FoodRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54B3A683A21BFC40095AA8 /* FoodRow.swift */; };
 		8643BC195B49D400B6299F42 /* SettingsTabPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789A3342DF80BE9BC306449 /* SettingsTabPicker.swift */; };
 		874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */; };
+		89F150E9C34AEAEFE1991748 /* DailyAggregator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE79581C8C2710AEE166A3B /* DailyAggregator.swift */; };
 		8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */; };
 		8FFD9164E8786ACA25F0D535 /* CatalogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E1695A726562559C382D98 /* CatalogRow.swift */; };
 		93EF3D2B5A44273D588F1D21 /* SummaryPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */; };
+		9A76FF3997617B47E9B7B486 /* DaySummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B940CFA9E12229086CC1C907 /* DaySummaryCard.swift */; };
+		9CBA2D1456B19D411F031B4B /* TrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F239A6EEF32F5C8E29977A41 /* TrendChart.swift */; };
 		9E53E30D1096E4ACEEC02611 /* FoodLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD424F6088E97F7A54955847 /* FoodLogView.swift */; };
 		A4909DDDA04FFCB61B8D8ACE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EFDBD1137E6026D7C9009C /* CalendarView.swift */; };
 		A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94957530C2BE28816CF223D /* SettingsView.swift */; };
 		A639E1C5970D6AC87BAF9242 /* AppHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7592FF7D0F6E7C700EA8AD /* AppHeader.swift */; };
+		AD45D02DF54901C7E5616DEB /* MonthGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B1D3F34EE3885D932DA073 /* MonthGrid.swift */; };
 		C5DAA9C35A39D4ACBA2D7CFF /* SpendingLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */; };
 		D206A8F408F9C5719BA3B49C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 684530DC556EA7D10A42C4A9 /* Assets.xcassets */; };
 		D2FAABAE0AC61051F5B83983 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 624447AAA11AB189D2A33409 /* Preview Assets.xcassets */; };
@@ -70,6 +74,8 @@
 		954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGoals.swift; sourceTree = "<group>"; };
 		A761C7390AECA8E169F2D91F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B940CFA9E12229086CC1C907 /* DaySummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryCard.swift; sourceTree = "<group>"; };
+		BBE79581C8C2710AEE166A3B /* DailyAggregator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAggregator.swift; sourceTree = "<group>"; };
 		C2EFDBD1137E6026D7C9009C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		C3EF913E189B34F56C5D11AD /* ExerciseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseItem.swift; sourceTree = "<group>"; };
 		CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPill.swift; sourceTree = "<group>"; };
@@ -80,6 +86,8 @@
 		DD9C00A2BC3DF6C43D82FF40 /* AmountKeypad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountKeypad.swift; sourceTree = "<group>"; };
 		E6E1695A726562559C382D98 /* CatalogRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRow.swift; sourceTree = "<group>"; };
 		EA6F388ADAE433B9778079FB /* NumberInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberInput.swift; sourceTree = "<group>"; };
+		F239A6EEF32F5C8E29977A41 /* TrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendChart.swift; sourceTree = "<group>"; };
+		F5B1D3F34EE3885D932DA073 /* MonthGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthGrid.swift; sourceTree = "<group>"; };
 		F5EE25A0A2BA041A14C4B733 /* FoodEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodEditorSheet.swift; sourceTree = "<group>"; };
 		FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,6 +151,10 @@
 			isa = PBXGroup;
 			children = (
 				C2EFDBD1137E6026D7C9009C /* CalendarView.swift */,
+				BBE79581C8C2710AEE166A3B /* DailyAggregator.swift */,
+				B940CFA9E12229086CC1C907 /* DaySummaryCard.swift */,
+				F5B1D3F34EE3885D932DA073 /* MonthGrid.swift */,
+				F239A6EEF32F5C8E29977A41 /* TrendChart.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -305,7 +317,9 @@
 				704882D79EE8841371D454CE /* Color+Hex.swift in Sources */,
 				D7A6A5A862F09D3942F04938 /* ContentView.swift in Sources */,
 				874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */,
+				89F150E9C34AEAEFE1991748 /* DailyAggregator.swift in Sources */,
 				DB82F1D3453EC18A96080F5B /* DateFormatters.swift in Sources */,
+				9A76FF3997617B47E9B7B486 /* DaySummaryCard.swift in Sources */,
 				F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */,
 				5FE1C9ECF0E8E06DF68708EB /* ExerciseCatalogTab.swift in Sources */,
 				352A2BDCF475074745588CC5 /* ExerciseItem.swift in Sources */,
@@ -319,6 +333,7 @@
 				7E5B823469E3FEC2D1A3416F /* FoodRow.swift in Sources */,
 				444B2B8AB6300A15CED758A7 /* GoalsTab.swift in Sources */,
 				0F50FDE9FC1F85B6AF7340D5 /* MacroCard.swift in Sources */,
+				AD45D02DF54901C7E5616DEB /* MonthGrid.swift in Sources */,
 				8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */,
 				419977C8CEB8DF08A995F918 /* NumberInput.swift in Sources */,
 				DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */,
@@ -328,6 +343,7 @@
 				FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */,
 				C5DAA9C35A39D4ACBA2D7CFF /* SpendingLogView.swift in Sources */,
 				93EF3D2B5A44273D588F1D21 /* SummaryPill.swift in Sources */,
+				9CBA2D1456B19D411F031B4B /* TrendChart.swift in Sources */,
 				70467842BBB92FE825742F81 /* UserGoals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
