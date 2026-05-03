@@ -10,6 +10,7 @@
 		0F50FDE9FC1F85B6AF7340D5 /* MacroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5CEDEF6DAA54A74AC7D56E /* MacroCard.swift */; };
 		352A2BDCF475074745588CC5 /* ExerciseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EF913E189B34F56C5D11AD /* ExerciseItem.swift */; };
 		390A2A4823F642F910A34BFE /* FitnessLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912CFD0DA61DCB3D1A1C0ADF /* FitnessLogEntry.swift */; };
+		419977C8CEB8DF08A995F918 /* NumberInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6F388ADAE433B9778079FB /* NumberInput.swift */; };
 		42D1461DF103D79503B8DC1D /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EF0AFF032AD0612B918643 /* FoodItem.swift */; };
 		6787C9619F48E7340A788498 /* FoodLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */; };
 		70467842BBB92FE825742F81 /* UserGoals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */; };
@@ -18,6 +19,7 @@
 		7E5B823469E3FEC2D1A3416F /* FoodRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54B3A683A21BFC40095AA8 /* FoodRow.swift */; };
 		874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */; };
 		8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */; };
+		93EF3D2B5A44273D588F1D21 /* SummaryPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */; };
 		9E53E30D1096E4ACEEC02611 /* FoodLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD424F6088E97F7A54955847 /* FoodLogView.swift */; };
 		A4909DDDA04FFCB61B8D8ACE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EFDBD1137E6026D7C9009C /* CalendarView.swift */; };
 		A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94957530C2BE28816CF223D /* SettingsView.swift */; };
@@ -29,6 +31,7 @@
 		DB82F1D3453EC18A96080F5B /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78BF2D3FEE409FC4301F65 /* DateFormatters.swift */; };
 		DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8FA1BF1DD34AB328B6C2C0 /* RootView.swift */; };
 		E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */; };
+		F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE490BB03964E90CD36D109B /* ExerciseCard.swift */; };
 		F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */; };
 		FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D54D8EF5353BFC0B877D2D /* SpendLogEntry.swift */; };
 /* End PBXBuildFile section */
@@ -56,9 +59,12 @@
 		A761C7390AECA8E169F2D91F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C2EFDBD1137E6026D7C9009C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		C3EF913E189B34F56C5D11AD /* ExerciseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseItem.swift; sourceTree = "<group>"; };
+		CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPill.swift; sourceTree = "<group>"; };
+		CE490BB03964E90CD36D109B /* ExerciseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCard.swift; sourceTree = "<group>"; };
 		D94957530C2BE28816CF223D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DA2CD710C2A1F54C07B105F1 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		DD424F6088E97F7A54955847 /* FoodLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogView.swift; sourceTree = "<group>"; };
+		EA6F388ADAE433B9778079FB /* NumberInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberInput.swift; sourceTree = "<group>"; };
 		FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -149,7 +155,10 @@
 		76F1E038B498B12FF918A319 /* Fitness */ = {
 			isa = PBXGroup;
 			children = (
+				CE490BB03964E90CD36D109B /* ExerciseCard.swift */,
 				14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */,
+				EA6F388ADAE433B9778079FB /* NumberInput.swift */,
+				CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */,
 			);
 			path = Fitness;
 			sourceTree = "<group>";
@@ -270,6 +279,7 @@
 				D7A6A5A862F09D3942F04938 /* ContentView.swift in Sources */,
 				874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */,
 				DB82F1D3453EC18A96080F5B /* DateFormatters.swift in Sources */,
+				F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */,
 				352A2BDCF475074745588CC5 /* ExerciseItem.swift in Sources */,
 				390A2A4823F642F910A34BFE /* FitnessLogEntry.swift in Sources */,
 				F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */,
@@ -279,11 +289,13 @@
 				7E5B823469E3FEC2D1A3416F /* FoodRow.swift in Sources */,
 				0F50FDE9FC1F85B6AF7340D5 /* MacroCard.swift in Sources */,
 				8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */,
+				419977C8CEB8DF08A995F918 /* NumberInput.swift in Sources */,
 				DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */,
 				E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */,
 				A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */,
 				FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */,
 				C5DAA9C35A39D4ACBA2D7CFF /* SpendingLogView.swift in Sources */,
+				93EF3D2B5A44273D588F1D21 /* SummaryPill.swift in Sources */,
 				70467842BBB92FE825742F81 /* UserGoals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
