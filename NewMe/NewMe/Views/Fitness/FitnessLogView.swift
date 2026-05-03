@@ -49,7 +49,15 @@ struct FitnessLogView: View {
     private func addSet(for ex: ExerciseItem) {
         let entry = ensureEntry(for: ex)
         let last = entry.sets.last
-        let newSet = SetData(reps: last?.reps ?? 8, kg: last?.kg ?? 20)
+        let newSet: SetData
+        switch ex.kind {
+        case .weight:
+            newSet = SetData(reps: last?.reps ?? 8, kg: last?.kg ?? 20)
+        case .bodyweight:
+            newSet = SetData(reps: last?.reps ?? 10)
+        case .cardio:
+            newSet = SetData(minutes: last?.minutes ?? 10)
+        }
         entry.sets.append(newSet)
         try? context.save()
     }

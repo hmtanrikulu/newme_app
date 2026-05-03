@@ -32,17 +32,21 @@ struct ExerciseCard: View {
     private var header: some View {
         Button(action: onToggleOpen) {
             HStack(spacing: 12) {
+                Image(systemName: exercise.kind.systemImage)
+                    .font(.system(size: 14))
+                    .foregroundStyle(AppColor.text2)
+                    .frame(width: 18)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(exercise.name)
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(AppColor.textPrimary)
-                    Text(exercise.muscleGroup)
+                    Text(exercise.kind.hasMuscleGroup ? exercise.muscleGroup : exercise.kind.label)
                         .font(.system(size: 12))
                         .foregroundStyle(AppColor.text2)
                 }
                 Spacer()
                 if !sets.isEmpty {
-                    Text("\(sets.count) set")
+                    Text(setBadge)
                         .font(.system(size: 12, weight: .semibold))
                         .monospacedDigit()
                         .foregroundStyle(AppColor.gold)
@@ -59,25 +63,19 @@ struct ExerciseCard: View {
         .buttonStyle(.plain)
     }
 
+    private var setBadge: String {
+        switch exercise.kind {
+        case .weight, .bodyweight:
+            return "\(sets.count) set"
+        case .cardio:
+            let total = Int(sets.reduce(0) { $0 + $1.minutes }.rounded())
+            return "\(total) dk"
+        }
+    }
+
     private var table: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 8) {
-                Text("SET").frame(width: 24, alignment: .leading)
-                Text("KG").frame(maxWidth: .infinity)
-                Text("TEKRAR").frame(maxWidth: .infinity)
-                Color.clear.frame(width: 22)
-            }
-            .font(.system(size: 10, weight: .heavy))
-            .tracking(1)
-            .foregroundStyle(AppColor.text3)
-            .padding(.horizontal, 4)
-            .padding(.bottom, 4)
-            .padding(.top, 6)
-            .overlay(
-                Rectangle().fill(Color.white.opacity(0.06)).frame(height: 0.5),
-                alignment: .bottom
-            )
-
+            tableHeader
             if sets.isEmpty {
                 Text("Henüz set girilmedi")
                     .font(.system(size: 13))
@@ -89,6 +87,7 @@ struct ExerciseCard: View {
                 ForEach(Array(sets.enumerated()), id: \.offset) { idx, set in
                     SetRow(
                         index: idx,
+                        kind: exercise.kind,
                         set: set,
                         isLast: idx == sets.count - 1,
                         onUpdate: { onUpdateSet(idx, $0) },
@@ -96,7 +95,6 @@ struct ExerciseCard: View {
                     )
                 }
             }
-
             Button(action: onAddSet) {
                 Text("+ Set Ekle")
                     .font(.system(size: 13, weight: .semibold))
@@ -119,10 +117,38 @@ struct ExerciseCard: View {
         .padding(.horizontal, 14)
         .padding(.bottom, 14)
     }
+
+    @ViewBuilder
+    private var tableHeader: some View {
+        HStack(spacing: 8) {
+            Text("SET").frame(width: 24, alignment: .leading)
+            switch exercise.kind {
+            case .weight:
+                Text("KG").frame(maxWidth: .infinity)
+                Text("TEKRAR").frame(maxWidth: .infinity)
+            case .bodyweight:
+                Text("TEKRAR").frame(maxWidth: .infinity)
+            case .cardio:
+                Text("DAKİKA").frame(maxWidth: .infinity)
+            }
+            Color.clear.frame(width: 22)
+        }
+        .font(.system(size: 10, weight: .heavy))
+        .tracking(1)
+        .foregroundStyle(AppColor.text3)
+        .padding(.horizontal, 4)
+        .padding(.bottom, 4)
+        .padding(.top, 6)
+        .overlay(
+            Rectangle().fill(Color.white.opacity(0.06)).frame(height: 0.5),
+            alignment: .bottom
+        )
+    }
 }
 
 private struct SetRow: View {
     let index: Int
+    let kind: ExerciseKind
     let set: SetData
     let isLast: Bool
     let onUpdate: (SetData) -> Void
@@ -130,17 +156,24 @@ private struct SetRow: View {
 
     @State private var kg: Double
     @State private var reps: Double
+    @State private var minutes: Double
 
-    init(index: Int, set: SetData, isLast: Bool,
+    init(index: Int, kind: ExerciseKind, set: SetData, isLast: Bool,
          onUpdate: @escaping (SetData) -> Void,
          onDelete: @escaping () -> Void) {
         self.index = index
+        self.kind = kind
         self.set = set
         self.isLast = isLast
         self.onUpdate = onUpdate
         self.onDelete = onDelete
         _kg = State(initialValue: set.kg)
         _reps = State(initialValue: Double(set.reps))
+        _minutes = State(initialValue: set.minutes)
+    }
+
+    private func emit() {
+        onUpdate(SetData(reps: Int(reps.rounded()), kg: kg, minutes: minutes))
     }
 
     var body: some View {
@@ -150,14 +183,21 @@ private struct SetRow: View {
                 .monospacedDigit()
                 .foregroundStyle(AppColor.gold)
                 .frame(width: 24, alignment: .leading)
-            NumberInput(value: $kg, decimals: 1, suffix: "kg")
-                .onChange(of: kg) { _, newValue in
-                    onUpdate(SetData(reps: Int(reps.rounded()), kg: newValue))
-                }
-            NumberInput(value: $reps)
-                .onChange(of: reps) { _, newValue in
-                    onUpdate(SetData(reps: Int(newValue.rounded()), kg: kg))
-                }
+
+            switch kind {
+            case .weight:
+                NumberInput(value: $kg, decimals: 1, suffix: "kg")
+                    .onChange(of: kg) { _, _ in emit() }
+                NumberInput(value: $reps)
+                    .onChange(of: reps) { _, _ in emit() }
+            case .bodyweight:
+                NumberInput(value: $reps)
+                    .onChange(of: reps) { _, _ in emit() }
+            case .cardio:
+                NumberInput(value: $minutes, decimals: 1, suffix: "dk")
+                    .onChange(of: minutes) { _, _ in emit() }
+            }
+
             Button(action: onDelete) {
                 Image(systemName: "xmark")
                     .font(.system(size: 12, weight: .medium))

@@ -22,7 +22,7 @@ struct ExerciseCatalogTab: View {
                 ForEach(exercises) { ex in
                     CatalogRow(
                         title: ex.name,
-                        subtitle: ex.muscleGroup,
+                        subtitle: subtitle(for: ex),
                         onRemove: { remove(ex) }
                     )
                 }
@@ -35,12 +35,23 @@ struct ExerciseCatalogTab: View {
         .sheet(isPresented: $presentingNew) {
             ExerciseEditorSheet(initial: nil) { draft in
                 let nextOrder = (exercises.map(\.sortOrder).max() ?? -1) + 1
-                let ex = ExerciseItem(name: draft.name, muscleGroup: draft.muscleGroup, sortOrder: nextOrder)
+                let ex = ExerciseItem(
+                    name: draft.name,
+                    muscleGroup: draft.kind.hasMuscleGroup ? draft.muscleGroup : "—",
+                    kind: draft.kind,
+                    sortOrder: nextOrder
+                )
                 context.insert(ex)
                 try? context.save()
             }
             .presentationDetents([.medium, .large])
         }
+    }
+
+    private func subtitle(for ex: ExerciseItem) -> String {
+        ex.kind.hasMuscleGroup
+            ? "\(ex.kind.label) · \(ex.muscleGroup)"
+            : ex.kind.label
     }
 
     private func remove(_ ex: ExerciseItem) {
@@ -52,6 +63,7 @@ struct ExerciseCatalogTab: View {
 struct ExerciseDraft {
     var name: String = ""
     var muscleGroup: String = "Göğüs"
+    var kind: ExerciseKind = .weight
 }
 
 struct ExerciseEditorSheet: View {
@@ -78,9 +90,21 @@ struct ExerciseEditorSheet: View {
             Form {
                 Section("Hareket") {
                     TextField("İsim (örn. Bench Press)", text: $draft.name)
-                    Picker("Kas grubu", selection: $draft.muscleGroup) {
-                        ForEach(groups, id: \.self) { Text($0).tag($0) }
+                    Picker("Tür", selection: $draft.kind) {
+                        ForEach(ExerciseKind.allCases) { kind in
+                            Label(kind.label, systemImage: kind.systemImage).tag(kind)
+                        }
                     }
+                    if draft.kind.hasMuscleGroup {
+                        Picker("Kas grubu", selection: $draft.muscleGroup) {
+                            ForEach(groups, id: \.self) { Text($0).tag($0) }
+                        }
+                    }
+                }
+                Section {
+                    Text(hintText)
+                        .font(.system(size: 12))
+                        .foregroundStyle(AppColor.text2)
                 }
             }
             .scrollContentBackground(.hidden)
@@ -97,6 +121,14 @@ struct ExerciseEditorSheet: View {
                         .disabled(!canSave)
                 }
             }
+        }
+    }
+
+    private var hintText: String {
+        switch draft.kind {
+        case .weight:     return "Her set için ağırlık (kg) ve tekrar sayısı girilir."
+        case .bodyweight: return "Her set için yalnızca tekrar sayısı girilir."
+        case .cardio:     return "Her set için süre (dakika) girilir."
         }
     }
 }
