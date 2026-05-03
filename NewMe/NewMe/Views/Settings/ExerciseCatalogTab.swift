@@ -9,29 +9,34 @@ struct ExerciseCatalogTab: View {
     @State private var presentingNew = false
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 6) {
+        List {
+            Section {
+                ForEach(exercises) { ex in
+                    CatalogRow(title: ex.name, subtitle: subtitle(for: ex))
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets(top: 3, leading: 16, bottom: 3, trailing: 16))
+                }
+                .onMove(perform: move)
+                .onDelete(perform: delete)
+
+                AddRowButton(label: "+ Egzersiz Ekle") { presentingNew = true }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 8, trailing: 16))
+                    .moveDisabled(true)
+                    .deleteDisabled(true)
+            } header: {
                 Text("EGZERSİZLER")
                     .font(.system(size: 11, weight: .heavy))
                     .tracking(1)
                     .foregroundStyle(AppColor.text3)
-                    .padding(.horizontal, 6)
-                    .padding(.top, 8)
-                    .padding(.bottom, 2)
-
-                ForEach(exercises) { ex in
-                    CatalogRow(
-                        title: ex.name,
-                        subtitle: subtitle(for: ex),
-                        onRemove: { remove(ex) }
-                    )
-                }
-
-                AddRowButton(label: "+ Egzersiz Ekle") { presentingNew = true }
+                    .listRowInsets(EdgeInsets(top: 8, leading: 22, bottom: 4, trailing: 16))
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 30)
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .environment(\.editMode, .constant(.active))
         .sheet(isPresented: $presentingNew) {
             ExerciseEditorSheet(initial: nil) { draft in
                 let nextOrder = (exercises.map(\.sortOrder).max() ?? -1) + 1
@@ -54,8 +59,19 @@ struct ExerciseCatalogTab: View {
             : ex.kind.label
     }
 
-    private func remove(_ ex: ExerciseItem) {
-        context.delete(ex)
+    private func delete(at offsets: IndexSet) {
+        for index in offsets {
+            context.delete(exercises[index])
+        }
+        try? context.save()
+    }
+
+    private func move(from source: IndexSet, to destination: Int) {
+        var arr = exercises
+        arr.move(fromOffsets: source, toOffset: destination)
+        for (idx, item) in arr.enumerated() {
+            item.sortOrder = idx
+        }
         try? context.save()
     }
 }

@@ -1,34 +1,25 @@
 import SwiftUI
 
+/// Card-styled row for the Settings catalog lists.
+/// Delete + drag handles come from the parent List's edit mode (no custom
+/// affordances inside the row itself, so the native red dash on the left
+/// and the three-line drag handle on the right show up in their standard
+/// iOS positions).
 struct CatalogRow: View {
     let title: String
     let subtitle: String
-    let onRemove: () -> Void
 
     var body: some View {
-        HStack(spacing: 10) {
-            Button(action: onRemove) {
-                ZStack {
-                    Circle().fill(AppColor.danger).frame(width: 22, height: 22)
-                    Rectangle().fill(.white).frame(width: 10, height: 2)
-                }
-            }
-            .buttonStyle(.plain)
-
-            VStack(alignment: .leading, spacing: 1) {
-                Text(title)
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(AppColor.textPrimary)
-                Text(subtitle)
-                    .font(.system(size: 12))
-                    .foregroundStyle(AppColor.text2)
-                    .lineLimit(1)
-            }
-            Spacer(minLength: 0)
-            Image(systemName: "line.3.horizontal")
-                .font(.system(size: 13))
-                .foregroundStyle(Color.white.opacity(0.3))
+        VStack(alignment: .leading, spacing: 1) {
+            Text(title)
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(AppColor.textPrimary)
+            Text(subtitle)
+                .font(.system(size: 12))
+                .foregroundStyle(AppColor.text2)
+                .lineLimit(1)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 12)
         .padding(.vertical, 11)
         .background(

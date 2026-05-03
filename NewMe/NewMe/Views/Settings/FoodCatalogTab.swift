@@ -9,29 +9,34 @@ struct FoodCatalogTab: View {
     @State private var presentingNew = false
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 6) {
+        List {
+            Section {
+                ForEach(foods) { food in
+                    CatalogRow(title: food.name, subtitle: subtitle(for: food))
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets(top: 3, leading: 16, bottom: 3, trailing: 16))
+                }
+                .onMove(perform: move)
+                .onDelete(perform: delete)
+
+                AddRowButton(label: "+ Yiyecek Ekle") { presentingNew = true }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 8, trailing: 16))
+                    .moveDisabled(true)
+                    .deleteDisabled(true)
+            } header: {
                 Text("YİYECEKLER")
                     .font(.system(size: 11, weight: .heavy))
                     .tracking(1)
                     .foregroundStyle(AppColor.text3)
-                    .padding(.horizontal, 6)
-                    .padding(.top, 8)
-                    .padding(.bottom, 2)
-
-                ForEach(foods) { food in
-                    CatalogRow(
-                        title: food.name,
-                        subtitle: subtitle(for: food),
-                        onRemove: { remove(food) }
-                    )
-                }
-
-                AddRowButton(label: "+ Yiyecek Ekle") { presentingNew = true }
+                    .listRowInsets(EdgeInsets(top: 8, leading: 22, bottom: 4, trailing: 16))
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 30)
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .environment(\.editMode, .constant(.active))
         .sheet(isPresented: $presentingNew) {
             FoodEditorSheet(initial: nil) { draft in
                 let nextOrder = (foods.map(\.sortOrder).max() ?? -1) + 1
@@ -62,8 +67,19 @@ struct FoodCatalogTab: View {
         v == v.rounded() ? "\(Int(v))" : String(format: "%.1f", v)
     }
 
-    private func remove(_ food: FoodItem) {
-        context.delete(food)
+    private func delete(at offsets: IndexSet) {
+        for index in offsets {
+            context.delete(foods[index])
+        }
+        try? context.save()
+    }
+
+    private func move(from source: IndexSet, to destination: Int) {
+        var arr = foods
+        arr.move(fromOffsets: source, toOffset: destination)
+        for (idx, item) in arr.enumerated() {
+            item.sortOrder = idx
+        }
         try? context.save()
     }
 }
