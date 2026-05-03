@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		704882D79EE8841371D454CE /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */; };
+		7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2CD710C2A1F54C07B105F1 /* AppColors.swift */; };
 		8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */; };
 		D206A8F408F9C5719BA3B49C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 684530DC556EA7D10A42C4A9 /* Assets.xcassets */; };
 		D2FAABAE0AC61051F5B83983 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 624447AAA11AB189D2A33409 /* Preview Assets.xcassets */; };
@@ -19,7 +21,9 @@
 		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		624447AAA11AB189D2A33409 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		684530DC556EA7D10A42C4A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		A761C7390AECA8E169F2D91F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DA2CD710C2A1F54C07B105F1 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -39,6 +43,15 @@
 			);
 			sourceTree = "<group>";
 		};
+		3BFA9D66DB4389F2D9D2F1AA /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				DA2CD710C2A1F54C07B105F1 /* AppColors.swift */,
+				904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
 		75F064B816AD662187B0DE1C /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -51,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				75F064B816AD662187B0DE1C /* Preview Content */,
+				3BFA9D66DB4389F2D9D2F1AA /* Theme */,
 				684530DC556EA7D10A42C4A9 /* Assets.xcassets */,
 				A761C7390AECA8E169F2D91F /* ContentView.swift */,
 				29861D311D54958D5E8AD7C2 /* NewMe.entitlements */,
@@ -131,6 +145,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */,
+				704882D79EE8841371D454CE /* Color+Hex.swift in Sources */,
 				D7A6A5A862F09D3942F04938 /* ContentView.swift in Sources */,
 				8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */,
 			);
