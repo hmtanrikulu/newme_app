@@ -1,0 +1,29 @@
+/* NEWME — kişisel takip uygulaması ortak stiller */
+:root {
+  --bg: #000000;
+  --surface: #1C1C1E;
+  --surface-2: #2C2C2E;
+  --surface-3: #3A3A3C;
+  --hairline: rgba(255,255,255,0.08);
+  --text: #FFFFFF;
+  --text-2: rgba(235,235,245,0.6);
+  --text-3: rgba(235,235,245,0.4);
+  --gold: #C9A961;
+  --gold-soft: #D4B872;
+  --gold-dim: rgba(201,169,97,0.18);
+  --green: #34C759;
+  --red: #FF453A;
+  --blue: #0A84FF;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #0a0a0a;
+  font-family: -apple-system, "SF Pro Display", system-ui, sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: inherit; }

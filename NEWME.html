@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEWME — Kişisel Takip</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  body { background: #0a0a0a; min-height: 100vh; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="screens/FoodScreen.jsx"></script>
+<script type="text/babel" src="screens/FitnessScreen.jsx"></script>
+<script type="text/babel" src="screens/SpendingScreen.jsx"></script>
+<script type="text/babel" src="screens/SettingsScreen.jsx"></script>
+<script type="text/babel" src="screens/Alternatives.jsx"></script>
+<script type="text/babel" src="screens/CalendarScreen.jsx"></script>
+<script type="text/babel" src="screens/App.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+// Wrap one App instance inside an iOS phone frame
+function PhoneFrame({ initialTab, initialModal }) {
+  return (
+    <IOSDevice width={390} height={780} dark={true}>
+      <App initialTab={initialTab} initialModal={initialModal} />
+    </IOSDevice>
+  );
+}
+
+function Root() {
+  return (
+    <div data-screen-label="NEWME Prototip" style={{ minHeight: '100vh', background: '#0a0a0a' }}>
+      <DesignCanvas>
+        <DCSection id="main" title="NEWME — Kişisel Takip Uygulaması"
+          subtitle="5 ekranlı, tıklanabilir prototip — yemek, fitness, harcama, ayarlar, takvim">
+          <DCArtboard id="food" label="1 · Yemek logları (giriş)" width={390} height={780}>
+            <PhoneFrame initialTab="food" />
+          </DCArtboard>
+          <DCArtboard id="fit" label="2 · Fitness logları" width={390} height={780}>
+            <PhoneFrame initialTab="fit" />
+          </DCArtboard>
+          <DCArtboard id="spend" label="3 · Harcama logları" width={390} height={780}>
+            <PhoneFrame initialTab="spend" />
+          </DCArtboard>
+          <DCArtboard id="settings" label="4 · Ayarlar" width={390} height={780}>
+            <PhoneFrame initialTab="food" initialModal="set" />
+          </DCArtboard>
+          <DCArtboard id="cal" label="5 · Takvim + son 7 gün" width={390} height={780}>
+            <PhoneFrame initialTab="food" initialModal="cal" />
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Root />);
+</script>
+</body>
+</html>
