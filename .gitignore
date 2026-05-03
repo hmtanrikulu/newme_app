@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Xcode build / user state
+**/build/
+**/DerivedData/
+**/*.xcuserstate
+**/xcuserdata/
+**/*.xcscmblueprint
+**/*.xccheckout
+**/*.moved-aside
+**/*.hmap
+**/*.ipa
+**/*.dSYM.zip
+**/*.dSYM
+
+# Swift package manager
+.swiftpm/
+Package.resolved
+
+# CocoaPods / Carthage (not used, but defensive)
+Pods/
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
