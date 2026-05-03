@@ -16,6 +16,7 @@
 		70467842BBB92FE825742F81 /* UserGoals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */; };
 		704882D79EE8841371D454CE /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */; };
 		7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2CD710C2A1F54C07B105F1 /* AppColors.swift */; };
+		76EECB56723F699EEC32EC54 /* CategoryGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */; };
 		7E5B823469E3FEC2D1A3416F /* FoodRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54B3A683A21BFC40095AA8 /* FoodRow.swift */; };
 		874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */; };
 		8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */; };
@@ -33,6 +34,7 @@
 		E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */; };
 		F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE490BB03964E90CD36D109B /* ExerciseCard.swift */; };
 		F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */; };
+		F87221C9A041E49B853E1D98 /* AmountKeypad.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9C00A2BC3DF6C43D82FF40 /* AmountKeypad.swift */; };
 		FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D54D8EF5353BFC0B877D2D /* SpendLogEntry.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +46,7 @@
 		3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMeApp.swift; sourceTree = "<group>"; };
 		3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
 		4D54B3A683A21BFC40095AA8 /* FoodRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRow.swift; sourceTree = "<group>"; };
+		4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGrid.swift; sourceTree = "<group>"; };
 		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingLogView.swift; sourceTree = "<group>"; };
 		5B5CEDEF6DAA54A74AC7D56E /* MacroCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroCard.swift; sourceTree = "<group>"; };
@@ -64,6 +67,7 @@
 		D94957530C2BE28816CF223D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DA2CD710C2A1F54C07B105F1 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		DD424F6088E97F7A54955847 /* FoodLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogView.swift; sourceTree = "<group>"; };
+		DD9C00A2BC3DF6C43D82FF40 /* AmountKeypad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountKeypad.swift; sourceTree = "<group>"; };
 		EA6F388ADAE433B9778079FB /* NumberInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberInput.swift; sourceTree = "<group>"; };
 		FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -180,6 +184,8 @@
 		DC951395D3F6DFFFF417E866 /* Spending */ = {
 			isa = PBXGroup;
 			children = (
+				DD9C00A2BC3DF6C43D82FF40 /* AmountKeypad.swift */,
+				4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */,
 				5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */,
 			);
 			path = Spending;
@@ -272,9 +278,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F87221C9A041E49B853E1D98 /* AmountKeypad.swift in Sources */,
 				7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */,
 				A639E1C5970D6AC87BAF9242 /* AppHeader.swift in Sources */,
 				A4909DDDA04FFCB61B8D8ACE /* CalendarView.swift in Sources */,
+				76EECB56723F699EEC32EC54 /* CategoryGrid.swift in Sources */,
 				704882D79EE8841371D454CE /* Color+Hex.swift in Sources */,
 				D7A6A5A862F09D3942F04938 /* ContentView.swift in Sources */,
 				874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */,

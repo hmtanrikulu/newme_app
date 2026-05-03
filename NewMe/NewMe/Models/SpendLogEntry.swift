@@ -15,6 +15,17 @@ enum SpendCategory: String, CaseIterable, Identifiable, Codable {
         case .other:  return "Diğer"
         }
     }
+
+    var systemImage: String {
+        switch self {
+        case .food:   return "fork.knife"
+        case .drink:  return "cup.and.saucer.fill"
+        case .fun:    return "gamecontroller.fill"
+        case .cloth:  return "tshirt.fill"
+        case .market: return "cart.fill"
+        case .other:  return "ellipsis"
+        }
+    }
 }
 
 @Model
