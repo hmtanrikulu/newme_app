@@ -12,14 +12,18 @@
 		390A2A4823F642F910A34BFE /* FitnessLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912CFD0DA61DCB3D1A1C0ADF /* FitnessLogEntry.swift */; };
 		419977C8CEB8DF08A995F918 /* NumberInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6F388ADAE433B9778079FB /* NumberInput.swift */; };
 		42D1461DF103D79503B8DC1D /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EF0AFF032AD0612B918643 /* FoodItem.swift */; };
+		444B2B8AB6300A15CED758A7 /* GoalsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8CB5764019E76EC86523A8 /* GoalsTab.swift */; };
+		5FE1C9ECF0E8E06DF68708EB /* ExerciseCatalogTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7347F084631F0DF43D2B5C5F /* ExerciseCatalogTab.swift */; };
 		6787C9619F48E7340A788498 /* FoodLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */; };
 		70467842BBB92FE825742F81 /* UserGoals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */; };
 		704882D79EE8841371D454CE /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */; };
 		7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2CD710C2A1F54C07B105F1 /* AppColors.swift */; };
 		76EECB56723F699EEC32EC54 /* CategoryGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */; };
 		7E5B823469E3FEC2D1A3416F /* FoodRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54B3A683A21BFC40095AA8 /* FoodRow.swift */; };
+		8643BC195B49D400B6299F42 /* SettingsTabPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789A3342DF80BE9BC306449 /* SettingsTabPicker.swift */; };
 		874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */; };
 		8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */; };
+		8FFD9164E8786ACA25F0D535 /* CatalogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E1695A726562559C382D98 /* CatalogRow.swift */; };
 		93EF3D2B5A44273D588F1D21 /* SummaryPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */; };
 		9E53E30D1096E4ACEEC02611 /* FoodLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD424F6088E97F7A54955847 /* FoodLogView.swift */; };
 		A4909DDDA04FFCB61B8D8ACE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EFDBD1137E6026D7C9009C /* CalendarView.swift */; };
@@ -32,10 +36,12 @@
 		DB82F1D3453EC18A96080F5B /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78BF2D3FEE409FC4301F65 /* DateFormatters.swift */; };
 		DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8FA1BF1DD34AB328B6C2C0 /* RootView.swift */; };
 		E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */; };
+		EE857929E36CBFE0AF9E96C4 /* FoodCatalogTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F08FC359220672EEF8263F1 /* FoodCatalogTab.swift */; };
 		F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE490BB03964E90CD36D109B /* ExerciseCard.swift */; };
 		F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */; };
 		F87221C9A041E49B853E1D98 /* AmountKeypad.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9C00A2BC3DF6C43D82FF40 /* AmountKeypad.swift */; };
 		FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D54D8EF5353BFC0B877D2D /* SpendLogEntry.swift */; };
+		FEF465D2A42E7FD81CF13326 /* FoodEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EE25A0A2BA041A14C4B733 /* FoodEditorSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,13 +54,17 @@
 		4D54B3A683A21BFC40095AA8 /* FoodRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRow.swift; sourceTree = "<group>"; };
 		4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGrid.swift; sourceTree = "<group>"; };
 		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5789A3342DF80BE9BC306449 /* SettingsTabPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTabPicker.swift; sourceTree = "<group>"; };
 		5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingLogView.swift; sourceTree = "<group>"; };
 		5B5CEDEF6DAA54A74AC7D56E /* MacroCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroCard.swift; sourceTree = "<group>"; };
 		624447AAA11AB189D2A33409 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		684530DC556EA7D10A42C4A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		68D54D8EF5353BFC0B877D2D /* SpendLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendLogEntry.swift; sourceTree = "<group>"; };
 		6B78BF2D3FEE409FC4301F65 /* DateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatters.swift; sourceTree = "<group>"; };
+		7347F084631F0DF43D2B5C5F /* ExerciseCatalogTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCatalogTab.swift; sourceTree = "<group>"; };
+		7F8CB5764019E76EC86523A8 /* GoalsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsTab.swift; sourceTree = "<group>"; };
 		8B7592FF7D0F6E7C700EA8AD /* AppHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHeader.swift; sourceTree = "<group>"; };
+		8F08FC359220672EEF8263F1 /* FoodCatalogTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCatalogTab.swift; sourceTree = "<group>"; };
 		904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		912CFD0DA61DCB3D1A1C0ADF /* FitnessLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessLogEntry.swift; sourceTree = "<group>"; };
 		954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -68,7 +78,9 @@
 		DA2CD710C2A1F54C07B105F1 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		DD424F6088E97F7A54955847 /* FoodLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogView.swift; sourceTree = "<group>"; };
 		DD9C00A2BC3DF6C43D82FF40 /* AmountKeypad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountKeypad.swift; sourceTree = "<group>"; };
+		E6E1695A726562559C382D98 /* CatalogRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRow.swift; sourceTree = "<group>"; };
 		EA6F388ADAE433B9778079FB /* NumberInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberInput.swift; sourceTree = "<group>"; };
+		F5EE25A0A2BA041A14C4B733 /* FoodEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodEditorSheet.swift; sourceTree = "<group>"; };
 		FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,6 +114,12 @@
 		18F6068B2D4B4525E1EB680E /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				E6E1695A726562559C382D98 /* CatalogRow.swift */,
+				7347F084631F0DF43D2B5C5F /* ExerciseCatalogTab.swift */,
+				8F08FC359220672EEF8263F1 /* FoodCatalogTab.swift */,
+				F5EE25A0A2BA041A14C4B733 /* FoodEditorSheet.swift */,
+				7F8CB5764019E76EC86523A8 /* GoalsTab.swift */,
+				5789A3342DF80BE9BC306449 /* SettingsTabPicker.swift */,
 				D94957530C2BE28816CF223D /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -282,24 +300,30 @@
 				7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */,
 				A639E1C5970D6AC87BAF9242 /* AppHeader.swift in Sources */,
 				A4909DDDA04FFCB61B8D8ACE /* CalendarView.swift in Sources */,
+				8FFD9164E8786ACA25F0D535 /* CatalogRow.swift in Sources */,
 				76EECB56723F699EEC32EC54 /* CategoryGrid.swift in Sources */,
 				704882D79EE8841371D454CE /* Color+Hex.swift in Sources */,
 				D7A6A5A862F09D3942F04938 /* ContentView.swift in Sources */,
 				874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */,
 				DB82F1D3453EC18A96080F5B /* DateFormatters.swift in Sources */,
 				F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */,
+				5FE1C9ECF0E8E06DF68708EB /* ExerciseCatalogTab.swift in Sources */,
 				352A2BDCF475074745588CC5 /* ExerciseItem.swift in Sources */,
 				390A2A4823F642F910A34BFE /* FitnessLogEntry.swift in Sources */,
 				F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */,
+				EE857929E36CBFE0AF9E96C4 /* FoodCatalogTab.swift in Sources */,
+				FEF465D2A42E7FD81CF13326 /* FoodEditorSheet.swift in Sources */,
 				42D1461DF103D79503B8DC1D /* FoodItem.swift in Sources */,
 				6787C9619F48E7340A788498 /* FoodLogEntry.swift in Sources */,
 				9E53E30D1096E4ACEEC02611 /* FoodLogView.swift in Sources */,
 				7E5B823469E3FEC2D1A3416F /* FoodRow.swift in Sources */,
+				444B2B8AB6300A15CED758A7 /* GoalsTab.swift in Sources */,
 				0F50FDE9FC1F85B6AF7340D5 /* MacroCard.swift in Sources */,
 				8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */,
 				419977C8CEB8DF08A995F918 /* NumberInput.swift in Sources */,
 				DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */,
 				E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */,
+				8643BC195B49D400B6299F42 /* SettingsTabPicker.swift in Sources */,
 				A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */,
 				FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */,
 				C5DAA9C35A39D4ACBA2D7CFF /* SpendingLogView.swift in Sources */,
