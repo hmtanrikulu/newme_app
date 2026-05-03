@@ -29,7 +29,7 @@ NewMe/
 
 ```bash
 brew install xcodegen           # bir kez
-cd NewMe
+cd ~/Desktop/newme/NewMe        # Xcode projesinin klasörü (newme/NewMe)
 xcodegen generate               # NewMe.xcodeproj'u taze üretir
 open NewMe.xcodeproj
 ```

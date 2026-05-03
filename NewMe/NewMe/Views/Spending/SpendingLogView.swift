@@ -2,11 +2,14 @@ import SwiftUI
 import SwiftData
 
 struct SpendingLogView: View {
+    let activeDate: Date
+    let isToday: Bool
+    let onBackToToday: () -> Void
     let onCalendar: () -> Void
     let onSettings: () -> Void
 
     @Environment(\.modelContext) private var context
-    @Query private var todayEntries: [SpendLogEntry]
+    @Query private var allEntries: [SpendLogEntry]
     @Query private var goalsRows: [UserGoals]
 
     @State private var category: SpendCategory = .food
@@ -14,10 +17,9 @@ struct SpendingLogView: View {
 
     private var goal: Int { goalsRows.first?.dailySpendLimit ?? 5000 }
 
-    private var todayTotal: Double {
-        let today = Calendar.current.startOfDay(for: .now)
-        return todayEntries
-            .filter { Calendar.current.isDate($0.date, inSameDayAs: today) }
+    private var dayTotal: Double {
+        allEntries
+            .filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }
             .reduce(0) { $0 + $1.amount }
     }
 
@@ -39,17 +41,23 @@ struct SpendingLogView: View {
 
     private func submit() {
         guard amountValue > 0 else { return }
-        let entry = SpendLogEntry(date: .now, category: category, amount: amountValue)
+        let entry = SpendLogEntry(date: activeDate, category: category, amount: amountValue)
         context.insert(entry)
         try? context.save()
         amountText = "0"
     }
 
+    private var headerTitle: String {
+        isToday ? "Harcama" : DateFormatters.monthDay.string(from: activeDate)
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             AppHeader(
-                kicker: "BUGÜN",
-                title: "Harcama",
+                kicker: DateFormatters.kicker(for: activeDate),
+                title: headerTitle,
+                showBackToToday: !isToday,
+                onBackToToday: onBackToToday,
                 onCalendar: onCalendar,
                 onSettings: onSettings
             )
@@ -67,13 +75,13 @@ struct SpendingLogView: View {
     private var progress: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("BUGÜN")
+                Text(isToday ? "BUGÜN" : "GÜNLÜK")
                     .font(.system(size: 11, weight: .semibold))
                     .tracking(1.2)
                     .foregroundStyle(AppColor.text3)
                 Spacer()
                 HStack(spacing: 0) {
-                    Text(DateFormatters.lira.string(from: NSNumber(value: todayTotal)) ?? "₺0")
+                    Text(DateFormatters.lira.string(from: NSNumber(value: dayTotal)) ?? "₺0")
                         .font(.system(size: 15, weight: .semibold))
                         .monospacedDigit()
                         .foregroundStyle(AppColor.textPrimary)
@@ -90,7 +98,7 @@ struct SpendingLogView: View {
                 ZStack(alignment: .leading) {
                     Capsule().fill(Color.white.opacity(0.08))
                     Capsule().fill(AppColor.gold)
-                        .frame(width: geo.size.width * min(1, todayTotal / Double(goal)))
+                        .frame(width: geo.size.width * min(1, dayTotal / Double(goal)))
                 }
             }
             .frame(height: 4)

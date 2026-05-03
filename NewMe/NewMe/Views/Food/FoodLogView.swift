@@ -2,13 +2,16 @@ import SwiftUI
 import SwiftData
 
 struct FoodLogView: View {
+    let activeDate: Date
+    let isToday: Bool
+    let onBackToToday: () -> Void
     let onCalendar: () -> Void
     let onSettings: () -> Void
 
     @Environment(\.modelContext) private var context
     @Query(sort: [SortDescriptor(\FoodItem.sortOrder), SortDescriptor(\FoodItem.name)])
     private var foods: [FoodItem]
-    @Query private var todayEntries: [FoodLogEntry]
+    @Query private var allFoodEntries: [FoodLogEntry]
     @Query private var goalsRows: [UserGoals]
 
     private var goals: UserGoals {
@@ -16,9 +19,8 @@ struct FoodLogView: View {
     }
 
     private var entriesByItem: [PersistentIdentifier: FoodLogEntry] {
-        let today = Calendar.current.startOfDay(for: .now)
         var result: [PersistentIdentifier: FoodLogEntry] = [:]
-        for entry in todayEntries where Calendar.current.isDate(entry.date, inSameDayAs: today) {
+        for entry in allFoodEntries where Calendar.current.isDate(entry.date, inSameDayAs: activeDate) {
             if let id = entry.item?.persistentModelID {
                 result[id] = entry
             }
@@ -52,7 +54,7 @@ struct FoodLogView: View {
                 entry.quantity = next
             }
         } else if delta > 0 {
-            context.insert(FoodLogEntry(date: .now, quantity: delta, item: food))
+            context.insert(FoodLogEntry(date: activeDate, quantity: delta, item: food))
         }
         try? context.save()
     }
@@ -60,8 +62,10 @@ struct FoodLogView: View {
     var body: some View {
         VStack(spacing: 0) {
             AppHeader(
-                kicker: "BUGÜN",
-                title: DateFormatters.dateLabel.string(from: .now),
+                kicker: DateFormatters.kicker(for: activeDate),
+                title: DateFormatters.dateLabel.string(from: activeDate),
+                showBackToToday: !isToday,
+                onBackToToday: onBackToToday,
                 onCalendar: onCalendar,
                 onSettings: onSettings
             )

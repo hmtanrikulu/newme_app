@@ -2,20 +2,22 @@ import SwiftUI
 import SwiftData
 
 struct FitnessLogView: View {
+    let activeDate: Date
+    let isToday: Bool
+    let onBackToToday: () -> Void
     let onCalendar: () -> Void
     let onSettings: () -> Void
 
     @Environment(\.modelContext) private var context
     @Query(sort: [SortDescriptor(\ExerciseItem.sortOrder), SortDescriptor(\ExerciseItem.name)])
     private var exercises: [ExerciseItem]
-    @Query private var todayEntries: [FitnessLogEntry]
+    @Query private var allEntries: [FitnessLogEntry]
 
     @State private var openExerciseID: PersistentIdentifier?
 
     private var entriesByExercise: [PersistentIdentifier: FitnessLogEntry] {
-        let today = Calendar.current.startOfDay(for: .now)
         var map: [PersistentIdentifier: FitnessLogEntry] = [:]
-        for entry in todayEntries where Calendar.current.isDate(entry.date, inSameDayAs: today) {
+        for entry in allEntries where Calendar.current.isDate(entry.date, inSameDayAs: activeDate) {
             if let id = entry.exercise?.persistentModelID {
                 map[id] = entry
             }
@@ -39,7 +41,7 @@ struct FitnessLogView: View {
 
     private func ensureEntry(for ex: ExerciseItem) -> FitnessLogEntry {
         if let existing = entryFor(ex) { return existing }
-        let new = FitnessLogEntry(date: .now, sets: [], exercise: ex)
+        let new = FitnessLogEntry(date: activeDate, sets: [], exercise: ex)
         context.insert(new)
         return new
     }
@@ -70,8 +72,10 @@ struct FitnessLogView: View {
     var body: some View {
         VStack(spacing: 0) {
             AppHeader(
-                kicker: "BUGÜN",
-                title: DateFormatters.dateLabel.string(from: .now),
+                kicker: DateFormatters.kicker(for: activeDate),
+                title: DateFormatters.dateLabel.string(from: activeDate),
+                showBackToToday: !isToday,
+                onBackToToday: onBackToToday,
                 onCalendar: onCalendar,
                 onSettings: onSettings
             )

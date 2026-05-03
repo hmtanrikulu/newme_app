@@ -2,6 +2,9 @@ import SwiftUI
 import SwiftData
 
 struct CalendarView: View {
+    let initialSelection: Date
+    let onOpenForEditing: (Date) -> Void
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
 
@@ -10,8 +13,16 @@ struct CalendarView: View {
     @Query private var spendEntries: [SpendLogEntry]
     @Query private var goalsRows: [UserGoals]
 
-    @State private var month: Date = Calendar.current.startOfDay(for: .now)
-    @State private var selected: Date = Calendar.current.startOfDay(for: .now)
+    @State private var month: Date
+    @State private var selected: Date
+
+    init(initialSelection: Date, onOpenForEditing: @escaping (Date) -> Void) {
+        let normalized = Calendar.current.startOfDay(for: initialSelection)
+        self.initialSelection = normalized
+        self.onOpenForEditing = onOpenForEditing
+        _month = State(initialValue: normalized)
+        _selected = State(initialValue: normalized)
+    }
 
     private var goalKcal: Int { goalsRows.first?.kcal ?? 2400 }
     private var today: Date { Calendar.current.startOfDay(for: .now) }
@@ -51,7 +62,8 @@ struct CalendarView: View {
 
                         DaySummaryCard(
                             day: rollup(on: selected),
-                            isToday: Calendar.current.isDate(selected, inSameDayAs: today)
+                            isToday: Calendar.current.isDate(selected, inSameDayAs: today),
+                            onOpenForEditing: { onOpenForEditing(selected) }
                         )
                         .padding(.horizontal, 16)
                         .padding(.bottom, 14)

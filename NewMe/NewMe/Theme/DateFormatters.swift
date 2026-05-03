@@ -42,4 +42,14 @@ enum DateFormatters {
         f.maximumFractionDigits = 0
         return f
     }()
+
+    /// Header kicker for the active log date.
+    /// Today → "BUGÜN"; yesterday → "DÜN"; else → "GÜNLÜK".
+    static func kicker(for date: Date, today: Date = .now) -> String {
+        let cal = Calendar.current
+        if cal.isDate(date, inSameDayAs: today) { return "BUGÜN" }
+        if let yesterday = cal.date(byAdding: .day, value: -1, to: cal.startOfDay(for: today)),
+           cal.isDate(date, inSameDayAs: yesterday) { return "DÜN" }
+        return "GÜNLÜK"
+    }
 }
