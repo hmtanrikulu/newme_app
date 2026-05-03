@@ -14,33 +14,59 @@
 		70467842BBB92FE825742F81 /* UserGoals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */; };
 		704882D79EE8841371D454CE /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */; };
 		7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2CD710C2A1F54C07B105F1 /* AppColors.swift */; };
+		874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */; };
 		8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */; };
+		9E53E30D1096E4ACEEC02611 /* FoodLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD424F6088E97F7A54955847 /* FoodLogView.swift */; };
+		A4909DDDA04FFCB61B8D8ACE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EFDBD1137E6026D7C9009C /* CalendarView.swift */; };
+		A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94957530C2BE28816CF223D /* SettingsView.swift */; };
+		A639E1C5970D6AC87BAF9242 /* AppHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7592FF7D0F6E7C700EA8AD /* AppHeader.swift */; };
+		C5DAA9C35A39D4ACBA2D7CFF /* SpendingLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */; };
 		D206A8F408F9C5719BA3B49C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 684530DC556EA7D10A42C4A9 /* Assets.xcassets */; };
 		D2FAABAE0AC61051F5B83983 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 624447AAA11AB189D2A33409 /* Preview Assets.xcassets */; };
 		D7A6A5A862F09D3942F04938 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761C7390AECA8E169F2D91F /* ContentView.swift */; };
+		DB82F1D3453EC18A96080F5B /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78BF2D3FEE409FC4301F65 /* DateFormatters.swift */; };
+		DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8FA1BF1DD34AB328B6C2C0 /* RootView.swift */; };
 		E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */; };
+		F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */; };
 		FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D54D8EF5353BFC0B877D2D /* SpendLogEntry.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E8FA1BF1DD34AB328B6C2C0 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessLogView.swift; sourceTree = "<group>"; };
 		29861D311D54958D5E8AD7C2 /* NewMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NewMe.entitlements; sourceTree = "<group>"; };
 		39EF0AFF032AD0612B918643 /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
 		3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMeApp.swift; sourceTree = "<group>"; };
 		3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
 		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingLogView.swift; sourceTree = "<group>"; };
 		624447AAA11AB189D2A33409 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		684530DC556EA7D10A42C4A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		68D54D8EF5353BFC0B877D2D /* SpendLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendLogEntry.swift; sourceTree = "<group>"; };
+		6B78BF2D3FEE409FC4301F65 /* DateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatters.swift; sourceTree = "<group>"; };
+		8B7592FF7D0F6E7C700EA8AD /* AppHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHeader.swift; sourceTree = "<group>"; };
 		904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		912CFD0DA61DCB3D1A1C0ADF /* FitnessLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessLogEntry.swift; sourceTree = "<group>"; };
+		954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGoals.swift; sourceTree = "<group>"; };
 		A761C7390AECA8E169F2D91F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C2EFDBD1137E6026D7C9009C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		C3EF913E189B34F56C5D11AD /* ExerciseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseItem.swift; sourceTree = "<group>"; };
+		D94957530C2BE28816CF223D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DA2CD710C2A1F54C07B105F1 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		DD424F6088E97F7A54955847 /* FoodLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogView.swift; sourceTree = "<group>"; };
 		FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		0505EAB3D385C62397C62754 /* Food */ = {
+			isa = PBXGroup;
+			children = (
+				DD424F6088E97F7A54955847 /* FoodLogView.swift */,
+			);
+			path = Food;
+			sourceTree = "<group>";
+		};
 		0AEC912868DB6BBE81CC4309 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -57,13 +83,53 @@
 			);
 			sourceTree = "<group>";
 		};
+		18F6068B2D4B4525E1EB680E /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D94957530C2BE28816CF223D /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		27EBD236E504F0827F9573E1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				338DFCF740613F35C2AC5E47 /* Calendar */,
+				56D7B612F97C4883861DB5F1 /* Components */,
+				76F1E038B498B12FF918A319 /* Fitness */,
+				0505EAB3D385C62397C62754 /* Food */,
+				18F6068B2D4B4525E1EB680E /* Settings */,
+				DC951395D3F6DFFFF417E866 /* Spending */,
+				0E8FA1BF1DD34AB328B6C2C0 /* RootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		338DFCF740613F35C2AC5E47 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				C2EFDBD1137E6026D7C9009C /* CalendarView.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
 		3BFA9D66DB4389F2D9D2F1AA /* Theme */ = {
 			isa = PBXGroup;
 			children = (
 				DA2CD710C2A1F54C07B105F1 /* AppColors.swift */,
 				904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */,
+				6B78BF2D3FEE409FC4301F65 /* DateFormatters.swift */,
 			);
 			path = Theme;
+			sourceTree = "<group>";
+		};
+		56D7B612F97C4883861DB5F1 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8B7592FF7D0F6E7C700EA8AD /* AppHeader.swift */,
+				954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		75F064B816AD662187B0DE1C /* Preview Content */ = {
@@ -72,6 +138,14 @@
 				624447AAA11AB189D2A33409 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		76F1E038B498B12FF918A319 /* Fitness */ = {
+			isa = PBXGroup;
+			children = (
+				14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */,
+			);
+			path = Fitness;
 			sourceTree = "<group>";
 		};
 		90BD92B0E6C67E178F484994 /* Models */ = {
@@ -88,12 +162,21 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		DC951395D3F6DFFFF417E866 /* Spending */ = {
+			isa = PBXGroup;
+			children = (
+				5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */,
+			);
+			path = Spending;
+			sourceTree = "<group>";
+		};
 		FD426EABA870495450503A3C /* NewMe */ = {
 			isa = PBXGroup;
 			children = (
 				90BD92B0E6C67E178F484994 /* Models */,
 				75F064B816AD662187B0DE1C /* Preview Content */,
 				3BFA9D66DB4389F2D9D2F1AA /* Theme */,
+				27EBD236E504F0827F9573E1 /* Views */,
 				684530DC556EA7D10A42C4A9 /* Assets.xcassets */,
 				A761C7390AECA8E169F2D91F /* ContentView.swift */,
 				29861D311D54958D5E8AD7C2 /* NewMe.entitlements */,
@@ -175,15 +258,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */,
+				A639E1C5970D6AC87BAF9242 /* AppHeader.swift in Sources */,
+				A4909DDDA04FFCB61B8D8ACE /* CalendarView.swift in Sources */,
 				704882D79EE8841371D454CE /* Color+Hex.swift in Sources */,
 				D7A6A5A862F09D3942F04938 /* ContentView.swift in Sources */,
+				874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */,
+				DB82F1D3453EC18A96080F5B /* DateFormatters.swift in Sources */,
 				352A2BDCF475074745588CC5 /* ExerciseItem.swift in Sources */,
 				390A2A4823F642F910A34BFE /* FitnessLogEntry.swift in Sources */,
+				F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */,
 				42D1461DF103D79503B8DC1D /* FoodItem.swift in Sources */,
 				6787C9619F48E7340A788498 /* FoodLogEntry.swift in Sources */,
+				9E53E30D1096E4ACEEC02611 /* FoodLogView.swift in Sources */,
 				8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */,
+				DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */,
 				E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */,
+				A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */,
 				FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */,
+				C5DAA9C35A39D4ACBA2D7CFF /* SpendingLogView.swift in Sources */,
 				70467842BBB92FE825742F81 /* UserGoals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
