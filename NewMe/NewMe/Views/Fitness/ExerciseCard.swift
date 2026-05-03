@@ -3,6 +3,7 @@ import SwiftUI
 struct ExerciseCard: View {
     let exercise: ExerciseItem
     let entry: FitnessLogEntry?
+    let recentSessions: [ExerciseSessionSummary]
     let isOpen: Bool
     let onToggleOpen: () -> Void
     let onAddSet: () -> Void
@@ -113,6 +114,8 @@ struct ExerciseCard: View {
             }
             .buttonStyle(.plain)
             .padding(.top, 8)
+
+            RecentSessionsBar(sessions: recentSessions)
         }
         .padding(.horizontal, 14)
         .padding(.bottom, 14)

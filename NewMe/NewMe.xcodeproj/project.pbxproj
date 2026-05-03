@@ -25,6 +25,7 @@
 		89F150E9C34AEAEFE1991748 /* DailyAggregator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE79581C8C2710AEE166A3B /* DailyAggregator.swift */; };
 		8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */; };
 		8FFD9164E8786ACA25F0D535 /* CatalogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E1695A726562559C382D98 /* CatalogRow.swift */; };
+		9266A851919344002E5F48A7 /* RecentSessionsBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89C40D8332CA453F79FB21F /* RecentSessionsBar.swift */; };
 		93EF3D2B5A44273D588F1D21 /* SummaryPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */; };
 		9A76FF3997617B47E9B7B486 /* DaySummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B940CFA9E12229086CC1C907 /* DaySummaryCard.swift */; };
 		9CBA2D1456B19D411F031B4B /* TrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F239A6EEF32F5C8E29977A41 /* TrendChart.swift */; };
@@ -80,6 +81,7 @@
 		C3EF913E189B34F56C5D11AD /* ExerciseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseItem.swift; sourceTree = "<group>"; };
 		CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPill.swift; sourceTree = "<group>"; };
 		CE490BB03964E90CD36D109B /* ExerciseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCard.swift; sourceTree = "<group>"; };
+		D89C40D8332CA453F79FB21F /* RecentSessionsBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSessionsBar.swift; sourceTree = "<group>"; };
 		D94957530C2BE28816CF223D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DA2CD710C2A1F54C07B105F1 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		DD424F6088E97F7A54955847 /* FoodLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogView.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				CE490BB03964E90CD36D109B /* ExerciseCard.swift */,
 				14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */,
 				EA6F388ADAE433B9778079FB /* NumberInput.swift */,
+				D89C40D8332CA453F79FB21F /* RecentSessionsBar.swift */,
 				CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */,
 			);
 			path = Fitness;
@@ -336,6 +339,7 @@
 				AD45D02DF54901C7E5616DEB /* MonthGrid.swift in Sources */,
 				8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */,
 				419977C8CEB8DF08A995F918 /* NumberInput.swift in Sources */,
+				9266A851919344002E5F48A7 /* RecentSessionsBar.swift in Sources */,
 				DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */,
 				E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */,
 				8643BC195B49D400B6299F42 /* SettingsTabPicker.swift in Sources */,

@@ -25,6 +25,14 @@ enum DateFormatters {
         return f
     }()
 
+    /// "12 NİS" (gün + 3-harfli ay) — recent-sessions bar
+    static let monthDayShort: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "tr_TR")
+        f.dateFormat = "d MMM"
+        return f
+    }()
+
     /// "Pzt, Sal, Çar..."
     static let weekdayShort: DateFormatter = {
         let f = DateFormatter()

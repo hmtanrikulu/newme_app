@@ -115,6 +115,11 @@ struct FitnessLogView: View {
                     ExerciseCard(
                         exercise: ex,
                         entry: entryFor(ex),
+                        recentSessions: ExerciseSessionSummary.makeRecent(
+                            for: ex,
+                            from: allEntries,
+                            activeDate: activeDate
+                        ),
                         isOpen: openExerciseID == ex.persistentModelID,
                         onToggleOpen: {
                             openExerciseID = openExerciseID == ex.persistentModelID ? nil : ex.persistentModelID
