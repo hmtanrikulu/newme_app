@@ -2,14 +2,19 @@ import Foundation
 import SwiftData
 
 enum SpendCategory: String, CaseIterable, Identifiable, Codable {
-    case food, drink, fun, cloth, market, other
+    case food, drink
+    /// Raw value kept as "fun" so existing SwiftData rows decode unchanged
+    /// after the user-facing rename from Eğlence → Yakıt.
+    case fuel = "fun"
+    case cloth, market, other
+
     var id: String { rawValue }
 
     var label: String {
         switch self {
         case .food:   return "Yemek"
         case .drink:  return "İçecek"
-        case .fun:    return "Eğlence"
+        case .fuel:   return "Yakıt"
         case .cloth:  return "Kıyafet"
         case .market: return "Market"
         case .other:  return "Diğer"
@@ -20,7 +25,7 @@ enum SpendCategory: String, CaseIterable, Identifiable, Codable {
         switch self {
         case .food:   return "fork.knife"
         case .drink:  return "cup.and.saucer.fill"
-        case .fun:    return "gamecontroller.fill"
+        case .fuel:   return "fuelpump.fill"
         case .cloth:  return "tshirt.fill"
         case .market: return "cart.fill"
         case .other:  return "ellipsis"
