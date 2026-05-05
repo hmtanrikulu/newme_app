@@ -14,13 +14,18 @@ struct SpendingLogView: View {
 
     @State private var category: SpendCategory = .food
     @State private var amountText: String = "0"
+    @State private var editingEntry: SpendLogEntry?
 
     private var goal: Int { goalsRows.first?.dailySpendLimit ?? 5000 }
 
-    private var dayTotal: Double {
+    private var dayEntries: [SpendLogEntry] {
         allEntries
             .filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }
-            .reduce(0) { $0 + $1.amount }
+            .sorted { $0.timestamp > $1.timestamp }
+    }
+
+    private var dayTotal: Double {
+        dayEntries.reduce(0) { $0 + $1.amount }
     }
 
     private var amountValue: Double {
@@ -47,6 +52,13 @@ struct SpendingLogView: View {
         amountText = "0"
     }
 
+    private func delete(_ entry: SpendLogEntry) {
+        withAnimation {
+            context.delete(entry)
+            try? context.save()
+        }
+    }
+
     private var headerTitle: String {
         isToday ? "Harcama" : DateFormatters.monthDay.string(from: activeDate)
     }
@@ -62,14 +74,21 @@ struct SpendingLogView: View {
                 onSettings: onSettings
             )
             progress
+            entriesSection
             categoryBlock
             amountDisplay
             AmountKeypad(onPress: press)
                 .padding(.horizontal, 16)
-                .padding(.top, 8)
+                .padding(.top, 4)
             submitButton
         }
         .padding(.top, 54)
+        .sheet(item: $editingEntry) { entry in
+            SpendEntryEditorSheet(entry: entry) {
+                delete(entry)
+            }
+            .preferredColorScheme(.dark)
+        }
     }
 
     private var progress: some View {
@@ -104,12 +123,29 @@ struct SpendingLogView: View {
             .frame(height: 4)
         }
         .padding(.horizontal, 22)
-        .padding(.bottom, 16)
+        .padding(.bottom, 12)
         .padding(.top, 4)
     }
 
+    private var entriesSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(isToday ? "BUGÜNKÜ KAYITLAR" : "GÜN KAYITLARI")
+                .font(.system(size: 11, weight: .heavy))
+                .tracking(1)
+                .foregroundStyle(AppColor.text3)
+                .padding(.horizontal, 6)
+            DayEntriesList(
+                entries: dayEntries,
+                onTapEntry: { editingEntry = $0 },
+                onDelete: { delete($0) }
+            )
+        }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 10)
+    }
+
     private var categoryBlock: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             Text("KATEGORİ")
                 .font(.system(size: 11, weight: .heavy))
                 .tracking(1)
@@ -118,7 +154,7 @@ struct SpendingLogView: View {
             CategoryGrid(selection: $category)
         }
         .padding(.horizontal, 16)
-        .padding(.bottom, 6)
+        .padding(.bottom, 4)
     }
 
     private var amountDisplay: some View {
@@ -129,27 +165,27 @@ struct SpendingLogView: View {
                 .foregroundStyle(AppColor.text3)
             HStack(alignment: .lastTextBaseline, spacing: 10) {
                 Text("₺")
-                    .font(.system(size: 30, weight: .light))
+                    .font(.system(size: 28, weight: .light))
                     .foregroundStyle(AppColor.gold)
                 Text(amountText)
-                    .font(.system(size: 38, weight: .medium))
+                    .font(.system(size: 34, weight: .medium))
                     .monospacedDigit()
                     .tracking(-1)
                     .foregroundStyle(AppColor.textPrimary)
                 Rectangle()
                     .fill(AppColor.gold)
-                    .frame(width: 2, height: 36)
+                    .frame(width: 2, height: 32)
                 Spacer(minLength: 0)
             }
-            .padding(.bottom, 8)
+            .padding(.bottom, 6)
             .overlay(
                 Rectangle().fill(AppColor.gold.opacity(0.5)).frame(height: 1),
                 alignment: .bottom
             )
         }
         .padding(.horizontal, 22)
-        .padding(.top, 14)
-        .padding(.bottom, 4)
+        .padding(.top, 8)
+        .padding(.bottom, 2)
     }
 
     private var submitButton: some View {
@@ -159,7 +195,7 @@ struct SpendingLogView: View {
                 .tracking(1.5)
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity)
-                .frame(height: 50)
+                .frame(height: 46)
                 .background(
                     RoundedRectangle(cornerRadius: 14).fill(AppColor.gold)
                 )
@@ -169,6 +205,6 @@ struct SpendingLogView: View {
         .opacity(amountValue <= 0 ? 0.5 : 1)
         .padding(.horizontal, 16)
         .padding(.top, 4)
-        .padding(.bottom, 14)
+        .padding(.bottom, 10)
     }
 }
