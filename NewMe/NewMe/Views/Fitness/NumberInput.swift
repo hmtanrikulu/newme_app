@@ -31,6 +31,12 @@ struct NumberInput: View {
                 }
                 .submitLabel(.done)
                 .onSubmit { focused = false }
+                // Commit pending edits if the field is removed while still
+                // focused (e.g. card collapses or user switches tabs while
+                // the keyboard is up). onChange(of: focused) doesn't fire
+                // reliably during unmount, so without this the typed text
+                // is lost and the parent keeps the previous value.
+                .onDisappear { commit() }
                 .frame(height: 28)
             if let suffix {
                 Text(suffix)
