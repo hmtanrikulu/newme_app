@@ -1,6 +1,11 @@
 # macOS
 .DS_Store
 
+# Stray screenshots dropped at the repo root
+/Screenshot*.png
+/Screenshot*.jpeg
+/Screenshot*.jpg
+
 # Xcode build / user state
 **/build/
 **/DerivedData/
