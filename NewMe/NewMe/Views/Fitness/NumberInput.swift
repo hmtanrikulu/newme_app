@@ -1,6 +1,10 @@
 import SwiftUI
 
-/// Tiny inline numeric editor: tap, type, blur or Enter to commit.
+/// Tiny inline numeric editor with **eager** commit: every valid keystroke
+/// writes the parsed text straight back into the binding, so backgrounding
+/// the app (e.g. switching to another app while the keyboard is open),
+/// collapsing a parent card, or switching tabs can never strand a typed
+/// value in local @State. Blur only re-formats the displayed text.
 struct NumberInput: View {
     @Binding var value: Double
     var decimals: Int = 0
@@ -23,20 +27,30 @@ struct NumberInput: View {
                 .foregroundStyle(AppColor.textPrimary)
                 .focused($focused)
                 .onAppear { text = format(value) }
+                // Eager write-through: parse on every keystroke and update
+                // the binding immediately. Empty / partial input (e.g. ".",
+                // "abc") fails the parse and leaves the previous value
+                // intact, so the field is always representing a valid
+                // number the moment the app loses focus.
+                .onChange(of: text) { _, newValue in
+                    let normalized = newValue.replacingOccurrences(of: ",", with: ".")
+                    if let parsed = Double(normalized), parsed != value {
+                        value = parsed
+                    }
+                }
+                // External value changes (parent re-init, addSet defaults,
+                // CloudKit pull) should reformat the field — but only when
+                // the user isn't actively typing, otherwise we'd clobber
+                // their input.
                 .onChange(of: value) { _, newValue in
                     if !focused { text = format(newValue) }
                 }
+                // Re-canonicalize text on blur ("1." → "1", "1.50" → "1.5").
                 .onChange(of: focused) { _, isFocused in
-                    if !isFocused { commit() }
+                    if !isFocused { text = format(value) }
                 }
                 .submitLabel(.done)
                 .onSubmit { focused = false }
-                // Commit pending edits if the field is removed while still
-                // focused (e.g. card collapses or user switches tabs while
-                // the keyboard is up). onChange(of: focused) doesn't fire
-                // reliably during unmount, so without this the typed text
-                // is lost and the parent keeps the previous value.
-                .onDisappear { commit() }
                 .frame(height: 28)
             if let suffix {
                 Text(suffix)
@@ -54,13 +68,5 @@ struct NumberInput: View {
                         .stroke(Color.white.opacity(0.10), lineWidth: 1)
                 )
         )
-    }
-
-    private func commit() {
-        let normalized = text.replacingOccurrences(of: ",", with: ".")
-        if let parsed = Double(normalized) {
-            value = parsed
-        }
-        text = format(value)
     }
 }
