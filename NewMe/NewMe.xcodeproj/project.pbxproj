@@ -60,7 +60,7 @@
 		3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
 		4D54B3A683A21BFC40095AA8 /* FoodRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRow.swift; sourceTree = "<group>"; };
 		4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGrid.swift; sourceTree = "<group>"; };
-		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5789A3342DF80BE9BC306449 /* SettingsTabPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTabPicker.swift; sourceTree = "<group>"; };
 		5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingLogView.swift; sourceTree = "<group>"; };
 		5B5CEDEF6DAA54A74AC7D56E /* MacroCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroCard.swift; sourceTree = "<group>"; };
@@ -276,7 +276,6 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					A1E02766ED4AFA5310516BFD = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -440,8 +439,9 @@
 				CODE_SIGN_ENTITLEMENTS = NewMe/NewMe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_ASSET_PATHS = "\"NewMe/Preview Content\"";
+				DEVELOPMENT_TEAM = RBV2VXNJAJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = kaizen;
+				INFOPLIST_KEY_CFBundleDisplayName = logs;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -527,8 +527,9 @@
 				CODE_SIGN_ENTITLEMENTS = NewMe/NewMe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_ASSET_PATHS = "\"NewMe/Preview Content\"";
+				DEVELOPMENT_TEAM = RBV2VXNJAJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = kaizen;
+				INFOPLIST_KEY_CFBundleDisplayName = logs;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
