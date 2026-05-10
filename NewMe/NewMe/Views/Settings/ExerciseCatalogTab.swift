@@ -7,12 +7,15 @@ struct ExerciseCatalogTab: View {
     private var exercises: [ExerciseItem]
 
     @State private var presentingNew = false
+    @State private var editingExercise: ExerciseItem?
 
     var body: some View {
         List {
             Section {
                 ForEach(exercises) { ex in
                     CatalogRow(title: ex.name, subtitle: subtitle(for: ex))
+                        .contentShape(Rectangle())
+                        .onTapGesture { editingExercise = ex }
                         .listRowBackground(Color.clear)
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets(top: 3, leading: 16, bottom: 3, trailing: 16))
@@ -51,6 +54,31 @@ struct ExerciseCatalogTab: View {
             }
             .presentationDetents([.medium, .large])
         }
+        .sheet(item: $editingExercise) { ex in
+            ExerciseEditorSheet(initial: draft(from: ex), existingLogCount: ex.logEntries?.count ?? 0) { draft in
+                let kindChanged = draft.kind != ex.kind
+                if kindChanged, let entries = ex.logEntries {
+                    // Old SetData fields would no longer match the new kind's
+                    // semantics — clear logs to keep history clean.
+                    for entry in entries {
+                        context.delete(entry)
+                    }
+                }
+                ex.name = draft.name
+                ex.kind = draft.kind
+                ex.muscleGroup = draft.kind.hasMuscleGroup ? draft.muscleGroup : "—"
+                try? context.save()
+            }
+            .presentationDetents([.medium, .large])
+        }
+    }
+
+    private func draft(from ex: ExerciseItem) -> ExerciseDraft {
+        ExerciseDraft(
+            name: ex.name,
+            muscleGroup: ex.kind.hasMuscleGroup ? ex.muscleGroup : "Göğüs",
+            kind: ex.kind
+        )
     }
 
     private func subtitle(for ex: ExerciseItem) -> String {
@@ -84,21 +112,29 @@ struct ExerciseDraft {
 
 struct ExerciseEditorSheet: View {
     let initial: ExerciseDraft?
+    let existingLogCount: Int
     let onSave: (ExerciseDraft) -> Void
 
     @Environment(\.dismiss) private var dismiss
     @State private var draft: ExerciseDraft
+    @State private var confirmKindChange = false
 
     private let groups = ["Göğüs", "Sırt", "Bacak", "Omuz", "Kol", "Core", "Diğer"]
 
-    init(initial: ExerciseDraft?, onSave: @escaping (ExerciseDraft) -> Void) {
+    init(initial: ExerciseDraft?, existingLogCount: Int = 0, onSave: @escaping (ExerciseDraft) -> Void) {
         self.initial = initial
+        self.existingLogCount = existingLogCount
         self.onSave = onSave
         _draft = State(initialValue: initial ?? ExerciseDraft())
     }
 
     private var canSave: Bool {
         !draft.name.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+
+    private var kindChanged: Bool {
+        guard let initial else { return false }
+        return draft.kind != initial.kind
     }
 
     var body: some View {
@@ -122,6 +158,16 @@ struct ExerciseEditorSheet: View {
                         .font(.system(size: 12))
                         .foregroundStyle(AppColor.text2)
                 }
+                if kindChanged && existingLogCount > 0 {
+                    Section {
+                        Label(
+                            "Tür değişikliği ile bu hareketin \(existingLogCount) eski kaydı silinecek.",
+                            systemImage: "exclamationmark.triangle.fill"
+                        )
+                        .font(.system(size: 12))
+                        .foregroundStyle(.orange)
+                    }
+                }
             }
             .scrollContentBackground(.hidden)
             .background(AppColor.bg)
@@ -132,10 +178,30 @@ struct ExerciseEditorSheet: View {
                     Button("İptal") { dismiss() }.foregroundStyle(AppColor.gold)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Kaydet") { onSave(draft); dismiss() }
-                        .foregroundStyle(canSave ? AppColor.gold : .gray)
-                        .disabled(!canSave)
+                    Button("Kaydet") {
+                        if kindChanged && existingLogCount > 0 {
+                            confirmKindChange = true
+                        } else {
+                            onSave(draft)
+                            dismiss()
+                        }
+                    }
+                    .foregroundStyle(canSave ? AppColor.gold : .gray)
+                    .disabled(!canSave)
                 }
+            }
+            .confirmationDialog(
+                "Tür değişikliği eski log'ları silecek",
+                isPresented: $confirmKindChange,
+                titleVisibility: .visible
+            ) {
+                Button("Sil ve kaydet", role: .destructive) {
+                    onSave(draft)
+                    dismiss()
+                }
+                Button("İptal", role: .cancel) { }
+            } message: {
+                Text("Bu hareketin \(existingLogCount) eski kaydı yeni tür ile uyuşmadığı için silinecek.")
             }
         }
     }

@@ -7,12 +7,15 @@ struct FoodCatalogTab: View {
     private var foods: [FoodItem]
 
     @State private var presentingNew = false
+    @State private var editingFood: FoodItem?
 
     var body: some View {
         List {
             Section {
                 ForEach(foods) { food in
                     CatalogRow(title: food.name, subtitle: subtitle(for: food))
+                        .contentShape(Rectangle())
+                        .onTapGesture { editingFood = food }
                         .listRowBackground(Color.clear)
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets(top: 3, leading: 16, bottom: 3, trailing: 16))
@@ -56,6 +59,33 @@ struct FoodCatalogTab: View {
             }
             .presentationDetents([.large])
         }
+        .sheet(item: $editingFood) { food in
+            FoodEditorSheet(initial: draft(from: food)) { draft in
+                food.name = draft.name
+                food.kcalPerServing = draft.kcal
+                food.protein = draft.protein
+                food.carbs = draft.carbs
+                food.fat = draft.fat
+                food.unit = draft.unit
+                food.gramsPerUnit = draft.gramsPerUnit
+                food.servingSize = draft.servingSize
+                try? context.save()
+            }
+            .presentationDetents([.large])
+        }
+    }
+
+    private func draft(from food: FoodItem) -> FoodDraft {
+        FoodDraft(
+            name: food.name,
+            kcal: food.kcalPerServing,
+            protein: food.protein,
+            carbs: food.carbs,
+            fat: food.fat,
+            unit: food.unit,
+            gramsPerUnit: food.gramsPerUnit,
+            servingSize: food.servingSize
+        )
     }
 
     private func subtitle(for food: FoodItem) -> String {
