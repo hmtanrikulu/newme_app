@@ -5,6 +5,8 @@ struct DayRollup: Identifiable, Equatable {
     let date: Date
     var kcal: Double = 0
     var protein: Double = 0
+    var carbs: Double = 0
+    var fat: Double = 0
     var setsByGroup: [String: Int] = [:]
     var spendByCategory: [SpendCategory: Double] = [:]
 
@@ -30,6 +32,8 @@ enum DailyAggregator {
             let q = Double(entry.quantity)
             roll.kcal    += q * item.kcalPerServing
             roll.protein += q * item.protein
+            roll.carbs   += q * item.carbs
+            roll.fat     += q * item.fat
         }
 
         for entry in fitnessEntries where cal.isDate(entry.date, inSameDayAs: normalized) {

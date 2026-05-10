@@ -21,7 +21,7 @@ struct DaySummaryCard: View {
             .padding(.bottom, 10)
 
             Row(systemImage: "fork.knife",
-                text: "\(Int(day.kcal.rounded())) kcal · \(Int(day.protein.rounded()))g protein")
+                text: "\(Int(day.kcal.rounded())) kcal · \(Int(day.protein.rounded()))g protein · \(Int(day.carbs.rounded()))g karb · \(Int(day.fat.rounded()))g yağ")
             Row(systemImage: "dumbbell.fill",
                 text: day.totalSets == 0
                     ? "antrenman yok"
