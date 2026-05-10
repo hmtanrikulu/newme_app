@@ -74,8 +74,12 @@ struct SpendingLogView: View {
                 onSettings: onSettings
             )
             progress
-            entriesSection
-            categoryBlock
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 0) {
+                    entriesSection
+                    categoryBlock
+                }
+            }
             amountDisplay
             AmountKeypad(onPress: press)
                 .padding(.horizontal, 16)
