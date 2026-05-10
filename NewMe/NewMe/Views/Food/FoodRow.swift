@@ -16,7 +16,7 @@ struct FoodRow: View {
     }
 
     private var kcalForQty: Int {
-        Int((Double(quantity) * food.kcalPerServing).rounded())
+        Int((Double(quantity) * food.kcalPerPortion).rounded())
     }
 
     var body: some View {

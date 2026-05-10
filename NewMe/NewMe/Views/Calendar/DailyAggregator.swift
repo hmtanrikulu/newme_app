@@ -30,10 +30,10 @@ enum DailyAggregator {
         for entry in foodEntries where cal.isDate(entry.date, inSameDayAs: normalized) {
             guard let item = entry.item else { continue }
             let q = Double(entry.quantity)
-            roll.kcal    += q * item.kcalPerServing
-            roll.protein += q * item.protein
-            roll.carbs   += q * item.carbs
-            roll.fat     += q * item.fat
+            roll.kcal    += q * item.kcalPerPortion
+            roll.protein += q * item.proteinPerPortion
+            roll.carbs   += q * item.carbsPerPortion
+            roll.fat     += q * item.fatPerPortion
         }
 
         for entry in fitnessEntries where cal.isDate(entry.date, inSameDayAs: normalized) {

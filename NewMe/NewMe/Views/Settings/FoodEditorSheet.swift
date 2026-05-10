@@ -7,7 +7,8 @@ struct FoodDraft {
     var carbs: Double = 0
     var fat: Double = 0
     var unit: String = "g"
-    var servingSize: Double = 1
+    var gramsPerUnit: Double = 1
+    var servingSize: Double = 100
 }
 
 struct FoodEditorSheet: View {
@@ -27,6 +28,14 @@ struct FoodEditorSheet: View {
         !draft.name.trimmingCharacters(in: .whitespaces).isEmpty
     }
 
+    private var isWeightUnit: Bool { draft.unit == "g" || draft.unit == "ml" }
+
+    private var portionGrams: Double { draft.servingSize * draft.gramsPerUnit }
+
+    private var previewKcal: Int {
+        Int((portionGrams / 100 * draft.kcal).rounded())
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -39,10 +48,42 @@ struct FoodEditorSheet: View {
                             ForEach(["g", "ml", "adet", "dilim"], id: \.self) { Text($0).tag($0) }
                         }
                         .pickerStyle(.menu)
+                        .onChange(of: draft.unit) { _, newUnit in
+                            // g/ml: 1 unit = 1 g implicitly. adet/dilim: keep current
+                            // gramsPerUnit if the user already set one, else prefill 50.
+                            if newUnit == "g" || newUnit == "ml" {
+                                draft.gramsPerUnit = 1
+                            } else if draft.gramsPerUnit <= 1 {
+                                draft.gramsPerUnit = 50
+                            }
+                        }
                     }
-                    LabeledNumberField(label: "Porsiyon büyüklüğü", value: $draft.servingSize, suffix: draft.unit, decimals: 1)
+                    if !isWeightUnit {
+                        LabeledNumberField(
+                            label: "1 \(draft.unit) ağırlığı",
+                            value: $draft.gramsPerUnit,
+                            suffix: "g",
+                            decimals: 1
+                        )
+                    }
+                    LabeledNumberField(
+                        label: "Porsiyon büyüklüğü",
+                        value: $draft.servingSize,
+                        suffix: draft.unit,
+                        decimals: 1
+                    )
+                    if portionGrams > 0 && draft.kcal > 0 {
+                        HStack {
+                            Text("1 porsiyon")
+                                .foregroundStyle(AppColor.text2)
+                            Spacer()
+                            Text("\(formatGrams(portionGrams)) g · \(previewKcal) kcal")
+                                .monospacedDigit()
+                                .foregroundStyle(AppColor.text3)
+                        }
+                    }
                 }
-                Section("Porsiyon başına") {
+                Section("100 g için") {
                     LabeledNumberField(label: "Kalori", value: $draft.kcal, suffix: "kcal", decimals: 0)
                     LabeledNumberField(label: "Protein", value: $draft.protein, suffix: "g", decimals: 1)
                     LabeledNumberField(label: "Karbonhidrat", value: $draft.carbs, suffix: "g", decimals: 1)
@@ -67,6 +108,10 @@ struct FoodEditorSheet: View {
                 }
             }
         }
+    }
+
+    private func formatGrams(_ v: Double) -> String {
+        v == v.rounded() ? "\(Int(v))" : String(format: "%.1f", v)
     }
 }
 

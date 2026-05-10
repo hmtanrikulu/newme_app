@@ -33,16 +33,16 @@ struct FoodLogView: View {
     }
 
     private var totalKcal: Double {
-        foods.reduce(0) { $0 + Double(quantity(for: $1)) * $1.kcalPerServing }
+        foods.reduce(0) { $0 + Double(quantity(for: $1)) * $1.kcalPerPortion }
     }
     private var totalProtein: Double {
-        foods.reduce(0) { $0 + Double(quantity(for: $1)) * $1.protein }
+        foods.reduce(0) { $0 + Double(quantity(for: $1)) * $1.proteinPerPortion }
     }
     private var totalCarbs: Double {
-        foods.reduce(0) { $0 + Double(quantity(for: $1)) * $1.carbs }
+        foods.reduce(0) { $0 + Double(quantity(for: $1)) * $1.carbsPerPortion }
     }
     private var totalFat: Double {
-        foods.reduce(0) { $0 + Double(quantity(for: $1)) * $1.fat }
+        foods.reduce(0) { $0 + Double(quantity(for: $1)) * $1.fatPerPortion }
     }
 
     private func adjust(_ food: FoodItem, by delta: Int) {

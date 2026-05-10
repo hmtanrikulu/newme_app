@@ -47,6 +47,7 @@ struct FoodCatalogTab: View {
                     carbs: draft.carbs,
                     fat: draft.fat,
                     unit: draft.unit,
+                    gramsPerUnit: draft.gramsPerUnit,
                     servingSize: draft.servingSize,
                     sortOrder: nextOrder
                 )
@@ -58,9 +59,12 @@ struct FoodCatalogTab: View {
     }
 
     private func subtitle(for food: FoodItem) -> String {
-        let kcal = Int(food.kcalPerServing.rounded())
-        let p = trim(food.protein), c = trim(food.carbs), f = trim(food.fat)
-        return "\(kcal) kcal · \(p)P / \(c)K / \(f)Y"
+        let kcal = Int(food.kcalPerPortion.rounded())
+        let p = trim(food.proteinPerPortion)
+        let c = trim(food.carbsPerPortion)
+        let f = trim(food.fatPerPortion)
+        let portion = trim(food.servingSize)
+        return "\(portion) \(food.unit) · \(kcal) kcal · \(p)P / \(c)K / \(f)Y"
     }
 
     private func trim(_ v: Double) -> String {
