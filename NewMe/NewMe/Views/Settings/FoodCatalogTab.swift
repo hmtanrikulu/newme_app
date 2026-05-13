@@ -78,7 +78,6 @@ struct FoodCatalogTab: View {
     private func draft(from food: FoodItem) -> FoodDraft {
         FoodDraft(
             name: food.name,
-            kcal: food.kcalPerServing,
             protein: food.protein,
             carbs: food.carbs,
             fat: food.fat,

@@ -2,13 +2,14 @@ import SwiftUI
 
 struct FoodDraft {
     var name: String = ""
-    var kcal: Double = 100
     var protein: Double = 0
     var carbs: Double = 0
     var fat: Double = 0
     var unit: String = "g"
     var gramsPerUnit: Double = 1
     var servingSize: Double = 100
+
+    var kcal: Double { protein * 4 + carbs * 4 + fat * 9 }
 }
 
 struct FoodEditorSheet: View {
@@ -84,10 +85,19 @@ struct FoodEditorSheet: View {
                     }
                 }
                 Section("100 g için") {
-                    LabeledNumberField(label: "Kalori", value: $draft.kcal, suffix: "kcal", decimals: 0)
                     LabeledNumberField(label: "Protein", value: $draft.protein, suffix: "g", decimals: 1)
                     LabeledNumberField(label: "Karbonhidrat", value: $draft.carbs, suffix: "g", decimals: 1)
                     LabeledNumberField(label: "Yağ", value: $draft.fat, suffix: "g", decimals: 1)
+                    HStack {
+                        Text("Kalori")
+                            .foregroundStyle(AppColor.text2)
+                        Spacer()
+                        Text("\(Int(draft.kcal.rounded()))")
+                            .monospacedDigit()
+                            .foregroundStyle(AppColor.textPrimary)
+                        Text("kcal")
+                            .foregroundStyle(AppColor.text3)
+                    }
                 }
             }
             .scrollContentBackground(.hidden)
