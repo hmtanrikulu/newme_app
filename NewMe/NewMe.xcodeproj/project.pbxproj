@@ -21,6 +21,7 @@
 		7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2CD710C2A1F54C07B105F1 /* AppColors.swift */; };
 		76EECB56723F699EEC32EC54 /* CategoryGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */; };
 		7E5B823469E3FEC2D1A3416F /* FoodRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54B3A683A21BFC40095AA8 /* FoodRow.swift */; };
+		861AD293390C0E8181D422F1 /* ManualFoodEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE64E9A42ACA0D286B428AF /* ManualFoodEntry.swift */; };
 		8643BC195B49D400B6299F42 /* SettingsTabPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789A3342DF80BE9BC306449 /* SettingsTabPicker.swift */; };
 		874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */; };
 		89F150E9C34AEAEFE1991748 /* DailyAggregator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE79581C8C2710AEE166A3B /* DailyAggregator.swift */; };
@@ -60,7 +61,7 @@
 		3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
 		4D54B3A683A21BFC40095AA8 /* FoodRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRow.swift; sourceTree = "<group>"; };
 		4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGrid.swift; sourceTree = "<group>"; };
-		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5789A3342DF80BE9BC306449 /* SettingsTabPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTabPicker.swift; sourceTree = "<group>"; };
 		5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingLogView.swift; sourceTree = "<group>"; };
 		5B5CEDEF6DAA54A74AC7D56E /* MacroCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroCard.swift; sourceTree = "<group>"; };
@@ -69,6 +70,7 @@
 		68D54D8EF5353BFC0B877D2D /* SpendLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendLogEntry.swift; sourceTree = "<group>"; };
 		6B78BF2D3FEE409FC4301F65 /* DateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatters.swift; sourceTree = "<group>"; };
 		7347F084631F0DF43D2B5C5F /* ExerciseCatalogTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCatalogTab.swift; sourceTree = "<group>"; };
+		7CE64E9A42ACA0D286B428AF /* ManualFoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualFoodEntry.swift; sourceTree = "<group>"; };
 		7F8CB5764019E76EC86523A8 /* GoalsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsTab.swift; sourceTree = "<group>"; };
 		878AE960DB912B200624FA1B /* SpendEntryEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendEntryEditorSheet.swift; sourceTree = "<group>"; };
 		8B7592FF7D0F6E7C700EA8AD /* AppHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHeader.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				912CFD0DA61DCB3D1A1C0ADF /* FitnessLogEntry.swift */,
 				39EF0AFF032AD0612B918643 /* FoodItem.swift */,
 				FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */,
+				7CE64E9A42ACA0D286B428AF /* ManualFoodEntry.swift */,
 				3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */,
 				68D54D8EF5353BFC0B877D2D /* SpendLogEntry.swift */,
 				9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */,
@@ -276,6 +279,7 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					A1E02766ED4AFA5310516BFD = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -342,6 +346,7 @@
 				7E5B823469E3FEC2D1A3416F /* FoodRow.swift in Sources */,
 				444B2B8AB6300A15CED758A7 /* GoalsTab.swift in Sources */,
 				0F50FDE9FC1F85B6AF7340D5 /* MacroCard.swift in Sources */,
+				861AD293390C0E8181D422F1 /* ManualFoodEntry.swift in Sources */,
 				AD45D02DF54901C7E5616DEB /* MonthGrid.swift in Sources */,
 				8FC22C324CCFDF440053DCC9 /* NewMeApp.swift in Sources */,
 				419977C8CEB8DF08A995F918 /* NumberInput.swift in Sources */,
@@ -439,9 +444,8 @@
 				CODE_SIGN_ENTITLEMENTS = NewMe/NewMe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_ASSET_PATHS = "\"NewMe/Preview Content\"";
-				DEVELOPMENT_TEAM = RBV2VXNJAJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = logs;
+				INFOPLIST_KEY_CFBundleDisplayName = kaizen;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -527,9 +531,8 @@
 				CODE_SIGN_ENTITLEMENTS = NewMe/NewMe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_ASSET_PATHS = "\"NewMe/Preview Content\"";
-				DEVELOPMENT_TEAM = RBV2VXNJAJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = logs;
+				INFOPLIST_KEY_CFBundleDisplayName = kaizen;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

@@ -13,6 +13,7 @@ struct NewMeApp: App {
             FitnessLogEntry.self,
             SpendLogEntry.self,
             UserGoals.self,
+            ManualFoodEntry.self,
         ])
         do {
             // .automatic picks up the iCloud container declared in entitlements;
