@@ -50,6 +50,7 @@
 		D7A6A5A862F09D3942F04938 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A761C7390AECA8E169F2D91F /* ContentView.swift */; };
 		DB82F1D3453EC18A96080F5B /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78BF2D3FEE409FC4301F65 /* DateFormatters.swift */; };
 		DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8FA1BF1DD34AB328B6C2C0 /* RootView.swift */; };
+		E0A5494354E5EF3C46E4F61B /* DayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6CE4C75BFF0BCF8F04128B /* DayDetailView.swift */; };
 		E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */; };
 		EE857929E36CBFE0AF9E96C4 /* FoodCatalogTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F08FC359220672EEF8263F1 /* FoodCatalogTab.swift */; };
 		F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE490BB03964E90CD36D109B /* ExerciseCard.swift */; };
@@ -69,6 +70,7 @@
 		3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMeApp.swift; sourceTree = "<group>"; };
 		3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
 		4D54B3A683A21BFC40095AA8 /* FoodRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRow.swift; sourceTree = "<group>"; };
+		4D6CE4C75BFF0BCF8F04128B /* DayDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayDetailView.swift; sourceTree = "<group>"; };
 		4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGrid.swift; sourceTree = "<group>"; };
 		51523303CB99C82AD0654DC4 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,6 +177,7 @@
 			children = (
 				C2EFDBD1137E6026D7C9009C /* CalendarView.swift */,
 				BBE79581C8C2710AEE166A3B /* DailyAggregator.swift */,
+				4D6CE4C75BFF0BCF8F04128B /* DayDetailView.swift */,
 				B940CFA9E12229086CC1C907 /* DaySummaryCard.swift */,
 				51523303CB99C82AD0654DC4 /* HistoryView.swift */,
 				F5B1D3F34EE3885D932DA073 /* MonthGrid.swift */,
@@ -361,6 +364,7 @@
 				874332FFF72FF0E176FB3098 /* CustomTabBar.swift in Sources */,
 				89F150E9C34AEAEFE1991748 /* DailyAggregator.swift in Sources */,
 				DB82F1D3453EC18A96080F5B /* DateFormatters.swift in Sources */,
+				E0A5494354E5EF3C46E4F61B /* DayDetailView.swift in Sources */,
 				4379B91E9EA97DD0256A39E2 /* DayEntriesList.swift in Sources */,
 				9A76FF3997617B47E9B7B486 /* DaySummaryCard.swift in Sources */,
 				F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */,

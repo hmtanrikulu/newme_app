@@ -76,15 +76,20 @@ struct HistoryView: View {
                 .padding(.bottom, 8)
             }
 
-            // Selected day summary
+            // Selected day — tap to open detail
             Section("Seçili Gün") {
-                DaySummaryCard(
-                    day: rollup(on: selected),
-                    isToday: Calendar.current.isDate(selected, inSameDayAs: today),
-                    onOpenForEditing: { }
-                )
-                .listRowInsets(EdgeInsets())
+                NavigationLink {
+                    DayDetailView(date: selected)
+                } label: {
+                    DaySummaryCard(
+                        day: rollup(on: selected),
+                        isToday: Calendar.current.isDate(selected, inSameDayAs: today),
+                        onOpenForEditing: { }
+                    )
+                    .listRowInsets(EdgeInsets())
+                }
                 .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets())
             }
 
             // 7-day trend
