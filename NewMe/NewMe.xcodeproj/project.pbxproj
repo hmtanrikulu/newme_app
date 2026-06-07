@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0845BB78C89D547506F013EC /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25467444B87440220C3CBB20 /* TodayView.swift */; };
 		0F50FDE9FC1F85B6AF7340D5 /* MacroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5CEDEF6DAA54A74AC7D56E /* MacroCard.swift */; };
+		1E0C67D2EB87E7373AF8D395 /* ActivityRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B194841AA753F3B37FCC1AEB /* ActivityRing.swift */; };
+		237C81B153F0EB4807E0EFAA /* UniversalLogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42A0A7718DC59E5BF73C7BE /* UniversalLogSheet.swift */; };
 		352A2BDCF475074745588CC5 /* ExerciseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EF913E189B34F56C5D11AD /* ExerciseItem.swift */; };
 		390A2A4823F642F910A34BFE /* FitnessLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912CFD0DA61DCB3D1A1C0ADF /* FitnessLogEntry.swift */; };
 		419977C8CEB8DF08A995F918 /* NumberInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6F388ADAE433B9778079FB /* NumberInput.swift */; };
@@ -36,6 +39,7 @@
 		A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94957530C2BE28816CF223D /* SettingsView.swift */; };
 		A639E1C5970D6AC87BAF9242 /* AppHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7592FF7D0F6E7C700EA8AD /* AppHeader.swift */; };
 		AD45D02DF54901C7E5616DEB /* MonthGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B1D3F34EE3885D932DA073 /* MonthGrid.swift */; };
+		B1B33417D479A04FC196EE87 /* TodayDomainCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A14037FC8810097537430C /* TodayDomainCard.swift */; };
 		C5DAA9C35A39D4ACBA2D7CFF /* SpendingLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */; };
 		C86F6602BB2F5FE460145B54 /* SpendEntryEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878AE960DB912B200624FA1B /* SpendEntryEditorSheet.swift */; };
 		D206A8F408F9C5719BA3B49C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 684530DC556EA7D10A42C4A9 /* Assets.xcassets */; };
@@ -55,6 +59,7 @@
 /* Begin PBXFileReference section */
 		0E8FA1BF1DD34AB328B6C2C0 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessLogView.swift; sourceTree = "<group>"; };
+		25467444B87440220C3CBB20 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		29861D311D54958D5E8AD7C2 /* NewMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NewMe.entitlements; sourceTree = "<group>"; };
 		39EF0AFF032AD0612B918643 /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
 		3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMeApp.swift; sourceTree = "<group>"; };
@@ -80,10 +85,13 @@
 		954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGoals.swift; sourceTree = "<group>"; };
 		A761C7390AECA8E169F2D91F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B194841AA753F3B37FCC1AEB /* ActivityRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRing.swift; sourceTree = "<group>"; };
+		B1A14037FC8810097537430C /* TodayDomainCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDomainCard.swift; sourceTree = "<group>"; };
 		B940CFA9E12229086CC1C907 /* DaySummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryCard.swift; sourceTree = "<group>"; };
 		BBE79581C8C2710AEE166A3B /* DailyAggregator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyAggregator.swift; sourceTree = "<group>"; };
 		C2EFDBD1137E6026D7C9009C /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		C3EF913E189B34F56C5D11AD /* ExerciseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseItem.swift; sourceTree = "<group>"; };
+		C42A0A7718DC59E5BF73C7BE /* UniversalLogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLogSheet.swift; sourceTree = "<group>"; };
 		CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPill.swift; sourceTree = "<group>"; };
 		CE490BB03964E90CD36D109B /* ExerciseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCard.swift; sourceTree = "<group>"; };
 		D89C40D8332CA453F79FB21F /* RecentSessionsBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSessionsBar.swift; sourceTree = "<group>"; };
@@ -150,6 +158,7 @@
 				0505EAB3D385C62397C62754 /* Food */,
 				18F6068B2D4B4525E1EB680E /* Settings */,
 				DC951395D3F6DFFFF417E866 /* Spending */,
+				D9E98F445395B4A4BCEB84C6 /* Today */,
 				0E8FA1BF1DD34AB328B6C2C0 /* RootView.swift */,
 			);
 			path = Views;
@@ -219,6 +228,17 @@
 				9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		D9E98F445395B4A4BCEB84C6 /* Today */ = {
+			isa = PBXGroup;
+			children = (
+				B194841AA753F3B37FCC1AEB /* ActivityRing.swift */,
+				B1A14037FC8810097537430C /* TodayDomainCard.swift */,
+				25467444B87440220C3CBB20 /* TodayView.swift */,
+				C42A0A7718DC59E5BF73C7BE /* UniversalLogSheet.swift */,
+			);
+			path = Today;
 			sourceTree = "<group>";
 		};
 		DC951395D3F6DFFFF417E866 /* Spending */ = {
@@ -320,6 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E0C67D2EB87E7373AF8D395 /* ActivityRing.swift in Sources */,
 				F87221C9A041E49B853E1D98 /* AmountKeypad.swift in Sources */,
 				7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */,
 				A639E1C5970D6AC87BAF9242 /* AppHeader.swift in Sources */,
@@ -359,7 +380,10 @@
 				FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */,
 				C5DAA9C35A39D4ACBA2D7CFF /* SpendingLogView.swift in Sources */,
 				93EF3D2B5A44273D588F1D21 /* SummaryPill.swift in Sources */,
+				B1B33417D479A04FC196EE87 /* TodayDomainCard.swift in Sources */,
+				0845BB78C89D547506F013EC /* TodayView.swift in Sources */,
 				9CBA2D1456B19D411F031B4B /* TrendChart.swift in Sources */,
+				237C81B153F0EB4807E0EFAA /* UniversalLogSheet.swift in Sources */,
 				70467842BBB92FE825742F81 /* UserGoals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

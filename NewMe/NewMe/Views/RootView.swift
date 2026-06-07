@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct RootView: View {
-    @State private var tab: AppTab = .food
+    @State private var tab: AppTab = .today
     @State private var showCalendar = false
     @State private var showSettings = false
+    @State private var showLogSheet = false
     @State private var activeDate: Date = Calendar.current.startOfDay(for: .now)
 
     private var isToday: Bool {
@@ -16,6 +17,16 @@ struct RootView: View {
 
             Group {
                 switch tab {
+                case .today:
+                    TodayView(
+                        activeDate: activeDate,
+                        onOpenFood:    { tab = .food },
+                        onOpenFitness: { tab = .fit },
+                        onOpenSpend:   { tab = .spend },
+                        onCalendar:    openCalendar,
+                        onSettings:    openSettings,
+                        onShowLogSheet: { showLogSheet = true }
+                    )
                 case .food:
                     FoodLogView(
                         activeDate: activeDate,
@@ -45,7 +56,7 @@ struct RootView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.bottom, 64)
 
-            CustomTabBar(selection: $tab)
+            CustomTabBar(selection: $tab, onFAB: { showLogSheet = true })
         }
         .sheet(isPresented: $showCalendar) {
             CalendarView(
@@ -60,6 +71,13 @@ struct RootView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
                 .preferredColorScheme(.dark)
+        }
+        .sheet(isPresented: $showLogSheet) {
+            UniversalLogSheet(
+                onOpenFood:    { tab = .food },
+                onOpenFitness: { tab = .fit },
+                onOpenSpend:   { tab = .spend }
+            )
         }
     }
 
@@ -76,5 +94,6 @@ struct RootView: View {
             FoodItem.self, ExerciseItem.self,
             FoodLogEntry.self, FitnessLogEntry.self,
             SpendLogEntry.self, UserGoals.self,
+            ManualFoodEntry.self,
         ], inMemory: true)
 }

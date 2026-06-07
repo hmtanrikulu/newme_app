@@ -64,4 +64,26 @@ enum DailyAggregator {
                           spendEntries: spendEntries)
         }
     }
+
+    /// Consecutive days from today backwards where any data was logged.
+    static func currentStreak(
+        foodEntries: [FoodLogEntry],
+        manualEntries: [ManualFoodEntry],
+        fitnessEntries: [FitnessLogEntry],
+        spendEntries: [SpendLogEntry]
+    ) -> Int {
+        let cal = Calendar.current
+        var streak = 0
+        var day = cal.startOfDay(for: .now)
+        for _ in 0..<365 {
+            let hasFood    = foodEntries.contains    { cal.isDate($0.date, inSameDayAs: day) }
+            let hasManual  = manualEntries.contains  { cal.isDate($0.date, inSameDayAs: day) }
+            let hasFitness = fitnessEntries.contains { cal.isDate($0.date, inSameDayAs: day) }
+            let hasSpend   = spendEntries.contains   { cal.isDate($0.date, inSameDayAs: day) }
+            guard hasFood || hasManual || hasFitness || hasSpend else { break }
+            streak += 1
+            day = cal.date(byAdding: .day, value: -1, to: day)!
+        }
+        return streak
+    }
 }

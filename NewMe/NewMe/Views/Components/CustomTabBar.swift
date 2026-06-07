@@ -1,11 +1,12 @@
 import SwiftUI
 
 enum AppTab: String, CaseIterable, Identifiable {
-    case food, fit, spend
+    case today, food, fit, spend
     var id: String { rawValue }
 
     var label: String {
         switch self {
+        case .today: return "Bugün"
         case .food:  return "Yemek"
         case .fit:   return "Fitness"
         case .spend: return "Harcama"
@@ -14,6 +15,7 @@ enum AppTab: String, CaseIterable, Identifiable {
 
     var systemImage: String {
         switch self {
+        case .today: return "square.grid.2x2.fill"
         case .food:  return "fork.knife"
         case .fit:   return "dumbbell.fill"
         case .spend: return "turkishlirasign.circle"
@@ -23,27 +25,46 @@ enum AppTab: String, CaseIterable, Identifiable {
 
 struct CustomTabBar: View {
     @Binding var selection: AppTab
+    let onFAB: () -> Void
 
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(AppTab.allCases) { tab in
-                TabButton(tab: tab, active: tab == selection) {
-                    selection = tab
+        ZStack {
+            HStack(spacing: 0) {
+                ForEach(AppTab.allCases) { tab in
+                    // Leave space in the center for the FAB
+                    if tab == .fit {
+                        Spacer().frame(width: 72)
+                    }
+                    TabButton(tab: tab, active: tab == selection) {
+                        selection = tab
+                    }
                 }
             }
+            .padding(.bottom, 14)
+            .frame(height: 64)
+            .background(
+                Color(white: 0.08).opacity(0.85)
+                    .background(.ultraThinMaterial)
+                    .overlay(
+                        Rectangle()
+                            .fill(AppColor.hairline)
+                            .frame(height: 0.5),
+                        alignment: .top
+                    )
+            )
+
+            // FAB — floats above tab bar center
+            Button(action: onFAB) {
+                Image(systemName: "plus")
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundStyle(.black)
+                    .frame(width: 56, height: 56)
+                    .background(Circle().fill(AppColor.gold))
+                    .shadow(color: AppColor.gold.opacity(0.4), radius: 12, y: 4)
+            }
+            .buttonStyle(.plain)
+            .offset(y: -20)
         }
-        .padding(.bottom, 14)
-        .frame(height: 64)
-        .background(
-            Color(white: 0.08).opacity(0.85)
-                .background(.ultraThinMaterial)
-                .overlay(
-                    Rectangle()
-                        .fill(AppColor.hairline)
-                        .frame(height: 0.5),
-                    alignment: .top
-                )
-        )
     }
 }
 
