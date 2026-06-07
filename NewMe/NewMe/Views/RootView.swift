@@ -1,90 +1,111 @@
 import SwiftUI
 
 struct RootView: View {
-    @State private var tab: AppTab = .today
-    @State private var showCalendar = false
-    @State private var showSettings = false
-    @State private var showLogSheet = false
-    @State private var activeDate: Date = Calendar.current.startOfDay(for: .now)
+    var body: some View {
+        TabView {
+            TodayTab()
+                .tabItem { Label("Bugün", systemImage: "house.fill") }
 
-    private var isToday: Bool {
-        Calendar.current.isDate(activeDate, inSameDayAs: .now)
+            HistoryTab()
+                .tabItem { Label("Geçmiş", systemImage: "calendar") }
+
+            SettingsNavTab()
+                .tabItem { Label("Ayarlar", systemImage: "gearshape.fill") }
+        }
     }
+}
+
+// MARK: — Tab containers
+
+private struct TodayTab: View {
+    @State private var activeDate = Calendar.current.startOfDay(for: .now)
+    @State private var showDatePicker = false
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            AppColor.bg.ignoresSafeArea()
-
-            Group {
-                switch tab {
-                case .today:
-                    TodayView(
-                        activeDate: activeDate,
-                        onOpenFood:    { tab = .food },
-                        onOpenFitness: { tab = .fit },
-                        onOpenSpend:   { tab = .spend },
-                        onCalendar:    openCalendar,
-                        onSettings:    openSettings,
-                        onShowLogSheet: { showLogSheet = true }
-                    )
-                case .food:
-                    FoodLogView(
-                        activeDate: activeDate,
-                        isToday: isToday,
-                        onBackToToday: backToToday,
-                        onCalendar: openCalendar,
-                        onSettings: openSettings
-                    )
-                case .fit:
-                    FitnessLogView(
-                        activeDate: activeDate,
-                        isToday: isToday,
-                        onBackToToday: backToToday,
-                        onCalendar: openCalendar,
-                        onSettings: openSettings
-                    )
-                case .spend:
-                    SpendingLogView(
-                        activeDate: activeDate,
-                        isToday: isToday,
-                        onBackToToday: backToToday,
-                        onCalendar: openCalendar,
-                        onSettings: openSettings
-                    )
+        NavigationStack {
+            TodayView(activeDate: $activeDate)
+                .navigationTitle(isToday ? "Bugün" : shortDate)
+                .navigationBarTitleDisplayMode(.large)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showDatePicker = true
+                        } label: {
+                            Image(systemName: isToday ? "calendar" : "calendar.badge.clock")
+                        }
+                    }
+                    if !isToday {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button("Bugün") {
+                                withAnimation { activeDate = Calendar.current.startOfDay(for: .now) }
+                            }
+                        }
+                    }
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .padding(.bottom, 64)
-
-            CustomTabBar(selection: $tab, onFAB: { showLogSheet = true })
-        }
-        .sheet(isPresented: $showCalendar) {
-            CalendarView(
-                initialSelection: activeDate,
-                onOpenForEditing: { date in
-                    activeDate = Calendar.current.startOfDay(for: date)
-                    showCalendar = false
+                .sheet(isPresented: $showDatePicker) {
+                    DatePickerSheet(selection: $activeDate)
                 }
-            )
-            .preferredColorScheme(.dark)
-        }
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
-                .preferredColorScheme(.dark)
-        }
-        .sheet(isPresented: $showLogSheet) {
-            UniversalLogSheet(
-                onOpenFood:    { tab = .food },
-                onOpenFitness: { tab = .fit },
-                onOpenSpend:   { tab = .spend }
-            )
         }
     }
 
-    private func openCalendar() { showCalendar = true }
-    private func openSettings() { showSettings = true }
-    private func backToToday() {
-        activeDate = Calendar.current.startOfDay(for: .now)
+    private var isToday: Bool {
+        Calendar.current.isDateInToday(activeDate)
+    }
+
+    private var shortDate: String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "tr_TR")
+        f.dateFormat = "d MMM"
+        return f.string(from: activeDate)
+    }
+}
+
+private struct HistoryTab: View {
+    var body: some View {
+        NavigationStack {
+            HistoryView()
+                .navigationTitle("Geçmiş")
+                .navigationBarTitleDisplayMode(.large)
+        }
+    }
+}
+
+private struct SettingsNavTab: View {
+    var body: some View {
+        NavigationStack {
+            SettingsView()
+                .navigationTitle("Ayarlar")
+                .navigationBarTitleDisplayMode(.large)
+        }
+    }
+}
+
+// MARK: — Date picker sheet
+
+private struct DatePickerSheet: View {
+    @Binding var selection: Date
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            DatePicker(
+                "Tarih",
+                selection: $selection,
+                in: ...Date.now,
+                displayedComponents: .date
+            )
+            .datePickerStyle(.graphical)
+            .padding()
+            .navigationTitle("Tarih Seç")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Tamam") { dismiss() }
+                        .fontWeight(.semibold)
+                }
+            }
+        }
+        .presentationDetents([.medium])
     }
 }
 
@@ -93,6 +114,7 @@ struct RootView: View {
         .modelContainer(for: [
             FoodItem.self, ExerciseItem.self,
             FoodLogEntry.self, FitnessLogEntry.self,
+            WorkoutSession.self,
             SpendLogEntry.self, UserGoals.self,
             ManualFoodEntry.self,
         ], inMemory: true)

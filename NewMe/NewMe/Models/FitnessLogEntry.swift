@@ -17,7 +17,6 @@ struct SetData: Codable, Hashable {
 
     enum CodingKeys: String, CodingKey { case reps, kg, minutes }
 
-    /// Backward-compat decode: pre-cardio rows lack `minutes`; default to 0.
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         self.reps    = try c.decodeIfPresent(Int.self,    forKey: .reps)    ?? 0
@@ -31,26 +30,25 @@ final class FitnessLogEntry {
     var date: Date = Date()
     var sets: [SetData] = []
     var exercise: ExerciseItem?
+    var session: WorkoutSession? = nil
 
-    init(date: Date, sets: [SetData] = [], exercise: ExerciseItem?) {
+    init(date: Date, sets: [SetData] = [], exercise: ExerciseItem?, session: WorkoutSession? = nil) {
         self.date = Calendar.current.startOfDay(for: date)
         self.sets = sets
         self.exercise = exercise
+        self.session = session
     }
 
-    /// Total weight × reps — only meaningful for weight-kind exercises.
     var volume: Double {
         guard exercise?.kind == .weight else { return 0 }
         return sets.reduce(0) { $0 + Double($1.reps) * $1.kg }
     }
 
-    /// Total minutes — only meaningful for cardio.
     var totalMinutes: Double {
         guard exercise?.kind == .cardio else { return 0 }
         return sets.reduce(0) { $0 + $1.minutes }
     }
 
-    /// Total reps for bodyweight movements.
     var totalReps: Int {
         guard exercise?.kind == .bodyweight else { return 0 }
         return sets.reduce(0) { $0 + $1.reps }

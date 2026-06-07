@@ -11,13 +11,12 @@ struct NewMeApp: App {
             ExerciseItem.self,
             FoodLogEntry.self,
             FitnessLogEntry.self,
+            WorkoutSession.self,
             SpendLogEntry.self,
             UserGoals.self,
             ManualFoodEntry.self,
         ])
         do {
-            // .automatic picks up the iCloud container declared in entitlements;
-            // SwiftData falls back to local-only when CloudKit is unreachable.
             let config = ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)
             container = try ModelContainer(for: schema, configurations: config)
         } catch {
@@ -28,7 +27,8 @@ struct NewMeApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .preferredColorScheme(.dark)
+                // Warm amber accent — the single brand color; everything else is system-adaptive
+                .tint(Color(red: 0.80, green: 0.67, blue: 0.38))
                 .task {
                     SeedData.seedIfNeeded(container.mainContext)
                 }

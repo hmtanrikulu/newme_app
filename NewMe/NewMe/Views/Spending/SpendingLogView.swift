@@ -3,10 +3,6 @@ import SwiftData
 
 struct SpendingLogView: View {
     let activeDate: Date
-    let isToday: Bool
-    let onBackToToday: () -> Void
-    let onCalendar: () -> Void
-    let onSettings: () -> Void
 
     @Environment(\.modelContext) private var context
     @Query private var allEntries: [SpendLogEntry]
@@ -24,9 +20,7 @@ struct SpendingLogView: View {
             .sorted { $0.timestamp > $1.timestamp }
     }
 
-    private var dayTotal: Double {
-        dayEntries.reduce(0) { $0 + $1.amount }
-    }
+    private var dayTotal: Double { dayEntries.reduce(0) { $0 + $1.amount } }
 
     private var amountValue: Double {
         Double(amountText.replacingOccurrences(of: ",", with: ".")) ?? 0
@@ -46,169 +40,127 @@ struct SpendingLogView: View {
 
     private func submit() {
         guard amountValue > 0 else { return }
-        let entry = SpendLogEntry(date: activeDate, category: category, amount: amountValue)
-        context.insert(entry)
+        context.insert(SpendLogEntry(date: activeDate, category: category, amount: amountValue))
         try? context.save()
         amountText = "0"
     }
 
     private func delete(_ entry: SpendLogEntry) {
-        withAnimation {
-            context.delete(entry)
-            try? context.save()
-        }
-    }
-
-    private var headerTitle: String {
-        isToday ? "Harcama" : DateFormatters.monthDay.string(from: activeDate)
+        context.delete(entry)
+        try? context.save()
     }
 
     var body: some View {
         VStack(spacing: 0) {
-            AppHeader(
-                kicker: DateFormatters.kicker(for: activeDate),
-                title: headerTitle,
-                showBackToToday: !isToday,
-                onBackToToday: onBackToToday,
-                onCalendar: onCalendar,
-                onSettings: onSettings
-            )
-            progress
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 0) {
-                    entriesSection
-                    categoryBlock
+            // Entries + category in a scrollable area
+            List {
+                // Progress
+                Section {
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Text("Bugün")
+                                .font(.subheadline)
+                            Spacer()
+                            Text("₺\(Int(dayTotal.rounded())) / ₺\(goal)")
+                                .font(.subheadline)
+                                .monospacedDigit()
+                                .foregroundStyle(.secondary)
+                        }
+                        ProgressView(value: min(1, dayTotal / Double(goal)))
+                            .tint(dayTotal > Double(goal) ? .red : .accentColor)
+                    }
+                }
+
+                // Category picker
+                Section("Kategori") {
+                    CategoryGrid(selection: $category)
+                        .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
+                }
+
+                // Logged entries
+                if !dayEntries.isEmpty {
+                    Section("Kayıtlar") {
+                        ForEach(dayEntries) { entry in
+                            SpendEntryRow(entry: entry)
+                                .onTapGesture { editingEntry = entry }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button(role: .destructive) {
+                                        delete(entry)
+                                    } label: {
+                                        Label("Sil", systemImage: "trash")
+                                    }
+                                }
+                        }
+                    }
                 }
             }
-            amountDisplay
-            AmountKeypad(onPress: press)
-                .padding(.horizontal, 16)
-                .padding(.top, 4)
-            submitButton
+            .listStyle(.insetGrouped)
+
+            // Fixed bottom: amount + keypad + add button
+            Divider()
+            VStack(spacing: 8) {
+                amountDisplay
+                AmountKeypad(onPress: press)
+                    .padding(.horizontal, 16)
+                addButton
+            }
+            .background(Color(UIColor.systemGroupedBackground))
+            .padding(.bottom, 8)
         }
-        .padding(.top, 54)
+        .navigationTitle("Harcama")
+        .navigationBarTitleDisplayMode(.large)
         .sheet(item: $editingEntry) { entry in
-            SpendEntryEditorSheet(entry: entry) {
-                delete(entry)
-            }
-            .preferredColorScheme(.dark)
+            SpendEntryEditorSheet(entry: entry) { delete(entry) }
         }
-    }
-
-    private var progress: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(isToday ? "BUGÜN" : "GÜNLÜK")
-                    .font(.system(size: 11, weight: .semibold))
-                    .tracking(1.2)
-                    .foregroundStyle(AppColor.text3)
-                Spacer()
-                HStack(spacing: 0) {
-                    Text(DateFormatters.lira.string(from: NSNumber(value: dayTotal)) ?? "₺0")
-                        .font(.system(size: 15, weight: .semibold))
-                        .monospacedDigit()
-                        .foregroundStyle(AppColor.textPrimary)
-                    Text(" / ")
-                        .font(.system(size: 15))
-                        .foregroundStyle(AppColor.text3)
-                    Text(DateFormatters.lira.string(from: NSNumber(value: goal)) ?? "₺0")
-                        .font(.system(size: 15))
-                        .monospacedDigit()
-                        .foregroundStyle(AppColor.text3)
-                }
-            }
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(Color.white.opacity(0.08))
-                    Capsule().fill(AppColor.gold)
-                        .frame(width: geo.size.width * min(1, dayTotal / Double(goal)))
-                }
-            }
-            .frame(height: 4)
-        }
-        .padding(.horizontal, 22)
-        .padding(.bottom, 12)
-        .padding(.top, 4)
-    }
-
-    private var entriesSection: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(isToday ? "BUGÜNKÜ KAYITLAR" : "GÜN KAYITLARI")
-                .font(.system(size: 11, weight: .heavy))
-                .tracking(1)
-                .foregroundStyle(AppColor.text3)
-                .padding(.horizontal, 6)
-            DayEntriesList(
-                entries: dayEntries,
-                onTapEntry: { editingEntry = $0 },
-                onDelete: { delete($0) }
-            )
-        }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 10)
-    }
-
-    private var categoryBlock: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("KATEGORİ")
-                .font(.system(size: 11, weight: .heavy))
-                .tracking(1)
-                .foregroundStyle(AppColor.text3)
-                .padding(.horizontal, 6)
-            CategoryGrid(selection: $category)
-        }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 4)
     }
 
     private var amountDisplay: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("TUTAR")
-                .font(.system(size: 11, weight: .heavy))
-                .tracking(1)
-                .foregroundStyle(AppColor.text3)
-            HStack(alignment: .lastTextBaseline, spacing: 10) {
-                Text("₺")
-                    .font(.system(size: 28, weight: .light))
-                    .foregroundStyle(AppColor.gold)
-                Text(amountText)
-                    .font(.system(size: 34, weight: .medium))
-                    .monospacedDigit()
-                    .tracking(-1)
-                    .foregroundStyle(AppColor.textPrimary)
-                Rectangle()
-                    .fill(AppColor.gold)
-                    .frame(width: 2, height: 32)
-                Spacer(minLength: 0)
-            }
-            .padding(.bottom, 6)
-            .overlay(
-                Rectangle().fill(AppColor.gold.opacity(0.5)).frame(height: 1),
-                alignment: .bottom
-            )
+        HStack(alignment: .lastTextBaseline, spacing: 6) {
+            Text("₺")
+                .font(.title2)
+                .foregroundStyle(Color.accentColor)
+            Text(amountText)
+                .font(.system(size: 32, weight: .medium))
+                .monospacedDigit()
+            Spacer()
         }
         .padding(.horizontal, 22)
-        .padding(.top, 8)
-        .padding(.bottom, 2)
+        .padding(.top, 10)
     }
 
-    private var submitButton: some View {
+    private var addButton: some View {
         Button(action: submit) {
-            Text("EKLE")
-                .font(.system(size: 15, weight: .heavy))
-                .tracking(1.5)
-                .foregroundStyle(.black)
+            Text("Ekle")
+                .font(.headline)
                 .frame(maxWidth: .infinity)
-                .frame(height: 46)
-                .background(
-                    RoundedRectangle(cornerRadius: 14).fill(AppColor.gold)
-                )
+                .padding(.vertical, 14)
+                .background(RoundedRectangle(cornerRadius: 14).fill(Color.accentColor))
+                .foregroundStyle(.black)
         }
         .buttonStyle(.plain)
         .disabled(amountValue <= 0)
-        .opacity(amountValue <= 0 ? 0.5 : 1)
+        .opacity(amountValue <= 0 ? 0.4 : 1)
         .padding(.horizontal, 16)
-        .padding(.top, 4)
-        .padding(.bottom, 10)
+        .padding(.bottom, 4)
+        .animation(.easeInOut(duration: 0.15), value: amountValue > 0)
+    }
+}
+
+// MARK: — Spend entry row
+
+private struct SpendEntryRow: View {
+    let entry: SpendLogEntry
+
+    var body: some View {
+        HStack {
+            Image(systemName: entry.category.systemImage)
+                .foregroundStyle(Color.accentColor)
+                .frame(width: 24)
+            Text(entry.category.label)
+            Spacer()
+            Text("₺\(Int(entry.amount))")
+                .fontWeight(.medium)
+                .monospacedDigit()
+        }
     }
 }

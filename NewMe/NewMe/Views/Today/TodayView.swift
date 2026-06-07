@@ -2,250 +2,205 @@ import SwiftUI
 import SwiftData
 
 struct TodayView: View {
-    let activeDate: Date
-    let onOpenFood: () -> Void
-    let onOpenFitness: () -> Void
-    let onOpenSpend: () -> Void
-    let onCalendar: () -> Void
-    let onSettings: () -> Void
-    let onShowLogSheet: () -> Void
+    @Binding var activeDate: Date
 
     @Query private var allFoodEntries: [FoodLogEntry]
-    @Query private var allManualEntries: [ManualFoodEntry]
     @Query private var allFitnessEntries: [FitnessLogEntry]
     @Query private var allSpendEntries: [SpendLogEntry]
     @Query private var goalsRows: [UserGoals]
 
     private var goals: UserGoals { goalsRows.first ?? UserGoals() }
 
-    // MARK: — Computed today values
+    // MARK: — Aggregates
 
     private var kcalToday: Double {
-        let catalog = allFoodEntries
-            .filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }
-            .reduce(0.0) { $0 + Double($1.quantity) * ($1.item?.kcalPerPortion ?? 0) }
-        let manual = allManualEntries
-            .first { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }?.kcal ?? 0
-        return catalog + manual
+        dayFood.reduce(0) { $0 + $1.kcal }
     }
 
     private var proteinToday: Double {
-        let catalog = allFoodEntries
-            .filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }
-            .reduce(0.0) { $0 + Double($1.quantity) * ($1.item?.proteinPerPortion ?? 0) }
-        let manual = allManualEntries
-            .first { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }?.protein ?? 0
-        return catalog + manual
+        dayFood.reduce(0) { $0 + $1.protein }
     }
 
-    private var spendToday: Double {
-        allSpendEntries
-            .filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }
-            .reduce(0.0) { $0 + $1.amount }
+    private var dayFood: [FoodLogEntry] {
+        allFoodEntries.filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }
     }
 
-    private var totalSetsToday: Int {
-        allFitnessEntries
-            .filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }
-            .reduce(0) { $0 + $1.sets.count }
+    private var dayFitness: [FitnessLogEntry] {
+        allFitnessEntries.filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }
     }
 
-    private var movementsToday: Int {
-        allFitnessEntries
-            .filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) && !$0.sets.isEmpty }
-            .count
+    private var daySpend: [SpendLogEntry] {
+        allSpendEntries.filter { Calendar.current.isDate($0.date, inSameDayAs: activeDate) }
     }
 
-    private var kcalProgress: Double {
-        goals.kcal > 0 ? kcalToday / Double(goals.kcal) : 0
-    }
+    private var totalSets: Int { dayFitness.reduce(0) { $0 + $1.sets.count } }
+    private var movements: Int { dayFitness.filter { !$0.sets.isEmpty }.count }
+    private var spendTotal: Double { daySpend.reduce(0) { $0 + $1.amount } }
 
-    private var spendProgress: Double {
-        goals.dailySpendLimit > 0 ? spendToday / Double(goals.dailySpendLimit) : 0
-    }
-
-    // 15 sets = full ring; any logged session shows meaningful fill
-    private var fitnessProgress: Double {
-        min(1.0, Double(totalSetsToday) / 15.0)
-    }
-
-    private var streak: Int {
-        DailyAggregator.currentStreak(
-            foodEntries: allFoodEntries,
-            manualEntries: allManualEntries,
-            fitnessEntries: allFitnessEntries,
-            spendEntries: allSpendEntries
-        )
-    }
-
-    // MARK: — Body
+    private var kcalProgress: Double { goals.kcal > 0 ? min(1, kcalToday / Double(goals.kcal)) : 0 }
+    private var spendProgress: Double { goals.dailySpendLimit > 0 ? min(1, spendTotal / Double(goals.dailySpendLimit)) : 0 }
+    private var fitnessProgress: Double { min(1, Double(totalSets) / 15.0) }
 
     var body: some View {
-        VStack(spacing: 0) {
-            AppHeader(
-                kicker: "BUGÜN",
-                title: DateFormatters.dateLabel.string(from: activeDate),
-                showBackToToday: false,
-                onBackToToday: nil,
-                onCalendar: onCalendar,
-                onSettings: onSettings
-            )
+        List {
+            // Rings hero
+            Section {
+                ringsRow
+                    .listRowInsets(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0))
+                    .listRowBackground(Color.clear)
+            }
 
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 16) {
-                    ringsCard
-                    domainCards
-                    if streak >= 2 {
-                        streakBadge
-                    }
-                    Color.clear.frame(height: 20)
+            // Food
+            Section {
+                NavigationLink {
+                    FoodLogView(activeDate: activeDate)
+                } label: {
+                    TodaySummaryRow(
+                        icon: "fork.knife.circle.fill",
+                        color: AppColor.food,
+                        title: "Yemek",
+                        primary: "\(Int(kcalToday.rounded())) kcal",
+                        secondary: "Hedef: \(goals.kcal) kcal",
+                        progress: kcalProgress
+                    )
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 12)
+            }
+
+            // Fitness
+            Section {
+                NavigationLink {
+                    FitnessLogView(activeDate: activeDate)
+                } label: {
+                    TodaySummaryRow(
+                        icon: "dumbbell.fill",
+                        color: AppColor.fitness,
+                        title: "Antrenman",
+                        primary: totalSets > 0 ? "\(totalSets) set · \(movements) hareket" : "Antrenman yok",
+                        secondary: totalSets > 0 ? "Protein: \(Int(proteinToday.rounded()))g" : "Başlamak için dokun",
+                        progress: fitnessProgress
+                    )
+                }
+            }
+
+            // Spending
+            Section {
+                NavigationLink {
+                    SpendingLogView(activeDate: activeDate)
+                } label: {
+                    TodaySummaryRow(
+                        icon: "turkishlirasign.circle.fill",
+                        color: AppColor.spending,
+                        title: "Harcama",
+                        primary: "₺\(Int(spendTotal.rounded()))",
+                        secondary: "Limit: ₺\(goals.dailySpendLimit)",
+                        progress: spendProgress
+                    )
+                }
             }
         }
-        .padding(.top, 54)
+        .listStyle(.insetGrouped)
     }
 
-    // MARK: — Rings
+    // MARK: — Rings row
 
-    private var ringsCard: some View {
+    private var ringsRow: some View {
         HStack(spacing: 0) {
-            ringItem(
+            ringCell(
                 progress: kcalProgress,
-                color: AppColor.gold,
-                valueText: "\(Int(kcalToday.rounded()))",
+                color: AppColor.food,
+                value: "\(Int(kcalToday.rounded()))",
                 unit: "kcal",
-                label: "KALORİ",
-                subLabel: "/ \(goals.kcal)"
+                label: "KALORİ"
             )
-            Divider()
-                .frame(height: 60)
-                .background(AppColor.hairline)
-            ringItem(
+            Divider().frame(height: 72)
+            ringCell(
                 progress: spendProgress,
-                color: AppColor.info,
-                valueText: "₺\(Int(spendToday.rounded()))",
+                color: AppColor.spending,
+                value: "₺\(Int(spendTotal.rounded()))",
                 unit: "",
-                label: "HARCAMA",
-                subLabel: "/ ₺\(goals.dailySpendLimit)"
+                label: "HARCAMA"
             )
-            Divider()
-                .frame(height: 60)
-                .background(AppColor.hairline)
-            ringItem(
+            Divider().frame(height: 72)
+            ringCell(
                 progress: fitnessProgress,
-                color: AppColor.success,
-                valueText: "\(totalSetsToday)",
+                color: AppColor.fitness,
+                value: "\(totalSets)",
                 unit: "set",
-                label: "FİTNESS",
-                subLabel: movementsToday > 0 ? "\(movementsToday) eg." : "—"
+                label: "FİTNESS"
             )
         }
-        .padding(.vertical, 22)
-        .background(RoundedRectangle(cornerRadius: 18).fill(AppColor.surface))
-        .overlay(
-            RoundedRectangle(cornerRadius: 18)
-                .stroke(AppColor.hairline, lineWidth: 0.5)
-        )
+        .padding(.vertical, 8)
     }
 
-    private func ringItem(
-        progress: Double,
-        color: Color,
-        valueText: String,
-        unit: String,
-        label: String,
-        subLabel: String
-    ) -> some View {
-        VStack(spacing: 10) {
+    private func ringCell(progress: Double, color: Color, value: String, unit: String, label: String) -> some View {
+        VStack(spacing: 8) {
             ZStack {
-                ActivityRing(progress: progress, color: color, ringWidth: 9, size: 74)
+                ActivityRing(progress: progress, color: color, ringWidth: 8, size: 66)
                 VStack(spacing: 1) {
-                    Text(valueText)
-                        .font(.system(size: 13, weight: .bold))
+                    Text(value)
+                        .font(.system(size: 12, weight: .bold))
                         .monospacedDigit()
-                        .foregroundStyle(AppColor.textPrimary)
                         .minimumScaleFactor(0.6)
                         .lineLimit(1)
                     if !unit.isEmpty {
                         Text(unit)
-                            .font(.system(size: 9, weight: .semibold))
-                            .foregroundStyle(AppColor.text3)
+                            .font(.system(size: 9, weight: .medium))
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
-            VStack(spacing: 2) {
-                Text(label)
-                    .font(.system(size: 10, weight: .heavy))
-                    .tracking(0.6)
-                    .foregroundStyle(AppColor.text3)
-                Text(subLabel)
-                    .font(.system(size: 10))
-                    .monospacedDigit()
-                    .foregroundStyle(color.opacity(0.65))
-            }
+            Text(label)
+                .font(.system(size: 10, weight: .semibold))
+                .tracking(0.5)
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
     }
+}
 
-    // MARK: — Domain cards
+// MARK: — Summary row (used in Today list)
 
-    private var domainCards: some View {
-        VStack(spacing: 8) {
-            TodayDomainCard(
-                icon: "fork.knife",
-                title: "Yemek",
-                color: AppColor.gold,
-                primaryText: "\(Int(kcalToday.rounded())) kcal",
-                secondaryText: "Hedef: \(goals.kcal) kcal",
-                progress: kcalProgress,
-                onTap: onOpenFood
-            )
-            TodayDomainCard(
-                icon: "dumbbell.fill",
-                title: "Antrenman",
-                color: AppColor.success,
-                primaryText: totalSetsToday > 0 ? "\(totalSetsToday) set · \(movementsToday) eg." : "Henüz kayıt yok",
-                secondaryText: totalSetsToday > 0 ? "Günlük protein: \(Int(proteinToday.rounded()))g" : "Antrenman ekle →",
-                progress: fitnessProgress,
-                onTap: onOpenFitness
-            )
-            TodayDomainCard(
-                icon: "turkishlirasign.circle.fill",
-                title: "Harcama",
-                color: AppColor.info,
-                primaryText: "₺\(Int(spendToday.rounded()))",
-                secondaryText: "Limit: ₺\(goals.dailySpendLimit)",
-                progress: spendProgress,
-                onTap: onOpenSpend
-            )
-        }
-    }
+struct TodaySummaryRow: View {
+    let icon: String
+    let color: Color
+    let title: String
+    let primary: String
+    let secondary: String
+    let progress: Double
 
-    // MARK: — Streak badge
+    var body: some View {
+        HStack(spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 22))
+                .foregroundStyle(color)
+                .frame(width: 32)
 
-    private var streakBadge: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "flame.fill")
-                .font(.system(size: 20))
-                .foregroundStyle(AppColor.gold)
-            VStack(alignment: .leading, spacing: 2) {
-                Text("\(streak) gün streak")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(AppColor.textPrimary)
-                Text("Devam et, harika gidiyorsun!")
-                    .font(.system(size: 12))
-                    .foregroundStyle(AppColor.text3)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                Text(primary)
+                    .font(.headline)
+                    .monospacedDigit()
             }
+
             Spacer()
+
+            VStack(alignment: .trailing, spacing: 4) {
+                Text(secondary)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(color.opacity(0.12))
+                        Capsule().fill(color.opacity(0.8))
+                            .frame(width: geo.size.width * progress)
+                    }
+                }
+                .frame(width: 72, height: 4)
+            }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
-        .background(
-            RoundedRectangle(cornerRadius: 14)
-                .fill(AppColor.goldDim)
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColor.gold.opacity(0.3), lineWidth: 1))
-        )
+        .padding(.vertical, 4)
     }
 }

@@ -1,27 +1,39 @@
 import SwiftUI
 
+// System-adaptive color palette — works in both light and dark mode.
+// AppColor.accent is the single brand color; everything else defers to system.
 enum AppColor {
-    static let bg          = Color(hex: 0x000000)
-    static let surface     = Color(hex: 0x1C1C1E)
-    static let surface2    = Color(hex: 0x2C2C2E)
-    static let surface3    = Color(hex: 0x3A3A3C)
-    static let hairline    = Color.white.opacity(0.08)
+    // Backgrounds — system grouped style
+    static let bg       = Color(UIColor.systemGroupedBackground)
+    static let surface  = Color(UIColor.secondarySystemGroupedBackground)
+    static let surface2 = Color(UIColor.tertiarySystemGroupedBackground)
+    static let hairline = Color(UIColor.separator)
 
-    static let textPrimary = Color.white
-    static let text2       = Color(red: 235/255, green: 235/255, blue: 245/255).opacity(0.6)
-    static let text3       = Color(red: 235/255, green: 235/255, blue: 245/255).opacity(0.4)
+    // Text — semantic, auto dark/light
+    static let textPrimary = Color.primary
+    static let text2       = Color.secondary
+    static let text3       = Color(UIColor.tertiaryLabel)
 
-    static let gold        = Color(hex: 0xC9A961)
-    static let goldSoft    = Color(hex: 0xD4B872)
-    static let goldDim     = Color(hex: 0xC9A961, opacity: 0.18)
+    // Brand accent — warm amber; set app .tint() once to propagate everywhere
+    static let accent    = Color.accentColor
+    static let gold      = Color.accentColor         // legacy alias
+    static let goldSoft  = Color.accentColor
+    static let goldDim   = Color.accentColor.opacity(0.15)
 
-    static let macroProt   = Color(hex: 0xFF6B6B)
-    static let macroCarb   = Color(hex: 0x5AB7FF)
-    static let macroFat    = Color(hex: 0xFFC857)
+    // Macro colors — semantic
+    static let macroProt = Color.red
+    static let macroCarb = Color.blue
+    static let macroFat  = Color.orange
 
-    static let danger      = Color(hex: 0xFF453A)
-    static let success     = Color(hex: 0x34C759)
-    static let info        = Color(hex: 0x0A84FF)
+    // Domain colors
+    static let food     = Color.orange
+    static let fitness  = Color.green
+    static let spending = Color.blue
+
+    // Status
+    static let danger  = Color.red
+    static let success = Color.green
+    static let info    = Color.blue
 }
 
 enum AppFont {
