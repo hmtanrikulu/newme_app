@@ -52,6 +52,7 @@
 		DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8FA1BF1DD34AB328B6C2C0 /* RootView.swift */; };
 		E0A5494354E5EF3C46E4F61B /* DayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6CE4C75BFF0BCF8F04128B /* DayDetailView.swift */; };
 		E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */; };
+		E711E442266779555EB921F1 /* SpendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8EDFF20B6BDB916DC333 /* SpendChart.swift */; };
 		EE857929E36CBFE0AF9E96C4 /* FoodCatalogTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F08FC359220672EEF8263F1 /* FoodCatalogTab.swift */; };
 		F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE490BB03964E90CD36D109B /* ExerciseCard.swift */; };
 		F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */; };
@@ -102,6 +103,7 @@
 		C42A0A7718DC59E5BF73C7BE /* UniversalLogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLogSheet.swift; sourceTree = "<group>"; };
 		CE27B05FEDD4D981F2C77ED7 /* SummaryPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPill.swift; sourceTree = "<group>"; };
 		CE490BB03964E90CD36D109B /* ExerciseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCard.swift; sourceTree = "<group>"; };
+		D7BA8EDFF20B6BDB916DC333 /* SpendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendChart.swift; sourceTree = "<group>"; };
 		D89C40D8332CA453F79FB21F /* RecentSessionsBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSessionsBar.swift; sourceTree = "<group>"; };
 		D94957530C2BE28816CF223D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DA2CD710C2A1F54C07B105F1 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				B940CFA9E12229086CC1C907 /* DaySummaryCard.swift */,
 				51523303CB99C82AD0654DC4 /* HistoryView.swift */,
 				F5B1D3F34EE3885D932DA073 /* MonthGrid.swift */,
+				D7BA8EDFF20B6BDB916DC333 /* SpendChart.swift */,
 				F239A6EEF32F5C8E29977A41 /* TrendChart.swift */,
 			);
 			path = Calendar;
@@ -391,6 +394,7 @@
 				E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */,
 				8643BC195B49D400B6299F42 /* SettingsTabPicker.swift in Sources */,
 				A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */,
+				E711E442266779555EB921F1 /* SpendChart.swift in Sources */,
 				C86F6602BB2F5FE460145B54 /* SpendEntryEditorSheet.swift in Sources */,
 				FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */,
 				C5DAA9C35A39D4ACBA2D7CFF /* SpendingLogView.swift in Sources */,

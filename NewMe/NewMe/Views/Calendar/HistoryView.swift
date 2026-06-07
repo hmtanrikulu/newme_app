@@ -13,7 +13,6 @@ struct HistoryView: View {
     @State private var selected: Date = Calendar.current.startOfDay(for: .now)
 
     private var today: Date { Calendar.current.startOfDay(for: .now) }
-    private var goalKcal: Int { goalsRows.first?.kcal ?? 2400 }
 
     private var streak: Int {
         DailyAggregator.currentStreak(
@@ -27,15 +26,6 @@ struct HistoryView: View {
     private func rollup(on day: Date) -> DayRollup {
         DailyAggregator.rollup(
             on: day,
-            foodEntries: foodEntries,
-            fitnessEntries: fitnessEntries,
-            spendEntries: spendEntries
-        )
-    }
-
-    private var last7: [DayRollup] {
-        DailyAggregator.last7Days(
-            ending: .now,
             foodEntries: foodEntries,
             fitnessEntries: fitnessEntries,
             spendEntries: spendEntries
@@ -92,12 +82,11 @@ struct HistoryView: View {
                 .listRowInsets(EdgeInsets())
             }
 
-            // 7-day trend
-            Section("Son 7 Gün") {
-                TrendChart(days: last7, goalKcal: goalKcal, selected: $selected)
-                    .listRowInsets(EdgeInsets())
+            // Spending chart
+            Section("Harcama Grafiği") {
+                SpendChart(entries: spendEntries)
+                    .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
                     .listRowBackground(Color.clear)
-                    .frame(height: 180)
             }
         }
         .listStyle(.insetGrouped)
