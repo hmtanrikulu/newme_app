@@ -33,6 +33,7 @@ struct AIFoodInputSheet: View {
             .background(Color(UIColor.systemGroupedBackground))
             .navigationTitle("AI ile Ekle")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear { errorMessage = nil }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("İptal") { dismiss() }
