@@ -262,36 +262,208 @@ private struct SearchTab: View {
     let onAdded: () -> Void
 
     @Environment(\.modelContext) private var context
-    @State private var search = ""
-    @State private var expandedItem: PersistentIdentifier?
-    @State private var quantity: Int = 1
 
-    private var filtered: [FoodItem] {
-        search.isEmpty ? catalog : catalog.filter { $0.name.localizedCaseInsensitiveContains(search) }
-    }
+    // Local catalog state
+    @State private var search = ""
+    @State private var expandedLocalID: PersistentIdentifier?
+    @State private var localQuantity: Int = 1
+
+    // USDA search state
+    @State private var usdaResults: [USDAService.FoodSearchResult] = []
+    @State private var isSearching = false
+    @State private var searchError: String?
+    @State private var searchDebounce: Task<Void, Never>? = nil
+    @State private var expandedFdcId: Int?
+    @State private var expandedGram: String = "100"
+
+    private var isSearchActive: Bool { search.count >= 2 }
 
     var body: some View {
         List {
-            if search.isEmpty && !recentEntries.isEmpty {
+            // Recent foods (always shown when search is empty)
+            if !isSearchActive && !recentEntries.isEmpty {
                 Section("Son eklenenler") {
-                    ForEach(recentEntries) { food in
-                        foodRow(food)
+                    ForEach(recentEntries) { food in localFoodRow(food) }
+                }
+            }
+
+            // USDA live search results
+            if isSearchActive {
+                Section("Sonuçlar") {
+                    if isSearching {
+                        HStack {
+                            Spacer()
+                            ProgressView().padding(.vertical, 8)
+                            Spacer()
+                        }
+                    } else if let err = searchError {
+                        Label(err, systemImage: "exclamationmark.triangle")
+                            .font(.caption).foregroundStyle(.secondary)
+                    } else if usdaResults.isEmpty {
+                        Text("Sonuç bulunamadı").font(.subheadline).foregroundStyle(.secondary)
+                    } else {
+                        ForEach(usdaResults) { result in usdaFoodRow(result) }
                     }
                 }
             }
-            Section(search.isEmpty ? "Katalog" : "Sonuçlar") {
-                ForEach(filtered) { food in
-                    foodRow(food)
+
+            // Local catalog (shown only when search is empty)
+            if !isSearchActive {
+                Section("Katalog") {
+                    ForEach(catalog) { food in localFoodRow(food) }
                 }
             }
         }
         .listStyle(.insetGrouped)
-        .searchable(text: $search, prompt: "Yiyecek ara")
+        .searchable(text: $search, prompt: "Yiyecek ara…")
+        .onChange(of: search) { _, query in
+            // Cancel any pending search
+            searchDebounce?.cancel()
+            searchError = nil
+
+            guard query.count >= 2 else {
+                usdaResults = []
+                isSearching = false
+                return
+            }
+            // Debounce 400ms
+            searchDebounce = Task {
+                try? await Task.sleep(for: .milliseconds(400))
+                guard !Task.isCancelled else { return }
+                await performSearch(query: query)
+            }
+        }
+    }
+
+    // MARK: — USDA search
+
+    private func performSearch(query: String) async {
+        await MainActor.run { isSearching = true; searchError = nil }
+        do {
+            let results = try await USDAService.searchFoods(query: query)
+            await MainActor.run {
+                usdaResults = results
+                isSearching = false
+                expandedFdcId = nil
+            }
+        } catch {
+            await MainActor.run {
+                searchError = "Arama yapılamadı"
+                isSearching = false
+            }
+        }
+    }
+
+    // MARK: — USDA food row
+
+    @ViewBuilder
+    private func usdaFoodRow(_ result: USDAService.FoodSearchResult) -> some View {
+        if expandedFdcId == result.fdcId {
+            usdaExpandedRow(result)
+        } else {
+            Button {
+                expandedFdcId = result.fdcId
+                expandedGram = "100"
+            } label: {
+                HStack(alignment: .top, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(result.name)
+                            .font(.body).foregroundStyle(Color.primary)
+                            .lineLimit(2)
+                        usdaSubtitle(result)
+                    }
+                    Spacer(minLength: 8)
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("\(Int(result.kcalPer100g.rounded()))")
+                            .font(.subheadline.weight(.semibold))
+                            .monospacedDigit()
+                            .foregroundStyle(Color.accentColor)
+                        Text("kcal/100g")
+                            .font(.caption2).foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private func usdaExpandedRow(_ result: USDAService.FoodSearchResult) -> some View {
+        let gram = Double(expandedGram.replacingOccurrences(of: ",", with: ".")) ?? 100
+        let m = gram / 100.0
+        return VStack(alignment: .leading, spacing: 12) {
+            Text(result.name)
+                .font(.body.weight(.medium))
+                .lineLimit(2)
+
+            HStack(spacing: 12) {
+                Text("Miktar")
+                    .font(.subheadline).foregroundStyle(.secondary)
+                Spacer()
+                TextField("100", text: $expandedGram)
+                    .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                    .frame(width: 72)
+                    .padding(.horizontal, 10).padding(.vertical, 6)
+                    .background(Color(UIColor.secondarySystemGroupedBackground),
+                                in: RoundedRectangle(cornerRadius: 8))
+                Text("g").foregroundStyle(.secondary)
+            }
+
+            NutritionGrid(
+                kcal:    result.kcalPer100g    * m,
+                protein: result.proteinPer100g * m,
+                carbs:   result.carbsPer100g   * m,
+                fat:     result.fatPer100g     * m
+            )
+
+            HStack(spacing: 10) {
+                Button("İptal") {
+                    expandedFdcId = nil
+                }
+                .frame(maxWidth: .infinity).frame(height: 42)
+                .background(Color(UIColor.systemFill), in: RoundedRectangle(cornerRadius: 10))
+                .foregroundStyle(.secondary)
+                .buttonStyle(.plain)
+
+                Button("Ekle") {
+                    let entry = FoodLogEntry(
+                        date:     activeDate,
+                        mealType: meal,
+                        name:     result.name,
+                        protein:  result.proteinPer100g * m,
+                        carbs:    result.carbsPer100g   * m,
+                        fat:      result.fatPer100g     * m
+                    )
+                    context.insert(entry)
+                    try? context.save()
+                    onAdded()
+                }
+                .frame(maxWidth: .infinity).frame(height: 42)
+                .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 10))
+                .foregroundStyle(.white)
+                .fontWeight(.semibold)
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.vertical, 4)
     }
 
     @ViewBuilder
-    private func foodRow(_ food: FoodItem) -> some View {
-        if expandedItem == food.persistentModelID {
+    private func usdaSubtitle(_ result: USDAService.FoodSearchResult) -> some View {
+        if let brand = result.brandOwner {
+            Text(brand)
+                .font(.caption).foregroundStyle(.secondary)
+        } else if result.dataType == "Survey (FNDDS)" {
+            Text("Restoran / Hazır")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+    }
+
+    // MARK: — Local catalog row (FoodItem)
+
+    @ViewBuilder
+    private func localFoodRow(_ food: FoodItem) -> some View {
+        if expandedLocalID == food.persistentModelID {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
@@ -300,25 +472,26 @@ private struct SearchTab: View {
                             .font(.caption).foregroundStyle(.secondary).monospacedDigit()
                     }
                     Spacer()
-                    Text("\(Int(food.kcalPerPortion.rounded())) kcal").font(.subheadline).foregroundStyle(.secondary)
+                    Text("\(Int(food.kcalPerPortion.rounded())) kcal")
+                        .font(.subheadline).foregroundStyle(.secondary)
                 }
                 HStack(spacing: 12) {
-                    Stepper("\(quantity) porsiyon", value: $quantity, in: 1...20)
+                    Stepper("\(localQuantity) porsiyon", value: $localQuantity, in: 1...20)
                     Button("Ekle") {
-                        let entry = FoodLogEntry(date: activeDate, mealType: meal, quantity: quantity, item: food)
+                        let entry = FoodLogEntry(date: activeDate, mealType: meal,
+                                                 quantity: localQuantity, item: food)
                         context.insert(entry)
                         try? context.save()
                         onAdded()
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.small)
+                    .buttonStyle(.borderedProminent).controlSize(.small)
                 }
             }
             .padding(.vertical, 4)
         } else {
             Button {
-                expandedItem = food.persistentModelID
-                quantity = 1
+                expandedLocalID = food.persistentModelID
+                localQuantity = 1
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
@@ -327,7 +500,8 @@ private struct SearchTab: View {
                             .font(.caption).foregroundStyle(.secondary).monospacedDigit()
                     }
                     Spacer()
-                    Text("\(Int(food.kcalPerPortion.rounded())) kcal").font(.subheadline).foregroundStyle(.secondary)
+                    Text("\(Int(food.kcalPerPortion.rounded())) kcal")
+                        .font(.subheadline).foregroundStyle(.secondary)
                 }
             }
             .buttonStyle(.plain)

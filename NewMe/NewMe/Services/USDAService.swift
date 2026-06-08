@@ -15,6 +15,19 @@ enum USDAService {
         var fatPer100g: Double
     }
 
+    // Richer result for the live food-diary search (all 4 USDA data types)
+    struct FoodSearchResult: Identifiable {
+        var id: Int { fdcId }
+        var fdcId: Int
+        var name: String
+        var brandOwner: String?     // populated for Branded items
+        var dataType: String        // "Foundation" | "SR Legacy" | "Branded" | "Survey (FNDDS)"
+        var kcalPer100g: Double
+        var proteinPer100g: Double
+        var carbsPer100g: Double
+        var fatPer100g: Double
+    }
+
     enum ServiceError: LocalizedError {
         case notFound(String)
         case badResponse(Int)
@@ -70,6 +83,57 @@ enum USDAService {
             carbsPer100g: nutrient(id: 1005),
             fatPer100g: nutrient(id: 1004)
         )
+    }
+
+    // Diary live-search: queries all 4 USDA data types, returns up to `limit` results.
+    // Foundation + SR Legacy = generics/cooked
+    // Branded = packaged products (yogurt brands, protein bars, etc.)
+    // Survey (FNDDS) = restaurant + mixed dishes
+    static func searchFoods(query: String, limit: Int = 25) async throws -> [FoodSearchResult] {
+        var comps = URLComponents(string: "https://api.nal.usda.gov/fdc/v1/foods/search")!
+        comps.queryItems = [
+            URLQueryItem(name: "query",    value: query),
+            URLQueryItem(name: "dataType", value: "Foundation,SR Legacy,Branded,Survey (FNDDS)"),
+            URLQueryItem(name: "pageSize", value: "\(limit)"),
+            URLQueryItem(name: "api_key",  value: apiKey)
+        ]
+        guard let url = comps.url else { throw URLError(.badURL) }
+
+        let (data, response) = try await URLSession.shared.data(from: url)
+        if let http = response as? HTTPURLResponse, http.statusCode != 200 {
+            throw ServiceError.badResponse(http.statusCode)
+        }
+
+        guard
+            let root  = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+            let foods  = root["foods"] as? [[String: Any]]
+        else { return [] }
+
+        return foods.compactMap { food -> FoodSearchResult? in
+            guard let fdcId = food["fdcId"] as? Int,
+                  let name  = food["description"] as? String
+            else { return nil }
+
+            let dataType   = food["dataType"] as? String ?? "Foundation"
+            let brandOwner = food["brandOwner"] as? String ?? food["brandName"] as? String
+
+            let nutrients = food["foodNutrients"] as? [[String: Any]] ?? []
+            func nutrient(id: Int) -> Double {
+                nutrients.first { ($0["nutrientId"] as? Int) == id }
+                    .flatMap { $0["value"] as? Double } ?? 0
+            }
+
+            return FoodSearchResult(
+                fdcId:          fdcId,
+                name:           name,
+                brandOwner:     brandOwner,
+                dataType:       dataType,
+                kcalPer100g:    nutrient(id: 1008),
+                proteinPer100g: nutrient(id: 1003),
+                carbsPer100g:   nutrient(id: 1005),
+                fatPer100g:     nutrient(id: 1004)
+            )
+        }
     }
 
     // Enrich (name, gram) pairs → [ParsedFoodItem] with verified macros
