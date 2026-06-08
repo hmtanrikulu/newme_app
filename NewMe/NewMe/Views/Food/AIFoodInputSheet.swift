@@ -170,6 +170,12 @@ struct AIFoodInputSheet: View {
                     selectedIDs = Set(items.map(\.id))
                     isLoading = false
                 }
+            } catch GeminiService.ServiceError.rateLimited {
+                await MainActor.run {
+                    // Retry already happened inside parseFood; show permanent error only if all retries failed
+                    errorMessage = "Sunucu meşgul, biraz bekleyip tekrar dene."
+                    isLoading = false
+                }
             } catch {
                 await MainActor.run {
                     errorMessage = error.localizedDescription

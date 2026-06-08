@@ -10,6 +10,7 @@ enum GeminiService {
 
     enum ServiceError: LocalizedError {
         case missingKey
+        case rateLimited
         case badResponse(Int)
         case emptyResponse
         case parseError(String)
@@ -17,15 +18,35 @@ enum GeminiService {
         var errorDescription: String? {
             switch self {
             case .missingKey:            return "API anahtarı eksik — Ayarlar → Hedefler'den Gemini API anahtarını gir."
-            case .badResponse(let code): return "API hatası: \(code) — anahtarın geçerli olduğundan emin ol."
+            case .rateLimited:           return "İstek limiti aşıldı — birkaç saniye beklenip tekrar deneniyor…"
+            case .badResponse(let code): return "API hatası: \(code)"
             case .emptyResponse:         return "Boş yanıt geldi"
             case .parseError(let msg):   return "Ayrıştırma hatası: \(msg)"
             }
         }
     }
 
-    static func parseFood(_ description: String) async throws -> [ParsedFoodItem] {
+    // Attempts the call up to maxRetries times, backing off on 429.
+    static func parseFood(_ description: String, maxRetries: Int = 3) async throws -> [ParsedFoodItem] {
         guard !apiKey.isEmpty else { throw ServiceError.missingKey }
+
+        var lastError: Error = ServiceError.emptyResponse
+        for attempt in 0..<maxRetries {
+            do {
+                return try await _parseFood(description)
+            } catch ServiceError.rateLimited {
+                lastError = ServiceError.rateLimited
+                // Exponential backoff: 2s, 4s, 8s
+                let delay = UInt64(pow(2.0, Double(attempt + 1))) * 1_000_000_000
+                try? await Task.sleep(nanoseconds: delay)
+            } catch {
+                throw error
+            }
+        }
+        throw lastError
+    }
+
+    private static func _parseFood(_ description: String) async throws -> [ParsedFoodItem] {
         let urlString = "https://generativelanguage.googleapis.com/v1beta/models/\(model):generateContent?key=\(apiKey)"
         guard let url = URL(string: urlString) else { throw URLError(.badURL) }
 
@@ -60,11 +81,11 @@ enum GeminiService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        if let http = response as? HTTPURLResponse, http.statusCode != 200 {
-            throw ServiceError.badResponse(http.statusCode)
+        if let http = response as? HTTPURLResponse {
+            if http.statusCode == 429 { throw ServiceError.rateLimited }
+            if http.statusCode != 200 { throw ServiceError.badResponse(http.statusCode) }
         }
 
-        // Parse Gemini envelope
         guard
             let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
             let candidates = root["candidates"] as? [[String: Any]],
@@ -75,7 +96,6 @@ enum GeminiService {
             throw ServiceError.emptyResponse
         }
 
-        // text should already be JSON (responseMimeType: application/json)
         guard let jsonData = text.data(using: .utf8) else {
             throw ServiceError.parseError("Metin UTF-8 değil")
         }
