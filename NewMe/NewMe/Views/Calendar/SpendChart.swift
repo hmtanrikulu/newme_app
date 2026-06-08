@@ -79,6 +79,14 @@ struct SpendChart: View {
         .background(Color(UIColor.tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
     }
 
+    private var xDomain: ClosedRange<Date> {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: .now)
+        let end = cal.date(byAdding: .day, value: 1, to: today) ?? today
+        let start = cal.date(byAdding: .day, value: -(selectedRange.calendarDays - 1), to: today) ?? today
+        return start...end
+    }
+
     @ViewBuilder
     private var chartBody: some View {
         let data = dataPoints
@@ -107,6 +115,7 @@ struct SpendChart: View {
             )
             .interpolationMethod(.catmullRom)
         }
+        .chartXScale(domain: xDomain)
         .chartYScale(domain: 0...maxY)
         .chartXAxis {
             AxisMarks(values: .automatic(desiredCount: xAxisCount)) { _ in
@@ -131,7 +140,7 @@ struct SpendChart: View {
             }
         }
         .frame(height: 180)
-        .id(selectedRange)
+        .animation(.none, value: selectedRange)
     }
 
     private var summaryRow: some View {
