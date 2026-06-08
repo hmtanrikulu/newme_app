@@ -6,6 +6,11 @@ options:
   createIntermediateGroups: true
   groupSortPosition: top
 
+packages:
+  LLM:
+    url: https://github.com/eastriverlee/LLM.swift
+    from: "1.1.0"
+
 settings:
   base:
     SWIFT_VERSION: "5.0"
@@ -42,3 +47,6 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         INFOPLIST_KEY_NSCameraUsageDescription: "Barkod taramak için kamera erişimi gereklidir"
+    dependencies:
+      - package: LLM
+        product: LLM

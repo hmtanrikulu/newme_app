@@ -15,6 +15,7 @@
 		1E0B10878805D9C8B403F0D1 /* CalorieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6190FCBDB3FBFFB9C3622876 /* CalorieChart.swift */; };
 		1E0C67D2EB87E7373AF8D395 /* ActivityRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B194841AA753F3B37FCC1AEB /* ActivityRing.swift */; };
 		237C81B153F0EB4807E0EFAA /* UniversalLogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42A0A7718DC59E5BF73C7BE /* UniversalLogSheet.swift */; };
+		34B352CE253E74690D2B11E4 /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = FF90A92F7C9C87C2ECCAF8A5 /* LLM */; };
 		352A2BDCF475074745588CC5 /* ExerciseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EF913E189B34F56C5D11AD /* ExerciseItem.swift */; };
 		390A2A4823F642F910A34BFE /* FitnessLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912CFD0DA61DCB3D1A1C0ADF /* FitnessLogEntry.swift */; };
 		419977C8CEB8DF08A995F918 /* NumberInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6F388ADAE433B9778079FB /* NumberInput.swift */; };
@@ -61,6 +62,7 @@
 		E0A5494354E5EF3C46E4F61B /* DayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6CE4C75BFF0BCF8F04128B /* DayDetailView.swift */; };
 		E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */; };
 		E711E442266779555EB921F1 /* SpendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8EDFF20B6BDB916DC333 /* SpendChart.swift */; };
+		ED36AAECF0188C1130CE2EFD /* LocalLLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A61BAB02610D2C49B9D620 /* LocalLLMService.swift */; };
 		EE857929E36CBFE0AF9E96C4 /* FoodCatalogTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F08FC359220672EEF8263F1 /* FoodCatalogTab.swift */; };
 		F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE490BB03964E90CD36D109B /* ExerciseCard.swift */; };
 		F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */; };
@@ -84,6 +86,7 @@
 		4FEB56A4DFE871CF81739742 /* CategoryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGrid.swift; sourceTree = "<group>"; };
 		5134B104B7091DD88E550D8A /* BarcodeLookupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeLookupService.swift; sourceTree = "<group>"; };
 		51523303CB99C82AD0654DC4 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		53A61BAB02610D2C49B9D620 /* LocalLLMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLLMService.swift; sourceTree = "<group>"; };
 		567CB52C2AC71C1DF6167E3E /* NewMe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NewMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5789A3342DF80BE9BC306449 /* SettingsTabPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTabPicker.swift; sourceTree = "<group>"; };
 		5939A353E2A49EAFBE6137AF /* SpendingLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingLogView.swift; sourceTree = "<group>"; };
@@ -135,6 +138,17 @@
 		FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogEntry.swift; sourceTree = "<group>"; };
 		FE6D958057A11B57144C371D /* USDAService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USDAService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		17335AA1981AD839DE1D4C03 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34B352CE253E74690D2B11E4 /* LLM in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0505EAB3D385C62397C62754 /* Food */ = {
@@ -297,6 +311,7 @@
 			children = (
 				5134B104B7091DD88E550D8A /* BarcodeLookupService.swift */,
 				9ED2F55D6B6EE8AFA6B472B4 /* GeminiService.swift */,
+				53A61BAB02610D2C49B9D620 /* LocalLLMService.swift */,
 				FE6D958057A11B57144C371D /* USDAService.swift */,
 			);
 			path = Services;
@@ -327,6 +342,7 @@
 			buildPhases = (
 				DA840B26B2BC583167815A04 /* Sources */,
 				572D3A8C85841EADCCE9BC37 /* Resources */,
+				17335AA1981AD839DE1D4C03 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -334,6 +350,7 @@
 			);
 			name = NewMe;
 			packageProductDependencies = (
+				FF90A92F7C9C87C2ECCAF8A5 /* LLM */,
 			);
 			productName = NewMe;
 			productReference = 567CB52C2AC71C1DF6167E3E /* NewMe.app */;
@@ -363,6 +380,9 @@
 			);
 			mainGroup = 1295BDEC51A2560CF0D771D7;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9D0C92D61161444AE964BB03 /* XCRemoteSwiftPackageReference "LLM.swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0AEC912868DB6BBE81CC4309 /* Products */;
 			projectDirPath = "";
@@ -423,6 +443,7 @@
 				82821B06335988287B24268C /* GeminiService.swift in Sources */,
 				444B2B8AB6300A15CED758A7 /* GoalsTab.swift in Sources */,
 				099A9FE8CDDB1E13BD26AB93 /* HistoryView.swift in Sources */,
+				ED36AAECF0188C1130CE2EFD /* LocalLLMService.swift in Sources */,
 				0F50FDE9FC1F85B6AF7340D5 /* MacroCard.swift in Sources */,
 				861AD293390C0E8181D422F1 /* ManualFoodEntry.swift in Sources */,
 				D4C036E25B4A6357837E44C9 /* MealType.swift in Sources */,
@@ -660,6 +681,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9D0C92D61161444AE964BB03 /* XCRemoteSwiftPackageReference "LLM.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/eastriverlee/LLM.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FF90A92F7C9C87C2ECCAF8A5 /* LLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D0C92D61161444AE964BB03 /* XCRemoteSwiftPackageReference "LLM.swift" */;
+			productName = LLM;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0AC0AA47BB6CDA637F55B9E7 /* Project object */;
 }

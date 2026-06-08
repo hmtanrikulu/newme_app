@@ -475,26 +475,137 @@ private struct AITab: View {
     let onAdded: () -> Void
 
     @Environment(\.modelContext) private var context
+
+    // Model download state
+    @State private var modelDownloaded = false
+    @State private var isDownloading = false
+    @State private var downloadProgress: Double = 0
+
+    // Inference state
     @State private var inputText = ""
-    @State private var isLoading = false
+    @State private var isAnalyzing = false
     @State private var loadingStage = ""
     @State private var parsedItems: [ParsedFoodItem] = []
     @State private var selectedIDs: Set<UUID> = []
     @State private var errorMessage: String?
 
     var body: some View {
-        if parsedItems.isEmpty {
-            inputView
-        } else {
-            resultsView
+        Group {
+            if !modelDownloaded {
+                downloadView
+            } else if parsedItems.isEmpty {
+                inputView
+            } else {
+                resultsView
+            }
+        }
+        .onAppear {
+            modelDownloaded = LocalLLMService.shared.isModelDownloaded
         }
     }
+
+    // MARK: — Download view
+
+    private var downloadView: some View {
+        ScrollView {
+            VStack(spacing: 28) {
+                Spacer(minLength: 40)
+
+                VStack(spacing: 12) {
+                    Image(systemName: "cpu.fill")
+                        .font(.system(size: 48))
+                        .foregroundStyle(Color.accentColor)
+
+                    Text("Yerel AI Modeli")
+                        .font(.title2.weight(.bold))
+
+                    Text("Yiyecek girişi için cihazında çalışan küçük bir dil modeli kullanılır. İnternet bağlantısı veya API anahtarı gerekmez, tüm işlem cihazında gerçekleşir.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+
+                VStack(spacing: 8) {
+                    HStack {
+                        Label("Qwen2.5-0.5B", systemImage: "checkmark.circle.fill")
+                            .foregroundStyle(Color.accentColor)
+                        Spacer()
+                        Text("~340 MB").foregroundStyle(.secondary)
+                    }
+                    HStack {
+                        Label("Türkçe desteği", systemImage: "checkmark.circle.fill")
+                            .foregroundStyle(Color.accentColor)
+                        Spacer()
+                    }
+                    HStack {
+                        Label("İnternetsiz çalışır", systemImage: "checkmark.circle.fill")
+                            .foregroundStyle(Color.accentColor)
+                        Spacer()
+                    }
+                }
+                .font(.subheadline)
+                .padding(.horizontal, 8)
+
+                if isDownloading {
+                    VStack(spacing: 8) {
+                        ProgressView(value: downloadProgress)
+                            .tint(Color.accentColor)
+                        Text("\(Int(downloadProgress * 100))% indirildi…")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                } else {
+                    if let err = errorMessage {
+                        Text(err).font(.caption).foregroundStyle(.red).multilineTextAlignment(.center)
+                    }
+
+                    Button(action: startDownload) {
+                        Label("Modeli İndir", systemImage: "arrow.down.circle.fill")
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity).frame(height: 50)
+                            .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 14))
+                            .foregroundStyle(.white)
+                    }
+                    .buttonStyle(.plain)
+                }
+
+                Spacer(minLength: 20)
+            }
+            .padding(24)
+        }
+        .background(Color(UIColor.systemGroupedBackground))
+    }
+
+    private func startDownload() {
+        isDownloading = true
+        downloadProgress = 0
+        errorMessage = nil
+
+        Task {
+            do {
+                try await LocalLLMService.shared.downloadModel { pct in
+                    Task { @MainActor in downloadProgress = pct }
+                }
+                await MainActor.run {
+                    modelDownloaded = true
+                    isDownloading = false
+                }
+            } catch {
+                await MainActor.run {
+                    errorMessage = "İndirme başarısız: \(error.localizedDescription)"
+                    isDownloading = false
+                }
+            }
+        }
+    }
+
+    // MARK: — Input view
 
     private var inputView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Label("Ne yedin?", systemImage: "sparkles").font(.headline)
+                    Label("Ne yedin?", systemImage: "cpu").font(.headline)
 
                     ZStack(alignment: .topLeading) {
                         RoundedRectangle(cornerRadius: 14)
@@ -519,11 +630,11 @@ private struct AITab: View {
 
                 Button(action: analyze) {
                     HStack {
-                        if isLoading {
+                        if isAnalyzing {
                             ProgressView().tint(.white)
                             Text(loadingStage.isEmpty ? "Analiz ediliyor…" : loadingStage)
                         } else {
-                            Image(systemName: "sparkles")
+                            Image(systemName: "cpu")
                             Text("Analiz Et")
                         }
                     }
@@ -536,17 +647,22 @@ private struct AITab: View {
                     .foregroundStyle(inputText.trimmingCharacters(in: .whitespaces).isEmpty ? Color.secondary : .white)
                 }
                 .buttonStyle(.plain)
-                .disabled(inputText.trimmingCharacters(in: .whitespaces).isEmpty || isLoading)
+                .disabled(inputText.trimmingCharacters(in: .whitespaces).isEmpty || isAnalyzing)
 
-                Text("Gemini yapay zekası yiyecekleri tanımlar, USDA veritabanından besin değerlerini alır.")
-                    .font(.caption2).foregroundStyle(.tertiary)
-                    .multilineTextAlignment(.center).frame(maxWidth: .infinity)
+                HStack(spacing: 4) {
+                    Image(systemName: "cpu.fill").font(.caption2).foregroundStyle(Color.accentColor)
+                    Text("Cihazda çalışır · İnternet gerekmez · USDA besin değerleri")
+                        .font(.caption2).foregroundStyle(.tertiary)
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
             }
             .padding(20)
         }
         .background(Color(UIColor.systemGroupedBackground))
         .onAppear { errorMessage = nil }
     }
+
+    // MARK: — Results view
 
     private var resultsView: some View {
         List {
@@ -608,11 +724,7 @@ private struct AITab: View {
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 6) {
                         Text(item.name).fontWeight(.medium).foregroundStyle(Color.primary)
-                        if item.source == .usda {
-                            Text("USDA").font(.caption2).foregroundStyle(.white)
-                                .padding(.horizontal, 5).padding(.vertical, 2)
-                                .background(Color.accentColor.opacity(0.8), in: Capsule())
-                        }
+                        sourceBadge(item.source)
                     }
                     Text("\(Int(item.gram))g · \(Int(item.kcal.rounded())) kcal · P \(Int(item.protein.rounded()))g  K \(Int(item.carbs.rounded()))g  Y \(Int(item.fat.rounded()))g")
                         .font(.caption).foregroundStyle(.secondary)
@@ -623,41 +735,52 @@ private struct AITab: View {
         .buttonStyle(.plain)
     }
 
+    @ViewBuilder
+    private func sourceBadge(_ source: ParsedFoodItem.Source) -> some View {
+        switch source {
+        case .usda:
+            Text("USDA").font(.caption2).foregroundStyle(.white)
+                .padding(.horizontal, 5).padding(.vertical, 2)
+                .background(Color.accentColor.opacity(0.8), in: Capsule())
+        case .estimated:
+            Text("Tahmini").font(.caption2).foregroundStyle(.secondary)
+                .padding(.horizontal, 5).padding(.vertical, 2)
+                .background(Color(UIColor.systemFill), in: Capsule())
+        }
+    }
+
+    // MARK: — Two-stage inference
+
     private func analyze() {
-        isLoading = true
-        loadingStage = "Analiz ediliyor…"
+        isAnalyzing = true
+        loadingStage = "Model yükleniyor…"
         errorMessage = nil
 
         Task {
             do {
-                // Stage 1: Gemini NLP — extract (name, gram) pairs
-                let extracted = try await GeminiService.extractFoods(inputText)
-
-                await MainActor.run { loadingStage = "Besin değerleri yükleniyor…" }
+                // Stage 1: Local LLM NLP — extract (name, gram) pairs
+                await MainActor.run { loadingStage = "Yiyecekler tanınıyor…" }
+                let extracted = try await LocalLLMService.shared.extractFoods(inputText)
 
                 // Stage 2: USDA FDC — fetch verified macros
+                await MainActor.run { loadingStage = "Besin değerleri yükleniyor…" }
                 let items = try await USDAService.enrich(extracted)
 
                 await MainActor.run {
                     parsedItems = items
                     selectedIDs = Set(items.map(\.id))
-                    isLoading = false
+                    isAnalyzing = false
                     loadingStage = ""
                 }
-            } catch GeminiService.ServiceError.rateLimited {
+            } catch LocalLLMService.ServiceError.modelNotDownloaded {
                 await MainActor.run {
-                    errorMessage = "Sunucu meşgul, biraz bekleyip tekrar dene."
-                    isLoading = false; loadingStage = ""
-                }
-            } catch GeminiService.ServiceError.missingKey {
-                await MainActor.run {
-                    errorMessage = "Gemini API anahtarı eksik — Ayarlar → Hedefler'den gir."
-                    isLoading = false; loadingStage = ""
+                    modelDownloaded = false  // go back to download view
+                    isAnalyzing = false; loadingStage = ""
                 }
             } catch {
                 await MainActor.run {
                     errorMessage = error.localizedDescription
-                    isLoading = false; loadingStage = ""
+                    isAnalyzing = false; loadingStage = ""
                 }
             }
         }
