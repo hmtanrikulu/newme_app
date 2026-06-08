@@ -26,7 +26,77 @@ enum GeminiService {
         }
     }
 
-    // Attempts the call up to maxRetries times, backing off on 429.
+    // MARK: — NLP extraction (name + gram only, no macros)
+
+    // Stage 1 of the two-stage pipeline: Gemini extracts food names and gram weights.
+    // Macros are then fetched from USDA FDC by the caller (USDAService.enrich).
+    static func extractFoods(_ description: String, maxRetries: Int = 3) async throws -> [(name: String, gram: Double)] {
+        guard !apiKey.isEmpty else { throw ServiceError.missingKey }
+
+        var lastError: Error = ServiceError.emptyResponse
+        for attempt in 0..<maxRetries {
+            do {
+                return try await _extractFoods(description)
+            } catch ServiceError.rateLimited {
+                lastError = ServiceError.rateLimited
+                let delay = UInt64(pow(2.0, Double(attempt + 1))) * 1_000_000_000
+                try? await Task.sleep(nanoseconds: delay)
+            } catch {
+                throw error
+            }
+        }
+        throw lastError
+    }
+
+    private static func _extractFoods(_ description: String) async throws -> [(name: String, gram: Double)] {
+        let urlString = "https://generativelanguage.googleapis.com/v1beta/models/\(model):generateContent?key=\(apiKey)"
+        guard let url = URL(string: urlString) else { throw URLError(.badURL) }
+
+        let prompt = """
+        Extract food items and quantities from this Turkish text. Return ONLY English food names and gram weights.
+
+        Text: "\(description)"
+
+        Respond with ONLY this JSON (no other text):
+        {"items":[{"name":"english food name","gram":100}]}
+
+        Rules:
+        - name: English, generic (e.g. "plain yogurt" not "Danone yogurt")
+        - gram: convert units if needed (1 scoop whey ≈ 31g, 1 cup oats ≈ 90g, 1 yumurta ≈ 50g)
+        - No nutrition data — just names and grams
+        """
+
+        let body: [String: Any] = [
+            "contents": [["parts": [["text": prompt]]]],
+            "generationConfig": [
+                "responseMimeType": "application/json",
+                "temperature": 0.1
+            ]
+        ]
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        request.timeoutInterval = 20
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if let http = response as? HTTPURLResponse {
+            if http.statusCode == 429 { throw ServiceError.rateLimited }
+            if http.statusCode != 200 { throw ServiceError.badResponse(http.statusCode) }
+        }
+
+        let text = try extractText(from: data)
+        guard let jsonData = text.data(using: .utf8) else { throw ServiceError.parseError("UTF-8") }
+
+        struct Item: Decodable { let name: String; let gram: Double }
+        struct Wrapper: Decodable { let items: [Item] }
+        let wrapper = try JSONDecoder().decode(Wrapper.self, from: jsonData)
+        return wrapper.items.map { (name: $0.name, gram: $0.gram) }
+    }
+
+    // MARK: — Legacy: full parse with macro estimation (fallback when USDA unavailable)
+
     static func parseFood(_ description: String, maxRetries: Int = 3) async throws -> [ParsedFoodItem] {
         guard !apiKey.isEmpty else { throw ServiceError.missingKey }
 
@@ -36,7 +106,6 @@ enum GeminiService {
                 return try await _parseFood(description)
             } catch ServiceError.rateLimited {
                 lastError = ServiceError.rateLimited
-                // Exponential backoff: 2s, 4s, 8s
                 let delay = UInt64(pow(2.0, Double(attempt + 1))) * 1_000_000_000
                 try? await Task.sleep(nanoseconds: delay)
             } catch {
@@ -80,25 +149,13 @@ enum GeminiService {
         request.timeoutInterval = 20
 
         let (data, response) = try await URLSession.shared.data(for: request)
-
         if let http = response as? HTTPURLResponse {
             if http.statusCode == 429 { throw ServiceError.rateLimited }
             if http.statusCode != 200 { throw ServiceError.badResponse(http.statusCode) }
         }
 
-        guard
-            let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-            let candidates = root["candidates"] as? [[String: Any]],
-            let content = candidates.first?["content"] as? [String: Any],
-            let parts = content["parts"] as? [[String: Any]],
-            let text = parts.first?["text"] as? String
-        else {
-            throw ServiceError.emptyResponse
-        }
-
-        guard let jsonData = text.data(using: .utf8) else {
-            throw ServiceError.parseError("Metin UTF-8 değil")
-        }
+        let text = try extractText(from: data)
+        guard let jsonData = text.data(using: .utf8) else { throw ServiceError.parseError("Metin UTF-8 değil") }
 
         do {
             struct Wrapper: Decodable { let items: [ParsedFoodItem] }
@@ -107,5 +164,18 @@ enum GeminiService {
         } catch {
             throw ServiceError.parseError(error.localizedDescription)
         }
+    }
+
+    // MARK: — Shared response parser
+
+    private static func extractText(from data: Data) throws -> String {
+        guard
+            let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+            let candidates = root["candidates"] as? [[String: Any]],
+            let content = candidates.first?["content"] as? [String: Any],
+            let parts = content["parts"] as? [[String: Any]],
+            let text = parts.first?["text"] as? String
+        else { throw ServiceError.emptyResponse }
+        return text
     }
 }

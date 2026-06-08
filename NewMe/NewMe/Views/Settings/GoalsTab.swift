@@ -5,6 +5,7 @@ struct GoalsTab: View {
     @Environment(\.modelContext) private var context
     @Query private var goalsRows: [UserGoals]
     @State private var geminiKey: String = GeminiService.apiKey
+    @State private var usdaKey: String = USDAService.apiKey
 
     private var goals: UserGoals {
         if let existing = goalsRows.first { return existing }
@@ -42,6 +43,27 @@ struct GoalsTab: View {
                             GeminiService.apiKey = new
                         }
                     Text("AI ile yemek girişi için gerekli. Google AI Studio'dan ücretsiz alınabilir.")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
+                .padding(.horizontal, 2)
+
+                Rectangle().fill(Color(UIColor.separator).opacity(0.4)).frame(height: 1).padding(.vertical, 4)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Label("USDA API Anahtarı", systemImage: "leaf")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    SecureField("DEMO_KEY (varsayılan) veya kendi anahtarın…", text: $usdaKey)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 10)
+                        .background(Color(UIColor.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
+                        .onChange(of: usdaKey) { _, new in
+                            USDAService.apiKey = new.isEmpty ? "DEMO_KEY" : new
+                        }
+                    Text("AI besin analizi için USDA veritabanı kullanılır. fdc.nal.usda.gov adresinden ücretsiz alınabilir. DEMO_KEY saatte 30 istek ile çalışır.")
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
                 }

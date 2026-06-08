@@ -1,6 +1,8 @@
 import Foundation
 
 struct ParsedFoodItem: Identifiable {
+    enum Source { case usda, estimated }
+
     var id = UUID()
     var name: String
     var gram: Double
@@ -8,6 +10,7 @@ struct ParsedFoodItem: Identifiable {
     var protein: Double
     var carbs: Double
     var fat: Double
+    var source: Source = .estimated
 }
 
 extension ParsedFoodItem: Decodable {
@@ -24,5 +27,6 @@ extension ParsedFoodItem: Decodable {
         protein = (try? c.decode(Double.self, forKey: .protein)) ?? 0
         carbs   = (try? c.decode(Double.self, forKey: .carbs)) ?? 0
         fat     = (try? c.decode(Double.self, forKey: .fat)) ?? 0
+        source  = .estimated
     }
 }

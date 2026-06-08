@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0845BB78C89D547506F013EC /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25467444B87440220C3CBB20 /* TodayView.swift */; };
 		099A9FE8CDDB1E13BD26AB93 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51523303CB99C82AD0654DC4 /* HistoryView.swift */; };
+		0C6C5C2FAF6693412004A782 /* AddFoodTabSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832288E9BC9F9BD21EDF6AF6 /* AddFoodTabSheet.swift */; };
 		0D9EBAD52594F2F2674C6AA5 /* WeekStrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B63021152DBC0FCA059D4D3 /* WeekStrip.swift */; };
 		0F50FDE9FC1F85B6AF7340D5 /* MacroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5CEDEF6DAA54A74AC7D56E /* MacroCard.swift */; };
 		1E0B10878805D9C8B403F0D1 /* CalorieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6190FCBDB3FBFFB9C3622876 /* CalorieChart.swift */; };
@@ -20,6 +21,7 @@
 		42D1461DF103D79503B8DC1D /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EF0AFF032AD0612B918643 /* FoodItem.swift */; };
 		4379B91E9EA97DD0256A39E2 /* DayEntriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC38B8C404C79A372DDFF42 /* DayEntriesList.swift */; };
 		444B2B8AB6300A15CED758A7 /* GoalsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8CB5764019E76EC86523A8 /* GoalsTab.swift */; };
+		529ABB8FB4EE8066310EC092 /* USDAService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6D958057A11B57144C371D /* USDAService.swift */; };
 		5FE1C9ECF0E8E06DF68708EB /* ExerciseCatalogTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7347F084631F0DF43D2B5C5F /* ExerciseCatalogTab.swift */; };
 		657A0FDB72C3390BCD306DC2 /* BarcodeLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5134B104B7091DD88E550D8A /* BarcodeLookupService.swift */; };
 		6787C9619F48E7340A788498 /* FoodLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */; };
@@ -41,7 +43,6 @@
 		9A76FF3997617B47E9B7B486 /* DaySummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B940CFA9E12229086CC1C907 /* DaySummaryCard.swift */; };
 		9CBA2D1456B19D411F031B4B /* TrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F239A6EEF32F5C8E29977A41 /* TrendChart.swift */; };
 		9E53E30D1096E4ACEEC02611 /* FoodLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD424F6088E97F7A54955847 /* FoodLogView.swift */; };
-		A489EB3452554D7E0317322F /* AIFoodInputSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A35C08EF4685F17A6F717C /* AIFoodInputSheet.swift */; };
 		A4909DDDA04FFCB61B8D8ACE /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EFDBD1137E6026D7C9009C /* CalendarView.swift */; };
 		A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94957530C2BE28816CF223D /* SettingsView.swift */; };
 		A639E1C5970D6AC87BAF9242 /* AppHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7592FF7D0F6E7C700EA8AD /* AppHeader.swift */; };
@@ -63,6 +64,7 @@
 		EE857929E36CBFE0AF9E96C4 /* FoodCatalogTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F08FC359220672EEF8263F1 /* FoodCatalogTab.swift */; };
 		F4068D009A714787C53EC797 /* ExerciseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE490BB03964E90CD36D109B /* ExerciseCard.swift */; };
 		F650086D53109F7CFFE6C927 /* FitnessLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */; };
+		F855488EC8FAF0F53A2EDD7F /* ScannerComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B5089FB9ACE44B2E4D2FFC /* ScannerComponents.swift */; };
 		F87221C9A041E49B853E1D98 /* AmountKeypad.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9C00A2BC3DF6C43D82FF40 /* AmountKeypad.swift */; };
 		FB2C034CAB57F04F4E4EB571 /* SpendLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D54D8EF5353BFC0B877D2D /* SpendLogEntry.swift */; };
 		FEF465D2A42E7FD81CF13326 /* FoodEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EE25A0A2BA041A14C4B733 /* FoodEditorSheet.swift */; };
@@ -74,7 +76,6 @@
 		14D97B3BF87C3AFC6D6A405A /* FitnessLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessLogView.swift; sourceTree = "<group>"; };
 		25467444B87440220C3CBB20 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		29861D311D54958D5E8AD7C2 /* NewMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NewMe.entitlements; sourceTree = "<group>"; };
-		37A35C08EF4685F17A6F717C /* AIFoodInputSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIFoodInputSheet.swift; sourceTree = "<group>"; };
 		39EF0AFF032AD0612B918643 /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
 		3B289E6FB92A13EA015B05C0 /* NewMeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMeApp.swift; sourceTree = "<group>"; };
 		3DFEA0B75CB3F1AB0E5D2059 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
@@ -96,12 +97,14 @@
 		7347F084631F0DF43D2B5C5F /* ExerciseCatalogTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCatalogTab.swift; sourceTree = "<group>"; };
 		7CE64E9A42ACA0D286B428AF /* ManualFoodEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualFoodEntry.swift; sourceTree = "<group>"; };
 		7F8CB5764019E76EC86523A8 /* GoalsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsTab.swift; sourceTree = "<group>"; };
+		832288E9BC9F9BD21EDF6AF6 /* AddFoodTabSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodTabSheet.swift; sourceTree = "<group>"; };
 		878AE960DB912B200624FA1B /* SpendEntryEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendEntryEditorSheet.swift; sourceTree = "<group>"; };
 		8B7592FF7D0F6E7C700EA8AD /* AppHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHeader.swift; sourceTree = "<group>"; };
 		8F08FC359220672EEF8263F1 /* FoodCatalogTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCatalogTab.swift; sourceTree = "<group>"; };
 		904A8D11B4BFE7000CFADD99 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		912CFD0DA61DCB3D1A1C0ADF /* FitnessLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessLogEntry.swift; sourceTree = "<group>"; };
 		954CA5BBD908EA10A2B6F9B5 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		97B5089FB9ACE44B2E4D2FFC /* ScannerComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerComponents.swift; sourceTree = "<group>"; };
 		9ED2F55D6B6EE8AFA6B472B4 /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
 		9FB42B1D68B03B51FF83CA54 /* UserGoals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGoals.swift; sourceTree = "<group>"; };
 		A761C7390AECA8E169F2D91F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -130,17 +133,19 @@
 		F5B1D3F34EE3885D932DA073 /* MonthGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthGrid.swift; sourceTree = "<group>"; };
 		F5EE25A0A2BA041A14C4B733 /* FoodEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodEditorSheet.swift; sourceTree = "<group>"; };
 		FAAA3E2715A816CD9519756B /* FoodLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodLogEntry.swift; sourceTree = "<group>"; };
+		FE6D958057A11B57144C371D /* USDAService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USDAService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		0505EAB3D385C62397C62754 /* Food */ = {
 			isa = PBXGroup;
 			children = (
-				37A35C08EF4685F17A6F717C /* AIFoodInputSheet.swift */,
+				832288E9BC9F9BD21EDF6AF6 /* AddFoodTabSheet.swift */,
 				CD1631B9CFF61FA45CF4F027 /* BarcodeScannerView.swift */,
 				DD424F6088E97F7A54955847 /* FoodLogView.swift */,
 				4D54B3A683A21BFC40095AA8 /* FoodRow.swift */,
 				5B5CEDEF6DAA54A74AC7D56E /* MacroCard.swift */,
+				97B5089FB9ACE44B2E4D2FFC /* ScannerComponents.swift */,
 			);
 			path = Food;
 			sourceTree = "<group>";
@@ -292,6 +297,7 @@
 			children = (
 				5134B104B7091DD88E550D8A /* BarcodeLookupService.swift */,
 				9ED2F55D6B6EE8AFA6B472B4 /* GeminiService.swift */,
+				FE6D958057A11B57144C371D /* USDAService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -384,8 +390,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A489EB3452554D7E0317322F /* AIFoodInputSheet.swift in Sources */,
 				1E0C67D2EB87E7373AF8D395 /* ActivityRing.swift in Sources */,
+				0C6C5C2FAF6693412004A782 /* AddFoodTabSheet.swift in Sources */,
 				F87221C9A041E49B853E1D98 /* AmountKeypad.swift in Sources */,
 				7626D52FAE13E84E6315F864 /* AppColors.swift in Sources */,
 				A639E1C5970D6AC87BAF9242 /* AppHeader.swift in Sources */,
@@ -426,6 +432,7 @@
 				A96624AE4D2239EFB20C93D8 /* ParsedFoodItem.swift in Sources */,
 				9266A851919344002E5F48A7 /* RecentSessionsBar.swift in Sources */,
 				DD9190FAABFA7A1F32D2E39B /* RootView.swift in Sources */,
+				F855488EC8FAF0F53A2EDD7F /* ScannerComponents.swift in Sources */,
 				E2F99F5946F2AB03BD9F5EF2 /* SeedData.swift in Sources */,
 				8643BC195B49D400B6299F42 /* SettingsTabPicker.swift in Sources */,
 				A5DC0E141BFC5B1D28BCF594 /* SettingsView.swift in Sources */,
@@ -437,6 +444,7 @@
 				B1B33417D479A04FC196EE87 /* TodayDomainCard.swift in Sources */,
 				0845BB78C89D547506F013EC /* TodayView.swift in Sources */,
 				9CBA2D1456B19D411F031B4B /* TrendChart.swift in Sources */,
+				529ABB8FB4EE8066310EC092 /* USDAService.swift in Sources */,
 				237C81B153F0EB4807E0EFAA /* UniversalLogSheet.swift in Sources */,
 				70467842BBB92FE825742F81 /* UserGoals.swift in Sources */,
 				0D9EBAD52594F2F2674C6AA5 /* WeekStrip.swift in Sources */,
