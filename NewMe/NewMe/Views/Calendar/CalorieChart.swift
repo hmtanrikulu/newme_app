@@ -1,13 +1,14 @@
 import SwiftUI
 import Charts
 
+// MARK: — Public shell
+
 struct CalorieChart: View {
     let entries: [FoodLogEntry]
     let goalKcal: Int
-
     @State private var selectedRange: KcalRange = .month
 
-    enum KcalRange: String, CaseIterable {
+    enum KcalRange: String, CaseIterable, Equatable {
         case day     = "1G"
         case week    = "1H"
         case month   = "1AY"
@@ -25,17 +26,80 @@ struct CalorieChart: View {
         }
     }
 
-    private struct DayPoint: Identifiable {
+    var body: some View {
+        VStack(spacing: 14) {
+            rangePicker
+            CalorieChartBody(entries: entries, goalKcal: goalKcal, range: selectedRange)
+            summaryRow
+        }
+    }
+
+    // MARK: Picker
+
+    private var rangePicker: some View {
+        HStack(spacing: 0) {
+            ForEach(KcalRange.allCases, id: \.rawValue) { range in
+                Button {
+                    selectedRange = range
+                } label: {
+                    Text(range.rawValue)
+                        .font(.caption.weight(selectedRange == range ? .bold : .regular))
+                        .foregroundStyle(selectedRange == range ? AppColor.food : Color.secondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 6)
+                        .background(
+                            Group {
+                                if selectedRange == range {
+                                    Capsule().fill(AppColor.food.opacity(0.15))
+                                }
+                            }
+                        )
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(4)
+        .background(Color(UIColor.tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    // MARK: Summary row
+
+    private var summaryRow: some View {
+        let data = CalorieChartBody.buildPoints(entries: entries, range: selectedRange)
+        let total = data.reduce(0) { $0 + $1.kcal }
+        let nonZero = data.filter { $0.kcal > 0 }
+        let avg = nonZero.isEmpty ? 0.0 : total / Double(nonZero.count)
+        return HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Toplam").font(.caption2).foregroundStyle(.secondary)
+                Text("\(Int(total.rounded())) kcal").font(.subheadline.weight(.semibold)).monospacedDigit()
+            }
+            Spacer()
+            VStack(alignment: .trailing, spacing: 2) {
+                Text("Günlük Ort.").font(.caption2).foregroundStyle(.secondary)
+                Text("\(Int(avg.rounded())) kcal").font(.subheadline.weight(.semibold)).monospacedDigit()
+            }
+        }
+    }
+}
+
+// MARK: — Private child view
+
+private struct CalorieChartBody: View {
+    let entries: [FoodLogEntry]
+    let goalKcal: Int
+    let range: CalorieChart.KcalRange
+
+    struct DayPoint: Identifiable {
         let id: Date
         let date: Date
         let kcal: Double
     }
 
-    private var dataPoints: [DayPoint] {
+    static func buildPoints(entries: [FoodLogEntry], range: CalorieChart.KcalRange) -> [DayPoint] {
         let cal = Calendar.current
         let now = Date.now
-        let days = selectedRange.calendarDays
-        return (0..<days).reversed().compactMap { offset -> DayPoint? in
+        return (0..<range.calendarDays).reversed().compactMap { offset -> DayPoint? in
             guard let day = cal.date(byAdding: .day, value: -offset, to: now) else { return nil }
             let start = cal.startOfDay(for: day)
             guard let end = cal.date(byAdding: .day, value: 1, to: start) else { return nil }
@@ -46,57 +110,40 @@ struct CalorieChart: View {
         }
     }
 
-    var body: some View {
-        VStack(spacing: 14) {
-            rangePicker
-            chartBody
-            summaryRow
-        }
-    }
-
-    private var rangePicker: some View {
-        HStack(spacing: 0) {
-            ForEach(KcalRange.allCases, id: \.rawValue) { range in
-                Button(range.rawValue) {
-                    withAnimation(.spring(response: 0.28, dampingFraction: 0.8)) {
-                        selectedRange = range
-                    }
-                }
-                .font(.caption.weight(selectedRange == range ? .bold : .regular))
-                .foregroundStyle(selectedRange == range ? AppColor.food : Color.secondary)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 6)
-                .background(
-                    Group {
-                        if selectedRange == range {
-                            Capsule().fill(AppColor.food.opacity(0.15))
-                        }
-                    }
-                )
-                .animation(.easeInOut(duration: 0.15), value: selectedRange)
-            }
-        }
-        .padding(4)
-        .background(Color(UIColor.tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
-    }
+    private var data: [DayPoint] { Self.buildPoints(entries: entries, range: range) }
 
     private var xDomain: ClosedRange<Date> {
         let cal = Calendar.current
         let today = cal.startOfDay(for: .now)
         let end = cal.date(byAdding: .day, value: 1, to: today) ?? today
-        let start = cal.date(byAdding: .day, value: -(selectedRange.calendarDays - 1), to: today) ?? today
+        let start = cal.date(byAdding: .day, value: -(range.calendarDays - 1), to: today) ?? today
         return start...end
     }
 
-    @ViewBuilder
-    private var chartBody: some View {
-        let data = dataPoints
+    private var maxY: Double {
         let goal = Double(goalKcal)
-        let maxY = max(goal * 1.2, (data.map(\.kcal).max() ?? 1) * 1.2)
+        return max(goal * 1.2, (data.map(\.kcal).max() ?? 1) * 1.2)
+    }
 
+    private var xAxisCount: Int {
+        switch range {
+        case .day: return 4; case .week: return 7
+        case .month: return 5; case .quarter, .year: return 6
+        }
+    }
+
+    private var xFormat: Date.FormatStyle {
+        switch range {
+        case .day:            return .dateTime.hour()
+        case .week, .month:   return .dateTime.day().month(.abbreviated)
+        case .quarter, .year: return .dateTime.month(.abbreviated)
+        }
+    }
+
+    var body: some View {
         Chart {
             if goalKcal > 0 {
-                RuleMark(y: .value("Hedef", goal))
+                RuleMark(y: .value("Hedef", Double(goalKcal)))
                     .foregroundStyle(AppColor.food.opacity(0.4))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
                     .annotation(position: .trailing) {
@@ -123,8 +170,7 @@ struct CalorieChart: View {
                 .foregroundStyle(
                     LinearGradient(
                         colors: [AppColor.food.opacity(0.25), AppColor.food.opacity(0)],
-                        startPoint: .top,
-                        endPoint: .bottom
+                        startPoint: .top, endPoint: .bottom
                     )
                 )
                 .interpolationMethod(.catmullRom)
@@ -153,41 +199,5 @@ struct CalorieChart: View {
             }
         }
         .frame(height: 160)
-        .animation(.none, value: selectedRange)
-    }
-
-    private var summaryRow: some View {
-        let data = dataPoints
-        let total = data.reduce(0) { $0 + $1.kcal }
-        let nonZero = data.filter { $0.kcal > 0 }
-        let avg = nonZero.isEmpty ? 0.0 : total / Double(nonZero.count)
-        return HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Toplam").font(.caption2).foregroundStyle(.secondary)
-                Text("\(Int(total.rounded())) kcal")
-                    .font(.subheadline.weight(.semibold)).monospacedDigit()
-            }
-            Spacer()
-            VStack(alignment: .trailing, spacing: 2) {
-                Text("Günlük Ort.").font(.caption2).foregroundStyle(.secondary)
-                Text("\(Int(avg.rounded())) kcal")
-                    .font(.subheadline.weight(.semibold)).monospacedDigit()
-            }
-        }
-    }
-
-    private var xAxisCount: Int {
-        switch selectedRange {
-        case .day: return 4; case .week: return 7
-        case .month: return 5; case .quarter, .year: return 6
-        }
-    }
-
-    private var xFormat: Date.FormatStyle {
-        switch selectedRange {
-        case .day:            return .dateTime.hour()
-        case .week, .month:   return .dateTime.day().month(.abbreviated)
-        case .quarter, .year: return .dateTime.month(.abbreviated)
-        }
     }
 }
