@@ -22,11 +22,11 @@ struct GoalsTab: View {
                 GoalRow(label: "Karbonhidrat hedefi",  unit: "g",    value: goals.carbs,           step: 5,  prefix: false, tone: AppColor.macroCarb) { goals.carbs = $0; save() }
                 GoalRow(label: "Yağ hedefi",           unit: "g",    value: goals.fat,             step: 5,  prefix: false, tone: AppColor.macroFat)  { goals.fat = $0; save() }
 
-                Rectangle().fill(Color.white.opacity(0.08)).frame(height: 1).padding(.vertical, 4)
+                Rectangle().fill(Color(UIColor.separator).opacity(0.4)).frame(height: 1).padding(.vertical, 4)
 
                 GoalRow(label: "Günlük harcama limiti", unit: "₺",  value: goals.dailySpendLimit, step: 100, prefix: true,  tone: AppColor.gold)     { goals.dailySpendLimit = $0; save() }
 
-                Rectangle().fill(Color.white.opacity(0.08)).frame(height: 1).padding(.vertical, 4)
+                Rectangle().fill(Color(UIColor.separator).opacity(0.4)).frame(height: 1).padding(.vertical, 4)
 
                 VStack(alignment: .leading, spacing: 8) {
                     Label("Gemini API Anahtarı", systemImage: "sparkles")
@@ -37,7 +37,7 @@ struct GoalsTab: View {
                         .autocorrectionDisabled()
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
-                        .background(Color.white.opacity(0.07), in: RoundedRectangle(cornerRadius: 12))
+                        .background(Color(UIColor.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
                         .onChange(of: geminiKey) { _, new in
                             GeminiService.apiKey = new
                         }
@@ -103,7 +103,7 @@ private struct GoalRow: View {
                 .fill(AppColor.surface)
                 .overlay(
                     RoundedRectangle(cornerRadius: 14)
-                        .stroke(Color.white.opacity(0.06), lineWidth: 1)
+                        .stroke(Color(UIColor.separator).opacity(0.4), lineWidth: 1)
                 )
         )
     }
@@ -122,10 +122,10 @@ private struct StepButton: View {
                 .frame(height: 32)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.white.opacity(0.05))
+                        .fill(Color(UIColor.systemFill))
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                                .stroke(Color(UIColor.separator).opacity(0.4), lineWidth: 1)
                         )
                 )
         }

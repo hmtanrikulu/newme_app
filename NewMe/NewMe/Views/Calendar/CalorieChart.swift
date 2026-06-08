@@ -144,6 +144,7 @@ struct CalorieChart: View {
             }
         }
         .frame(height: 160)
+        .id(selectedRange)
     }
 
     private var summaryRow: some View {

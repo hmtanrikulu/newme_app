@@ -131,6 +131,7 @@ struct SpendChart: View {
             }
         }
         .frame(height: 180)
+        .id(selectedRange)
     }
 
     private var summaryRow: some View {

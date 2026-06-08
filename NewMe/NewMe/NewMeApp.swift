@@ -27,8 +27,7 @@ struct NewMeApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                // Warm amber accent — the single brand color; everything else is system-adaptive
-                .tint(Color(red: 0.80, green: 0.67, blue: 0.38))
+                .tint(Color(red: 0.40, green: 0.32, blue: 0.85))
                 .task {
                     SeedData.seedIfNeeded(container.mainContext)
                 }

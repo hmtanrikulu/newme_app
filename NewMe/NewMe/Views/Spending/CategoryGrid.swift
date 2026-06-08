@@ -38,7 +38,7 @@ private struct CategoryTile: View {
                     .overlay(
                         RoundedRectangle(cornerRadius: 14)
                             .stroke(
-                                selected ? Color.clear : Color.white.opacity(0.06),
+                                selected ? Color.clear : Color(UIColor.systemFill),
                                 lineWidth: 1
                             )
                     )

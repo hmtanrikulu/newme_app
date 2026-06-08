@@ -9,20 +9,23 @@ enum GeminiService {
     }
 
     enum ServiceError: LocalizedError {
+        case missingKey
         case badResponse(Int)
         case emptyResponse
         case parseError(String)
 
         var errorDescription: String? {
             switch self {
-            case .badResponse(let code): return "API hatası: \(code)"
-            case .emptyResponse:        return "Boş yanıt geldi"
-            case .parseError(let msg):  return "Ayrıştırma hatası: \(msg)"
+            case .missingKey:            return "API anahtarı eksik — Ayarlar → Hedefler'den Gemini API anahtarını gir."
+            case .badResponse(let code): return "API hatası: \(code) — anahtarın geçerli olduğundan emin ol."
+            case .emptyResponse:         return "Boş yanıt geldi"
+            case .parseError(let msg):   return "Ayrıştırma hatası: \(msg)"
             }
         }
     }
 
     static func parseFood(_ description: String) async throws -> [ParsedFoodItem] {
+        guard !apiKey.isEmpty else { throw ServiceError.missingKey }
         let urlString = "https://generativelanguage.googleapis.com/v1beta/models/\(model):generateContent?key=\(apiKey)"
         guard let url = URL(string: urlString) else { throw URLError(.badURL) }
 

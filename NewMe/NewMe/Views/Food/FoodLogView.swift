@@ -39,51 +39,18 @@ struct FoodLogView: View {
 
     var body: some View {
         List {
-            // Macro summary
-            macroSection
+            // ── Calorie summary (MacroFactor style) ──
+            Section {
+                calorieSummary
+                macroRows
+            }
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
 
-            // Meal sections
+            // ── Meal sections ──
             ForEach(MealType.allCases) { meal in
-                let mealEntries = entries(for: meal)
-                let mealKcal = mealEntries.reduce(0) { $0 + $1.kcal }
-
-                Section {
-                    ForEach(mealEntries) { entry in
-                        FoodEntryRow(entry: entry)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button(role: .destructive) {
-                                    delete(entry)
-                                } label: {
-                                    Label("Sil", systemImage: "trash")
-                                }
-                            }
-                            .swipeActions(edge: .leading) {
-                                Button {
-                                    editingEntry = entry
-                                } label: {
-                                    Label("Düzenle", systemImage: "pencil")
-                                }
-                                .tint(.orange)
-                            }
-                    }
-                    Button {
-                        addingForMeal = meal
-                        showAddSheet = true
-                    } label: {
-                        Label("Ekle", systemImage: "plus")
-                            .font(.subheadline)
-                    }
-                } header: {
-                    HStack {
-                        Image(systemName: meal.systemImage)
-                        Text(meal.label)
-                        Spacer()
-                        if mealKcal > 0 {
-                            Text("\(Int(mealKcal.rounded())) kcal")
-                                .monospacedDigit()
-                        }
-                    }
-                }
+                mealSection(meal)
             }
         }
         .listStyle(.insetGrouped)
@@ -91,7 +58,7 @@ struct FoodLogView: View {
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 4) {
+                HStack(spacing: 2) {
                     Button {
                         showBarcodeSheet = true
                     } label: {
@@ -126,108 +93,171 @@ struct FoodLogView: View {
         }
     }
 
-    // MARK: — Macro summary section
+    // MARK: — Calorie summary (MacroFactor style)
 
-    private var macroSection: some View {
-        Section {
-            // Calorie progress
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text("Kalori")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                    Spacer()
-                    Text("\(Int(totalKcal.rounded())) / \(goals.kcal) kcal")
-                        .font(.subheadline)
-                        .monospacedDigit()
+    @ViewBuilder
+    private var calorieSummary: some View {
+        let consumed = Int(totalKcal.rounded())
+        let goal = goals.kcal
+        let remaining = goal - consumed
+        let over = remaining < 0
+
+        VStack(spacing: 10) {
+            HStack(alignment: .firstTextBaseline, spacing: 0) {
+                Text("\(consumed)")
+                    .font(.system(size: 52, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(over ? Color.red : Color.accentColor)
+                Text(" kcal")
+                    .font(.title3.weight(.medium))
+                    .foregroundStyle(.secondary)
+                    .padding(.leading, 2)
+                Spacer()
+                VStack(alignment: .trailing, spacing: 3) {
+                    Text("Hedef \(goal)")
+                        .font(.caption)
                         .foregroundStyle(.secondary)
+                    Text(over ? "\(abs(remaining)) fazla" : "\(remaining) kalan")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(over ? .red : Color.accentColor)
                 }
-                ProgressView(value: min(1, totalKcal / Double(goals.kcal)))
-                    .tint(totalKcal > Double(goals.kcal) ? .red : .accentColor)
             }
 
-            // Macros
-            HStack(spacing: 0) {
-                macroCell(
-                    label: "Protein",
-                    value: Int(totalProtein.rounded()),
-                    goal: goals.protein,
-                    color: AppColor.macroProt
-                )
-                Divider()
-                macroCell(
-                    label: "Karb.",
-                    value: Int(totalCarbs.rounded()),
-                    goal: goals.carbs,
-                    color: AppColor.macroCarb
-                )
-                Divider()
-                macroCell(
-                    label: "Yağ",
-                    value: Int(totalFat.rounded()),
-                    goal: goals.fat,
-                    color: AppColor.macroFat
-                )
+            // Thin calorie bar
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color(UIColor.systemFill))
+                        .frame(height: 6)
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(over ? Color.red : Color.accentColor)
+                        .frame(width: min(geo.size.width, geo.size.width * CGFloat(min(1, totalKcal / Double(max(1, goal))))), height: 6)
+                        .animation(.easeOut(duration: 0.3), value: totalKcal)
+                }
             }
-            .listRowInsets(EdgeInsets())
+            .frame(height: 6)
+        }
+        .padding(.vertical, 6)
+    }
+
+    // MARK: — Macro rows (MacroFactor style)
+
+    private var macroRows: some View {
+        VStack(spacing: 8) {
+            macroBar("Protein", value: totalProtein, goal: Double(goals.protein), color: AppColor.macroProt)
+            macroBar("Karbonhidrat", value: totalCarbs, goal: Double(goals.carbs), color: AppColor.macroCarb)
+            macroBar("Yağ", value: totalFat, goal: Double(goals.fat), color: AppColor.macroFat)
+        }
+        .padding(.bottom, 4)
+    }
+
+    private func macroBar(_ name: String, value: Double, goal: Double, color: Color) -> some View {
+        HStack(spacing: 10) {
+            Text(name)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .frame(width: 88, alignment: .leading)
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(color.opacity(0.15))
+                        .frame(height: 5)
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(color)
+                        .frame(width: min(geo.size.width, geo.size.width * CGFloat(min(1, value / max(1, goal)))), height: 5)
+                        .animation(.easeOut(duration: 0.3), value: value)
+                }
+            }
+            .frame(height: 5)
+            Text("\(Int(value.rounded()))g / \(Int(goal.rounded()))g")
+                .font(.caption.weight(.medium))
+                .monospacedDigit()
+                .foregroundStyle(.secondary)
+                .frame(width: 72, alignment: .trailing)
         }
     }
 
-    private func macroCell(label: String, value: Int, goal: Int, color: Color) -> some View {
-        VStack(spacing: 4) {
-            HStack(alignment: .firstTextBaseline, spacing: 2) {
-                Text("\(value)")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                    .monospacedDigit()
-                Text("g")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+    // MARK: — Meal section
+
+    @ViewBuilder
+    private func mealSection(_ meal: MealType) -> some View {
+        let mealEntries = entries(for: meal)
+        let mealKcal = mealEntries.reduce(0) { $0 + $1.kcal }
+
+        Section {
+            ForEach(mealEntries) { entry in
+                FoodEntryRow(entry: entry)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) { delete(entry) } label: {
+                            Label("Sil", systemImage: "trash")
+                        }
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button { editingEntry = entry } label: {
+                            Label("Düzenle", systemImage: "pencil")
+                        }
+                        .tint(.orange)
+                    }
             }
-            .foregroundStyle(color)
-            Text(label)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-            ProgressView(value: min(1, Double(value) / Double(max(1, goal))))
-                .tint(color)
-                .frame(width: 48)
+
+            // Inline add button
+            Button {
+                addingForMeal = meal
+                showAddSheet = true
+            } label: {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundStyle(Color.accentColor)
+                    Text("Besin ekle")
+                        .foregroundStyle(Color.accentColor)
+                }
+                .font(.subheadline)
+            }
+        } header: {
+            HStack {
+                Image(systemName: meal.systemImage)
+                    .foregroundStyle(Color.accentColor)
+                Text(meal.label.uppercased())
+                    .fontWeight(.semibold)
+                Spacer()
+                if mealKcal > 0 {
+                    Text("\(Int(mealKcal.rounded())) kcal")
+                        .monospacedDigit()
+                        .fontWeight(.medium)
+                }
+            }
+            .font(.caption)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 10)
     }
 }
 
-// MARK: — Food entry row
+// MARK: — Food entry row (MacroFactor style)
 
 private struct FoodEntryRow: View {
     let entry: FoodLogEntry
 
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 3) {
                 Text(entry.displayName)
-                    .font(.body)
+                    .font(.body.weight(.medium))
                 if let item = entry.item {
-                    Text("\(entry.quantity) × \(item.name)")
+                    Text("\(entry.quantity) × \(item.name)  ·  \(Int(item.kcalPerPortion.rounded())) kcal/porsiyon")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text("P \(Int(entry.protein.rounded()))g  K \(Int(entry.carbs.rounded()))g  Y \(Int(entry.fat.rounded()))g")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
             }
             Spacer()
-            VStack(alignment: .trailing, spacing: 2) {
-                Text("\(Int(entry.kcal.rounded())) kcal")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .monospacedDigit()
-                HStack(spacing: 6) {
-                    Text("P\(Int(entry.protein.rounded()))")
-                    Text("K\(Int(entry.carbs.rounded()))")
-                    Text("Y\(Int(entry.fat.rounded()))")
-                }
-                .font(.caption2)
+            Text("\(Int(entry.kcal.rounded()))")
+                .font(.body.weight(.semibold))
                 .monospacedDigit()
+            + Text(" kcal")
+                .font(.caption)
                 .foregroundStyle(.secondary)
-            }
         }
     }
 }
@@ -263,7 +293,6 @@ struct AddFoodSheet: View {
     var body: some View {
         NavigationStack {
             List {
-                // Meal picker
                 Section {
                     Picker("Öğün", selection: $selectedMeal) {
                         ForEach(MealType.allCases) { meal in
@@ -273,7 +302,6 @@ struct AddFoodSheet: View {
                     .pickerStyle(.menu)
                 }
 
-                // Manual entry toggle
                 Section {
                     if manualMode {
                         manualFields
@@ -284,7 +312,6 @@ struct AddFoodSheet: View {
                     }
                 }
 
-                // Catalog
                 if !manualMode {
                     Section("Katalog") {
                         ForEach(filtered) { food in
@@ -299,7 +326,7 @@ struct AddFoodSheet: View {
                 }
             }
             .searchable(text: $search, prompt: "Yiyecek ara")
-            .navigationTitle("Yemek Ekle")
+            .navigationTitle("Besin Ekle")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -422,7 +449,7 @@ struct EditFoodEntrySheet: View {
     }
 }
 
-// MARK: — Catalog row (reused in AddFoodSheet)
+// MARK: — Catalog row
 
 private struct FoodCatalogRow: View {
     let food: FoodItem

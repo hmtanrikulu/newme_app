@@ -41,7 +41,7 @@ struct DaySummaryCard: View {
                 HStack(spacing: 6) {
                     Image(systemName: "square.and.pencil")
                         .font(.system(size: 12, weight: .semibold))
-                    Text(day.hasAnyData ? "Bu günü düzenle" : "Bu güne ekle")
+                    Text("Düzenle")
                         .font(.system(size: 13, weight: .semibold))
                 }
                 .foregroundStyle(AppColor.gold)
@@ -66,7 +66,7 @@ struct DaySummaryCard: View {
                 .fill(AppColor.surface)
                 .overlay(
                     RoundedRectangle(cornerRadius: 14)
-                        .stroke(Color.white.opacity(0.06), lineWidth: 1)
+                        .stroke(Color(UIColor.separator).opacity(0.4), lineWidth: 1)
                 )
         )
     }

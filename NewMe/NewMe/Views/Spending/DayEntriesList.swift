@@ -27,10 +27,10 @@ struct DayEntriesList: View {
         .frame(height: 110)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white.opacity(0.02))
+                .fill(Color(UIColor.systemFill))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.white.opacity(0.05), lineWidth: 1)
+                        .stroke(Color(UIColor.systemFill), lineWidth: 1)
                 )
         )
     }
@@ -98,7 +98,7 @@ private struct EntryRow: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white.opacity(0.03))
+                .fill(Color(UIColor.systemFill))
         )
         .padding(.horizontal, 6)
     }

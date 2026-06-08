@@ -29,7 +29,7 @@ struct SettingsTabPicker: View {
                         .frame(height: 32)
                         .background(
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(selection == tab ? AppColor.gold.opacity(0.2) : Color.white.opacity(0.05))
+                                .fill(selection == tab ? AppColor.gold.opacity(0.15) : Color(UIColor.systemFill))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(selection == tab ? AppColor.gold.opacity(0.5) : Color.clear,
