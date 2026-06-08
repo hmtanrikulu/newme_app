@@ -4,6 +4,7 @@ import SwiftData
 struct GoalsTab: View {
     @Environment(\.modelContext) private var context
     @Query private var goalsRows: [UserGoals]
+    @State private var geminiKey: String = GeminiService.apiKey
 
     private var goals: UserGoals {
         if let existing = goalsRows.first { return existing }
@@ -24,6 +25,27 @@ struct GoalsTab: View {
                 Rectangle().fill(Color.white.opacity(0.08)).frame(height: 1).padding(.vertical, 4)
 
                 GoalRow(label: "Günlük harcama limiti", unit: "₺",  value: goals.dailySpendLimit, step: 100, prefix: true,  tone: AppColor.gold)     { goals.dailySpendLimit = $0; save() }
+
+                Rectangle().fill(Color.white.opacity(0.08)).frame(height: 1).padding(.vertical, 4)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Label("Gemini API Anahtarı", systemImage: "sparkles")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    SecureField("API anahtarını gir…", text: $geminiKey)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 10)
+                        .background(Color.white.opacity(0.07), in: RoundedRectangle(cornerRadius: 12))
+                        .onChange(of: geminiKey) { _, new in
+                            GeminiService.apiKey = new
+                        }
+                    Text("AI ile yemek girişi için gerekli. Google AI Studio'dan ücretsiz alınabilir.")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
+                .padding(.horizontal, 2)
             }
             .padding(.horizontal, 16)
             .padding(.top, 8)
