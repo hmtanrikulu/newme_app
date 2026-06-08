@@ -41,3 +41,4 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: kaizen
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_KEY_NSCameraUsageDescription: "Barkod taramak için kamera erişimi gereklidir"

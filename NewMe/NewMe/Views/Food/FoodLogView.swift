@@ -10,6 +10,8 @@ struct FoodLogView: View {
     @Query private var goalsRows: [UserGoals]
 
     @State private var showAddSheet = false
+    @State private var showAISheet = false
+    @State private var showBarcodeSheet = false
     @State private var addingForMeal: MealType = .breakfast
     @State private var editingEntry: FoodLogEntry?
 
@@ -89,16 +91,35 @@ struct FoodLogView: View {
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    addingForMeal = MealType.current()
-                    showAddSheet = true
-                } label: {
-                    Image(systemName: "plus")
+                HStack(spacing: 4) {
+                    Button {
+                        showBarcodeSheet = true
+                    } label: {
+                        Image(systemName: "barcode.viewfinder")
+                    }
+                    Button {
+                        addingForMeal = MealType.current()
+                        showAISheet = true
+                    } label: {
+                        Image(systemName: "sparkles")
+                    }
+                    Button {
+                        addingForMeal = MealType.current()
+                        showAddSheet = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
             }
         }
         .sheet(isPresented: $showAddSheet) {
             AddFoodSheet(date: activeDate, defaultMeal: addingForMeal)
+        }
+        .sheet(isPresented: $showAISheet) {
+            AIFoodInputSheet(activeDate: activeDate, defaultMeal: addingForMeal)
+        }
+        .sheet(isPresented: $showBarcodeSheet) {
+            BarcodeScannerView(activeDate: activeDate, defaultMeal: MealType.current())
         }
         .sheet(item: $editingEntry) { entry in
             EditFoodEntrySheet(entry: entry)

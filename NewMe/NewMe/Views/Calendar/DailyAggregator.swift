@@ -65,6 +65,43 @@ enum DailyAggregator {
         }
     }
 
+    static func monthStats(
+        month: Date,
+        foodEntries: [FoodLogEntry],
+        fitnessEntries: [FitnessLogEntry],
+        spendEntries: [SpendLogEntry]
+    ) -> (spend: Double, workouts: Int, avgKcal: Double) {
+        let cal = Calendar.current
+        guard
+            let monthStart = cal.date(from: cal.dateComponents([.year, .month], from: month)),
+            let nextMonth  = cal.date(byAdding: .month, value: 1, to: monthStart)
+        else { return (0, 0, 0) }
+
+        let spend = spendEntries
+            .filter { $0.date >= monthStart && $0.date < nextMonth }
+            .reduce(0) { $0 + $1.amount }
+
+        let workoutDays = Set(
+            fitnessEntries
+                .filter { !$0.sets.isEmpty && $0.date >= monthStart && $0.date < nextMonth }
+                .map { cal.startOfDay(for: $0.date) }
+        ).count
+
+        let daysInMonth = cal.range(of: .day, in: .month, for: monthStart)!.count
+        var kcalPerDay: [Double] = []
+        for d in 0..<daysInMonth {
+            guard let day = cal.date(byAdding: .day, value: d, to: monthStart),
+                  let end = cal.date(byAdding: .day, value: 1, to: day) else { continue }
+            let total = foodEntries
+                .filter { $0.date >= day && $0.date < end }
+                .reduce(0) { $0 + $1.kcal }
+            if total > 0 { kcalPerDay.append(total) }
+        }
+        let avgKcal = kcalPerDay.isEmpty ? 0 : kcalPerDay.reduce(0, +) / Double(kcalPerDay.count)
+
+        return (spend, workoutDays, avgKcal)
+    }
+
     /// Consecutive days from today backwards where any data was logged.
     static func currentStreak(
         foodEntries: [FoodLogEntry],

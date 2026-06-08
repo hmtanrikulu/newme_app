@@ -9,10 +9,24 @@ struct HistoryView: View {
     @Query private var spendEntries: [SpendLogEntry]
     @Query private var goalsRows: [UserGoals]
 
-    @State private var month: Date = Calendar.current.startOfDay(for: .now)
     @State private var selected: Date = Calendar.current.startOfDay(for: .now)
 
     private var today: Date { Calendar.current.startOfDay(for: .now) }
+    private var goals: UserGoals { goalsRows.first ?? UserGoals() }
+
+    private var displayMonth: Date {
+        let c = Calendar.current.dateComponents([.year, .month], from: selected)
+        return Calendar.current.date(from: c) ?? selected
+    }
+
+    private var stats: (spend: Double, workouts: Int, avgKcal: Double) {
+        DailyAggregator.monthStats(
+            month: displayMonth,
+            foodEntries: foodEntries,
+            fitnessEntries: fitnessEntries,
+            spendEntries: spendEntries
+        )
+    }
 
     private var streak: Int {
         DailyAggregator.currentStreak(
@@ -34,40 +48,31 @@ struct HistoryView: View {
 
     var body: some View {
         List {
-            // Streak badge
-            if streak >= 2 {
-                Section {
-                    HStack(spacing: 12) {
-                        Image(systemName: "flame.fill")
-                            .font(.title2)
-                            .foregroundStyle(.orange)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("\(streak) gün streak")
-                                .font(.headline)
-                            Text("Harika gidiyorsun!")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                    }
-                    .padding(.vertical, 4)
-                }
+            // ── Monthly stats header ──
+            Section {
+                monthStatsRow
             }
 
-            // Month navigation + grid
+            // ── Week strip + streak ──
             Section {
-                monthHeader
-                MonthGrid(
-                    month: month,
-                    today: today,
+                if streak >= 2 {
+                    HStack(spacing: 10) {
+                        Image(systemName: "flame.fill").foregroundStyle(.orange)
+                        Text("\(streak) gün streak").font(.subheadline.weight(.semibold))
+                        Spacer()
+                        Text("Harika!").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                WeekStrip(
                     selected: $selected,
+                    today: today,
                     dayHasData: { rollup(on: $0).hasAnyData }
                 )
-                .padding(.bottom, 8)
+                .listRowInsets(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
             }
 
-            // Selected day — tap to open detail
-            Section("Seçili Gün") {
+            // ── Selected day ──
+            Section(dayTitle) {
                 NavigationLink {
                     DayDetailView(date: selected)
                 } label: {
@@ -82,40 +87,96 @@ struct HistoryView: View {
                 .listRowInsets(EdgeInsets())
             }
 
-            // Spending chart
+            // ── Spending chart ──
             Section("Harcama Grafiği") {
                 SpendChart(entries: spendEntries)
                     .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
                     .listRowBackground(Color.clear)
             }
+
+            // ── Calorie chart ──
+            Section("Kalori Trendi") {
+                CalorieChart(entries: foodEntries, goalKcal: goals.kcal)
+                    .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+                    .listRowBackground(Color.clear)
+            }
         }
         .listStyle(.insetGrouped)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                if !Calendar.current.isDateInToday(selected) {
+                    Button("Bugün") {
+                        withAnimation { selected = today }
+                    }
+                    .font(.subheadline.weight(.semibold))
+                }
+            }
+        }
     }
 
-    private var monthHeader: some View {
-        HStack {
-            Button {
-                withAnimation {
-                    month = Calendar.current.date(byAdding: .month, value: -1, to: month) ?? month
-                }
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.body.weight(.semibold))
+    // MARK: — Month stats row
+
+    private var monthStatsRow: some View {
+        let monthFmt: DateFormatter = {
+            let f = DateFormatter()
+            f.locale = Locale(identifier: "tr_TR")
+            f.dateFormat = "MMMM yyyy"
+            return f
+        }()
+
+        return VStack(spacing: 10) {
+            Text(monthFmt.string(from: displayMonth).capitalized(with: Locale(identifier: "tr_TR")))
+                .font(.footnote.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            HStack(spacing: 0) {
+                statChip(
+                    icon: "turkishlirasign.circle.fill",
+                    color: AppColor.spending,
+                    value: "₺\(Int(stats.spend.rounded()))",
+                    label: "harcama"
+                )
+                Divider().frame(height: 30)
+                statChip(
+                    icon: "dumbbell.fill",
+                    color: AppColor.fitness,
+                    value: "\(stats.workouts)",
+                    label: "antrenman"
+                )
+                Divider().frame(height: 30)
+                statChip(
+                    icon: "fork.knife.circle.fill",
+                    color: AppColor.food,
+                    value: "\(Int(stats.avgKcal.rounded()))",
+                    label: "ort. kcal"
+                )
             }
-            Spacer()
-            Text(DateFormatters.monthYear.string(from: month).capitalized(with: Locale(identifier: "tr_TR")))
-                .font(.headline)
-            Spacer()
-            Button {
-                withAnimation {
-                    month = Calendar.current.date(byAdding: .month, value: 1, to: month) ?? month
-                }
-            } label: {
-                Image(systemName: "chevron.right")
-                    .font(.body.weight(.semibold))
-            }
-            .disabled(Calendar.current.isDate(month, equalTo: today, toGranularity: .month))
         }
-        .buttonStyle(.borderless)
+        .padding(.vertical, 4)
+    }
+
+    private func statChip(icon: String, color: Color, value: String, label: String) -> some View {
+        VStack(spacing: 3) {
+            Image(systemName: icon)
+                .foregroundStyle(color)
+                .font(.title3)
+            Text(value)
+                .font(.headline)
+                .monospacedDigit()
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: — Helpers
+
+    private var dayTitle: String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "tr_TR")
+        f.dateFormat = "d MMMM"
+        return f.string(from: selected)
     }
 }
